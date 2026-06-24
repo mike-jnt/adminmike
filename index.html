@@ -6373,7 +6373,7 @@
  <div>
  <span class="section-kicker">Biblioteca documental</span>
  <h2>Archivos</h2>
- <p>Organiza logos, firmas, comprobantes, soportes y documentos livianos relacionados con clientes, cuentas/proyectos, cobros, finanzas, reuniones y tareas.</p>
+ <p>Organiza logos, firmas, comprobantes, soportes y documentos y soportes pesados relacionados con clientes, cuentas/proyectos, cobros, finanzas, reuniones y tareas.</p>
  </div>
  <div class="hero-actions">
  <button class="btn" onclick="openModal('file')"><svg class="ui-icon"><use href="#icon-plus"></use></svg>Subir archivo</button>
@@ -6391,7 +6391,7 @@
  <div class="field"><label>Cliente</label><select id="fileFilterCliente" onchange="fileFilters.clienteId=this.value; renderFiles();"></select></div>
  <div class="field"><label>Cuenta / Proyecto</label><select id="fileFilterNegocio" onchange="fileFilters.negocioId=this.value; renderFiles();"></select></div>
  <div class="field"><label>Tipo</label><select id="fileFilterTipo" onchange="fileFilters.tipo=this.value; renderFiles();"><option value="">Todos</option><option value="image">Imágenes</option><option value="pdf">PDF</option><option value="document">Documentos</option><option value="other">Otros</option></select></div>
- <div class="field"><label>Vista rápida</label><select id="fileQuickView" onchange="fileFilters.quick=this.value; renderFiles();"><option value="all">Todos</option><option value="logos">Logos</option><option value="firmas">Firmas</option><option value="comprobantes">Comprobantes</option><option value="documentos">Documentos</option><option value="sinRelacion">Sin relación</option><option value="pesados">Cerca del límite</option></select></div>
+ <div class="field"><label>Vista rápida</label><select id="fileQuickView" onchange="fileFilters.quick=this.value; renderFiles();"><option value="all">Todos</option><option value="logos">Logos</option><option value="firmas">Firmas</option><option value="comprobantes">Comprobantes</option><option value="documentos">Documentos</option><option value="sinRelacion">Sin relación</option><option value="pesados">Archivos pesados</option></select></div>
  </div>
 
  <div class="files-layout">
@@ -6400,7 +6400,7 @@
  <div class="card-headline">
  <div>
  <h3>Biblioteca de archivos</h3>
- <p>Archivos guardados como Base64 dentro de Firestore. Usa archivos pequeños para evitar errores.</p>
+ <p>Archivos de hasta 2 MB guardados directamente en Firestore mediante fragmentos organizados.</p>
  </div>
  <div class="quote-actions-row">
  <button class="btn secondary small" onclick="renderFiles()">Actualizar</button>
@@ -6408,7 +6408,7 @@
  </div>
  </div>
  <div class="file-drop-hint">
- <strong>Límite recomendado:</strong> máximo 650 KB por archivo. Ideal para logos, firmas, comprobantes y documentos pequeños.
+ <strong>Nuevo sistema:</strong> puedes subir archivos de hasta 2 MB directamente en Firestore. El sistema divide cada archivo en fragmentos seguros y guarda los metadatos en el registro principal.
  </div>
  <div id="filesGrid" class="files-board"></div>
  </div>
@@ -6561,6 +6561,13 @@
  query,
  orderBy
  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+ import {
+ getStorage,
+ ref as storageRef,
+ uploadBytesResumable,
+ getDownloadURL,
+ deleteObject
+ } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
  const firebaseConfig = {
  apiKey: "AIzaSyCX2gWyZjW0D6miZy1OZSownFFUcGR13gk",
@@ -6575,6 +6582,7 @@
  const app = initializeApp(firebaseConfig);
  const auth = getAuth(app);
  const db = getFirestore(app);
+ const storage = getStorage(app);
 
  const state = {
  uid: null,
@@ -6761,8 +6769,12 @@
 
  async function deleteRecord(collectionName, id) {
  if (!confirm('¿Seguro que deseas eliminar este registro?')) return;
+ if (collectionName === 'archivos') {
+ const file = state.archivos.find(f => f.id === id);
+ await deleteStoredFile(file);
+ }
  await deleteDoc(docRef(collectionName, id));
- toast('Registro eliminado');
+ toast(collectionName === 'archivos' ? 'Archivo eliminado de Firestore' : 'Registro eliminado');
  }
 
  function applyTheme(theme) {
@@ -8879,10 +8891,10 @@
  <div class="business-detail-panel">
  <h4>Soporte y observaciones</h4>
  <div class="detail-list">
- ${detailRow('Comprobante', f.comprobanteNombre || 'Sin comprobante')}
+ ${detailRow('Comprobante', f.comprobanteNombre || f.comprobante?.nombre || 'Sin comprobante')}
  ${detailRow('Notas', f.notas || '-')}
  </div>
- ${f.comprobanteBase64 ? `<div class="finance-proof-box" style="margin-top:10px;">Comprobante guardado en Firestore como Base64: ${escapeHtml(f.comprobanteNombre || 'archivo')}</div>` : ''}
+ ${(f.comprobanteArchivoId || f.comprobante?.archivoId || f.comprobanteUrl || f.comprobante?.url || f.comprobanteBase64 || f.comprobante?.base64) ? `<div class="finance-proof-box" style="margin-top:10px;"><strong>Comprobante:</strong> ${escapeHtml(f.comprobanteNombre || f.comprobante?.nombre || 'archivo')} · ${(f.comprobanteArchivoId || f.comprobante?.archivoId) ? 'Firestore dividido' : ((f.comprobanteUrl || f.comprobante?.url) ? 'Storage antiguo' : 'Base64 antiguo')}<br>${(f.comprobanteArchivoId || f.comprobante?.archivoId) ? `<button class="btn secondary small" onclick="openStoredFileById('${escapeHtml(f.comprobanteArchivoId || f.comprobante?.archivoId)}')">Abrir soporte</button>` : `<button class="btn secondary small" onclick="window.open('${escapeHtml(f.comprobanteUrl || f.comprobante?.url || f.comprobanteBase64 || f.comprobante?.base64)}','_blank')">Abrir soporte</button>`}</div>` : ''}
  </div>
  </div>`;
  $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cerrar</button><button class="btn secondary" onclick="editFinance('${f.id}')">Editar</button>${isFinanceReceivable(f) ? `<button class="btn warning" onclick="addFinancePayment('${f.id}')">Registrar abono</button>` : ''}<button class="btn success" onclick="markFinancePaid('${f.id}'); closeModal();">Marcar pagada</button>`;
@@ -9344,6 +9356,140 @@
  </article>`;
  }
 
+ function fileSource(file = {}) {
+ return file.url || file.downloadURL || file.storageUrl || file.base64 || '';
+ }
+
+ function sanitizeFileName(name = 'archivo') {
+ return String(name || 'archivo')
+ .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+ .replace(/[^a-zA-Z0-9._-]/g, '-')
+ .replace(/-+/g, '-')
+ .slice(0, 120) || 'archivo';
+ }
+
+ const FIRESTORE_FILE_MAX_BYTES = 2 * 1024 * 1024;
+ const FIRESTORE_FILE_CHUNK_SIZE = 650000;
+
+ function splitTextIntoChunks(text, size = FIRESTORE_FILE_CHUNK_SIZE) {
+ const chunks = [];
+ for (let i = 0; i < text.length; i += size) chunks.push(text.slice(i, i + size));
+ return chunks;
+ }
+
+ function firestoreChunksRef(fileId) {
+ return collection(db, 'users', state.uid, 'archivos', fileId, 'chunks');
+ }
+
+ function firestoreChunkDocRef(fileId, index) {
+ return doc(db, 'users', state.uid, 'archivos', fileId, 'chunks', String(index).padStart(4, '0'));
+ }
+
+ async function deleteFileChunks(fileId) {
+ if (!state.uid || !fileId) return;
+ try {
+ const snap = await getDocs(firestoreChunksRef(fileId));
+ await Promise.all(snap.docs.map(chunkDoc => deleteDoc(chunkDoc.ref)));
+ } catch (error) {
+ console.warn('No se pudieron eliminar fragmentos de Firestore', error);
+ }
+ }
+
+ async function writeFileChunks(fileId, chunks, alertEl = null) {
+ for (let i = 0; i < chunks.length; i += 1) {
+ await setDoc(firestoreChunkDocRef(fileId, i), { index: i, data: chunks[i], creadoEn: serverTimestamp() });
+ if (alertEl) {
+ const pct = Math.round(((i + 1) / chunks.length) * 100);
+ alertEl.classList.remove('hidden');
+ alertEl.style.borderColor = 'rgba(14,165,233,.35)';
+ alertEl.textContent = `Guardando en Firestore: ${pct}% · fragmento ${i + 1} de ${chunks.length}`;
+ }
+ }
+ }
+
+ async function readFileFromFirestoreChunks(file) {
+ if (!state.uid || !file?.id) return fileSource(file);
+ if (!file.firestoreChunks && !file.firestoreFragmentado) return fileSource(file);
+ const snap = await getDocs(query(firestoreChunksRef(file.id), orderBy('index', 'asc')));
+ return snap.docs.map(chunkDoc => chunkDoc.data().data || '').join('');
+ }
+
+ async function deleteStoredFile(file = {}) {
+ if (file?.id && (file.firestoreChunks || file.firestoreFragmentado)) await deleteFileChunks(file.id);
+ const path = file.storagePath || file.rutaStorage || '';
+ if (!path) return;
+ try {
+ await deleteObject(storageRef(storage, path));
+ } catch (error) {
+ console.warn('No se pudo eliminar archivo antiguo de Storage', error);
+ }
+ }
+
+ async function saveFileRecordInFirestoreChunks(file, payload, existingData = {}, alertEl = null) {
+ if (!state.uid) throw new Error('Debes iniciar sesión para guardar archivos.');
+ if (!file && !existingData.id) throw new Error('Selecciona un archivo.');
+ if (!file) {
+ await updateRecord('archivos', existingData.id, payload);
+ return existingData.id;
+ }
+ if (file.size > FIRESTORE_FILE_MAX_BYTES) {
+ throw new Error(`Firestore directo está configurado para máximo 2 MB por archivo. Este archivo pesa ${fileSize(file.size)}.`);
+ }
+ if (alertEl) {
+ alertEl.classList.remove('hidden');
+ alertEl.style.borderColor = 'rgba(14,165,233,.35)';
+ alertEl.textContent = `Preparando archivo para Firestore: ${file.name} · ${fileSize(file.size)}`;
+ }
+ const dataUrl = await readFileRaw(file);
+ const chunks = splitTextIntoChunks(dataUrl);
+ const finalPayload = {
+ ...payload,
+ base64: '',
+ url: '',
+ downloadURL: '',
+ storageUrl: '',
+ storagePath: '',
+ almacenamiento: 'Firestore dividido',
+ firestoreChunks: true,
+ firestoreFragmentado: true,
+ chunkCount: chunks.length,
+ chunkSize: FIRESTORE_FILE_CHUNK_SIZE,
+ firestoreMaxBytes: FIRESTORE_FILE_MAX_BYTES
+ };
+ let fileId = existingData.id || '';
+ if (fileId) {
+ await deleteStoredFile(existingData);
+ await updateRecord('archivos', fileId, finalPayload);
+ } else {
+ const created = await addRecord('archivos', finalPayload);
+ fileId = created.id;
+ }
+ await writeFileChunks(fileId, chunks, alertEl);
+ return fileId;
+ }
+
+ async function uploadSupportToFirestore(file, extra = {}, alertEl = null) {
+ const payload = {
+ nombre: file.name,
+ tipo: file.type || 'application/octet-stream',
+ categoria: extra.categoria || 'Soporte financiero',
+ estado: 'Activo',
+ fecha: extra.fecha || today(),
+ clienteId: extra.clienteId || '',
+ negocioId: extra.negocioId || '',
+ cotizacionId: extra.cotizacionId || '',
+ cuentaCobroId: extra.cuentaCobroId || '',
+ finanzaId: extra.finanzaId || '',
+ tareaId: extra.tareaId || '',
+ reunionId: extra.reunionId || '',
+ descripcion: extra.descripcion || 'Archivo de soporte guardado desde un módulo del sistema.',
+ etiquetas: extra.etiquetas || 'soporte, firestore',
+ tamano: file.size
+ };
+ const archivoId = await saveFileRecordInFirestoreChunks(file, payload, {}, alertEl);
+ return { archivoId, nombre: file.name, tipo: file.type || 'application/octet-stream', tamano: file.size, almacenamiento: 'Firestore dividido', firestoreChunks: true };
+ }
+
  const fileFilters = { search: '', categoria: '', clienteId: '', negocioId: '', tipo: '', quick: 'all' };
  window.fileFilters = fileFilters;
 
@@ -9363,7 +9509,8 @@
  return 'other';
  }
  function fileIcon(file) {
- if (fileIsImage(file)) return file.base64 ? `<img src="${file.base64}" alt="${escapeHtml(file.nombre || 'Archivo')}">` : 'IMG';
+ const src = fileSource(file);
+ if (fileIsImage(file)) return src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(file.nombre || 'Archivo')}">` : 'IMG';
  if (fileIsPdf(file)) return 'PDF';
  if (fileKind(file) === 'document') return 'DOC';
  return 'FILE';
@@ -9411,7 +9558,7 @@
  renderFileUnlinkedList();
  const target = $('filesGrid');
  if (!target) return;
- target.innerHTML = list.length ? list.map(fileCardV2).join('') : emptyText('No hay archivos con esos filtros. Sube logos, firmas, comprobantes o documentos livianos.');
+ target.innerHTML = list.length ? list.map(fileCardV2).join('') : emptyText('No hay archivos con esos filtros. Sube logos, firmas, comprobantes o documentos pesados.');
  }
 
  function renderFileFilterOptions() {
@@ -9435,11 +9582,11 @@
  const size = state.archivos.reduce((a,f) => a + Number(f.tamano || 0), 0);
  const unlinked = state.archivos.filter(fileIsUnlinked).length;
  target.innerHTML = [
- financeKpi('Total archivos', total, 'Guardados en Firestore', ''),
+ financeKpi('Total archivos', total, 'Firestore dividido', ''),
  financeKpi('Imágenes', images, 'Logos, firmas o imágenes', ''),
  financeKpi('Comprobantes', comprobantes, 'Pagos y soportes', ''),
- financeKpi('Documentos', docs, 'PDF o documentos livianos', ''),
- financeKpi('Peso estimado', fileSize(size), 'Base original aproximada', ''),
+ financeKpi('Documentos', docs, 'PDF, Word, Excel y otros', ''),
+ financeKpi('Peso total', fileSize(size), 'Guardados en Firestore', ''),
  financeKpi('Sin relación', unlinked, 'Por asociar', '')
  ].join('');
  }
@@ -9454,7 +9601,7 @@
  const logos = state.archivos.filter(f => /logo/i.test(f.categoria || '') && fileIsImage(f));
  if (unlinked.length) alerts.push(['warning','AV',`${unlinked.length} archivo(s) sin relación`, 'Asócialos a cliente, cuenta/proyecto o movimiento para encontrarlos más fácil.', `<button class="btn warning small" onclick="setFileQuickFilter('sinRelacion')">Ver</button>`]);
  if (comprobantesSinFinanza.length) alerts.push(['info','IN',`${comprobantesSinFinanza.length} comprobante(s) sin movimiento`, 'Puedes asociarlos a Finanzas para mayor trazabilidad.', `<button class="btn secondary small" onclick="setFileQuickFilter('comprobantes')">Revisar</button>`]);
- if (heavy.length) alerts.push(['warning','AV',`${heavy.length} archivo(s) cerca del límite`, 'Firestore soporta documentos pequeños. Evita superar 650 KB por archivo.', `<button class="btn warning small" onclick="setFileQuickFilter('pesados')">Ver</button>`]);
+ if (heavy.length) alerts.push(['warning','AV',`${heavy.length} archivo(s) cerca del límite`, 'Estos archivos están guardados en Firestore por fragmentos.', `<button class="btn warning small" onclick="setFileQuickFilter('pesados')">Ver</button>`]);
  if (!state.config.signature) alerts.push(['info','IN','No has cargado firma general', 'Puedes subir una firma y usarla en cuentas de cobro.', `<button class="btn secondary small" onclick="openFileModalWithCategory('Firma')">Subir firma</button>`]);
  if (logos.length && !state.config.logo) alerts.push(['success','OK','Tienes logos disponibles', 'Puedes usar uno como logo general para documentos.', `<button class="btn secondary small" onclick="setFileQuickFilter('logos')">Ver logos</button>`]);
  target.innerHTML = alerts.length ? alerts.map(([type, icon, title, text, action]) => `<div class="quote-alert ${type}"><span>${icon}</span><div><strong>${escapeHtml(title)}</strong><small>${escapeHtml(text)}</small></div>${action || ''}</div>`).join('') : `<div class="quote-alert success"><span></span><div><strong>Biblioteca organizada</strong><small>No hay alertas importantes en tus archivos.</small></div></div>`;
@@ -9493,7 +9640,7 @@
  </div>
  ${statusPill(file.estado || 'Activo')}
  </div>
- <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">${fileIsUnlinked(file) ? '<span class="pill warning">Sin relación</span>' : '<span class="pill success">Relacionado</span>'}${fileIsHeavy(file) ? '<span class="file-size-warning"> cerca del límite</span>' : ''}</div>
+ <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">${fileIsUnlinked(file) ? '<span class="pill warning">Sin relación</span>' : '<span class="pill success">Relacionado</span>'}${fileIsHeavy(file) ? '<span class="file-size-warning"> pesado</span>' : ''}</div>
  </div>
  </div>
  <div class="file-meta-grid">
@@ -10648,7 +10795,7 @@
  $('modalTitle').textContent = data.id ? 'Editar movimiento financiero' : 'Nuevo movimiento financiero';
  const type = normalizeFinanceType(data.tipo || 'ingreso');
  const estado = data.estado || (['ingreso','gasto','pago recibido','pago realizado','abono','reembolso'].includes(type) ? 'Pagado' : 'Pendiente');
- const currentProof = data.comprobanteNombre ? `<div class="finance-proof-box">Archivo actual: ${escapeHtml(data.comprobanteNombre)}</div>` : '';
+ const currentProof = (data.comprobanteNombre || data.comprobante?.nombre) ? `<div class="finance-proof-box">Archivo actual: ${escapeHtml(data.comprobanteNombre || data.comprobante?.nombre)} · ${(data.comprobanteUrl || data.comprobante?.url) ? 'Storage' : 'Base64 antiguo'}</div>` : '';
  $('modalBody').innerHTML = `
  <div class="finance-form-layout">
  <div class="finance-form-panel">
@@ -10722,7 +10869,7 @@
  ${['','Semanal','Quincenal','Mensual','Bimestral','Trimestral','Anual'].map(x => `<option value="${x}" ${data.frecuencia===x?'selected':''}>${x || 'No aplica'}</option>`).join('')}
  </select></div>
  </div>
- <div class="field"><label>Comprobante opcional en Firestore</label><input id="fComprobante" type="file" accept="image/*,.pdf" /><small style="color:var(--muted);font-weight:800;">Máximo recomendado: 650 KB. Se guardará como Base64 en Firestore.</small>${currentProof}</div>
+ <div class="field"><label>Comprobante opcional en Firestore</label><input id="fComprobante" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.zip" /><small style="color:var(--muted);font-weight:800;">Se guardará en Firestore por fragmentos y Finanzas guardará la referencia.</small>${currentProof}</div>
  <div class="field"><label>Observaciones</label><textarea id="fNotas" placeholder="Acuerdos, detalles del pago, pendiente de validar...">${escapeHtml(data.notas || '')}</textarea></div>
  </div>
  </div>
@@ -10737,10 +10884,13 @@
  </div>`;
  $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveFinance">Guardar movimiento</button>`;
 
- let proofData = data.comprobanteBase64 || '';
- let proofName = data.comprobanteNombre || '';
- let proofType = data.comprobanteTipo || '';
- let proofSize = data.comprobanteTamano || 0;
+ let proofData = data.comprobanteBase64 || data.comprobante?.base64 || '';
+ let proofUrl = data.comprobanteUrl || data.comprobante?.url || '';
+ let proofStoragePath = data.comprobanteStoragePath || data.comprobante?.storagePath || '';
+ let proofName = data.comprobanteNombre || data.comprobante?.nombre || '';
+ let proofType = data.comprobanteTipo || data.comprobante?.tipo || '';
+ let proofSize = data.comprobanteTamano || data.comprobante?.tamano || 0;
+ let proofFile = null;
 
  $('fCategoriaSelect').onchange = () => {
  if ($('fCategoriaSelect').value) $('fCategoria').value = $('fCategoriaSelect').value;
@@ -10750,15 +10900,14 @@
  $('fComprobante').addEventListener('change', async (event) => {
  const file = event.target.files?.[0];
  if (!file) return;
- if (file.size > 650 * 1024) {
- event.target.value = '';
- return toast('El comprobante supera 650 KB. Comprímelo antes de subirlo a Firestore.');
- }
- proofData = await fileToBase64(file);
+ proofFile = file;
+ proofData = '';
+ proofUrl = '';
+ proofStoragePath = '';
  proofName = file.name;
- proofType = file.type || 'archivo';
+ proofType = file.type || 'application/octet-stream';
  proofSize = file.size;
- toast('Comprobante cargado en vista previa');
+ toast(`Comprobante listo para guardar en Firestore: ${file.name} · ${fileSize(file.size)}`);
  updatePreview();
  });
 
@@ -10781,9 +10930,13 @@
  frecuencia: $('fFrecuencia').value,
  notas: $('fNotas').value.trim(),
  comprobanteBase64: proofData,
+ comprobanteUrl: proofUrl,
+ comprobanteStoragePath: proofStoragePath,
  comprobanteNombre: proofName,
  comprobanteTipo: proofType,
  comprobanteTamano: proofSize,
+ comprobanteArchivoId: data.comprobanteArchivoId || data.comprobante?.archivoId || '',
+ comprobanteAlmacenamiento: proofFile ? 'Firestore dividido' : (data.comprobanteAlmacenamiento || data.comprobante?.almacenamiento || ''),
  abonos: data.abonos || []
  });
 
@@ -10800,6 +10953,22 @@
  updatePreview();
 
  $('saveFinance').onclick = async () => {
+ try {
+ if (proofFile) {
+ $('saveFinance').disabled = true;
+ $('saveFinance').textContent = 'Subiendo comprobante...';
+ const uploaded = await uploadSupportToFirestore(proofFile, { categoria: 'Soporte financiero', clienteId: $('fCliente').value, negocioId: $('fNegocio').value, finanzaId: data.id || '', fecha: $('fFecha').value || today() });
+ proofUrl = '';
+ proofStoragePath = '';
+ proofData = '';
+ proofName = uploaded.nombre;
+ proofType = uploaded.tipo;
+ proofSize = uploaded.tamano;
+ data.comprobanteArchivoId = uploaded.archivoId;
+ proofType = proofFile.type || 'application/octet-stream';
+ proofSize = proofFile.size;
+ proofData = '';
+ }
  const payload = readDraft();
  if (!payload.concepto) return toast('Agrega el concepto del movimiento');
  if (!payload.valor || payload.valor <= 0) return toast('Agrega un valor válido');
@@ -10808,6 +10977,10 @@
  payload.saldo = ['cuenta por cobrar','cuenta por pagar'].includes(payload.tipo) ? financeRemaining(payload) : 0;
  data.id ? await updateRecord('finanzas', data.id, payload) : await addRecord('finanzas', payload);
  closeModal(); toast('Movimiento financiero guardado');
+ } catch(e) {
+ if ($('saveFinance')) { $('saveFinance').disabled = false; $('saveFinance').textContent = 'Guardar movimiento'; }
+ toast(e.message || 'No se pudo guardar el movimiento');
+ }
  };
  }
 
@@ -11079,8 +11252,8 @@
  </div>
  <div class="field"><label>Forma de pago / datos bancarios</label><textarea id="fPago">${escapeHtml(data.pago || paymentInstructions() || '')}</textarea></div>
  <div class="field"><label>Observaciones</label><textarea id="fObservaciones" placeholder="Notas internas o instrucciones para el cliente">${escapeHtml(data.observaciones || '')}</textarea></div>
- <div class="field"><label>Comprobante opcional en Firestore</label><input id="fComprobante" type="file" accept="image/*,.pdf" /></div>
- <div class="message">Los soportes se guardan como Base64 en Firestore. Usa archivos livianos, idealmente menores a 650 KB.</div>
+ <div class="field"><label>Comprobante opcional en Firestore</label><input id="fComprobante" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.zip" /></div>
+ <div class="message">Los soportes se guardan directamente en Firestore por fragmentos; la cuenta conserva la referencia del archivo.</div>
  <div class="card" style="margin-top:12px;box-shadow:none;">
  <h3>Abonos registrados</h3>
  <div id="chargeFormAbonos" class="charge-abono-list"></div>
@@ -11151,8 +11324,8 @@
  if (!payload.concepto || !payload.total) return toast('Agrega concepto y valor');
  const file = $('fComprobante').files[0];
  if (file) {
- if (file.size > 650 * 1024) return toast('El comprobante supera 650 KB');
- payload.comprobante = { nombre: file.name, tipo: file.type || 'application/octet-stream', tamano: file.size, base64: await readFileRaw(file) };
+ const uploaded = await uploadSupportToFirestore(file, { categoria: 'Soporte de cuenta de cobro', clienteId: payload.clienteId, negocioId: payload.negocioId, cuentaCobroId: data.id || '', fecha: payload.fecha || today() });
+ payload.comprobante = { nombre: file.name, tipo: file.type || 'application/octet-stream', tamano: file.size, archivoId: uploaded.archivoId, almacenamiento: 'Firestore dividido', firestoreChunks: true };
  } else if (data.comprobante) payload.comprobante = data.comprobante;
  payload.estado = chargeStatus(payload);
  const isNew = !data.id;
@@ -11172,9 +11345,11 @@
  }
 
  function fileForm(data = {}) {
+ let previewUrl = fileSource(data);
  let previewBase64 = data.base64 || '';
  let previewType = data.tipo || '';
  let previewSize = Number(data.tamano || 0);
+ let pendingFile = null;
  $('modalTitle').textContent = data.id ? 'Editar archivo' : 'Subir archivo a Firestore';
  const quoteOpts = `<option value="">Sin cotización</option>` + state.cotizaciones.map(q => `<option value="${q.id}" ${data.cotizacionId===q.id?'selected':''}>${escapeHtml(q.numero || 'Cotización')} · ${escapeHtml(clientName(q.clienteId))}</option>`).join('');
  const chargeOpts = `<option value="">Sin cuenta de cobro</option>` + state.cuentasCobro.map(c => `<option value="${c.id}" ${data.cuentaCobroId===c.id?'selected':''}>${escapeHtml(c.numero || 'Cuenta')} · ${escapeHtml(clientName(c.clienteId))}</option>`).join('');
@@ -11184,8 +11359,8 @@
  $('modalBody').innerHTML = `
  <div class="file-form-layout">
  <div class="file-form-panel">
- <div class="message">Los archivos se guardan como Base64 dentro de Firestore. Usa archivos livianos: máximo recomendado 650 KB.</div>
- <div class="field"><label>Archivo ${data.id ? '(opcional para reemplazar)' : ''}</label><input id="fFile" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt" /></div>
+ <div class="message"><strong>Nuevo manejo de archivos:</strong> el archivo se guarda directamente en Firestore dividido en fragmentos. Límite recomendado: 2 MB por archivo.</div>
+ <div class="field"><label>Archivo ${data.id ? '(opcional para reemplazar)' : ''}</label><input id="fFile" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar,.ppt,.pptx,.csv" /></div>
  <div id="fSizeAlert" class="message hidden"></div>
  <div class="form-row">
  <div class="field"><label>Nombre del archivo</label><input id="fNombre" value="${escapeHtml(data.nombre || '')}" placeholder="Ej: Logo cliente / Comprobante pago" /></div>
@@ -11214,11 +11389,11 @@
  <div class="field"><label>Etiquetas</label><input id="fEtiquetas" value="${escapeHtml(data.etiquetas || '')}" placeholder="logo, soporte, pago, cliente..." /></div>
  </div>
  <div class="file-preview-panel">
- <div class="file-preview-title"><h4>Vista previa</h4><span class="pill">Firestore Base64</span></div>
+ <div class="file-preview-title"><h4>Vista previa</h4><span class="pill">Firestore hasta 2 MB</span></div>
  <div id="fileLivePreview"></div>
  </div>
  </div>`;
- $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveFile">${data.id ? 'Actualizar archivo' : 'Guardar en Firestore'}</button>`;
+ $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveFile">${data.id ? 'Actualizar archivo' : 'Subir y guardar'}</button>`;
 
  const updatePreview = () => {
  const fileLike = {
@@ -11229,6 +11404,8 @@
  tipo: previewType || data.tipo || 'Sin tipo',
  tamano: previewSize || data.tamano || 0,
  base64: previewBase64,
+ url: previewUrl,
+ storagePath: data.storagePath || '',
  clienteId: $('fClienteId')?.value || '',
  negocioId: $('fNegocioId')?.value || '',
  cotizacionId: $('fCotizacionId')?.value || '',
@@ -11248,37 +11425,32 @@
  const file = event.target.files?.[0];
  if (!file) return;
  const alert = $('fSizeAlert');
+ pendingFile = file;
  previewSize = file.size;
  previewType = file.type || 'application/octet-stream';
+ previewBase64 = '';
+ previewUrl = fileIsImage({ tipo: previewType }) ? URL.createObjectURL(file) : '';
  if (!$('fNombre').value.trim()) $('fNombre').value = file.name;
  alert.classList.remove('hidden');
- if (file.size > 650 * 1024) {
- alert.textContent = `Archivo muy pesado: ${fileSize(file.size)}. Debe ser menor a 650 KB para guardarse en Firestore.`;
- alert.style.borderColor = 'rgba(220,38,38,.35)';
- previewBase64 = '';
- updatePreview();
- return;
- }
- alert.textContent = `Archivo listo: ${file.name} · ${fileSize(file.size)}.`;
- alert.style.borderColor = 'rgba(22,163,74,.35)';
- previewBase64 = await readFileRaw(file);
+ alert.style.borderColor = 'rgba(14,165,233,.35)';
+ alert.textContent = `Archivo seleccionado: ${file.name} · ${fileSize(file.size)}. Se guardará en Firestore dividido en fragmentos.`;
  updatePreview();
  });
  updatePreview();
 
  $('saveFile').onclick = async () => {
  try {
- const file = $('fFile').files[0];
+ const file = pendingFile || $('fFile').files[0];
  if (file) {
- if (file.size > 650 * 1024) return toast('Archivo muy pesado. Usa uno menor a 650 KB.');
- if (!previewBase64) previewBase64 = await readFileRaw(file);
+ $('saveFile').disabled = true;
+ $('saveFile').textContent = 'Guardando en Firestore...';
  previewType = file.type || 'application/octet-stream';
  previewSize = file.size;
  }
- if (!data.id && !previewBase64) return toast('Selecciona un archivo');
+ if (!data.id && !file) return toast('Selecciona un archivo');
  const payload = {
  nombre: $('fNombre').value.trim() || file?.name || data.nombre || 'Archivo',
- tipo: previewType || data.tipo || 'application/octet-stream',
+ tipo: previewType || data.tipo || file?.type || 'application/octet-stream',
  categoria: $('fCategoria').value,
  estado: $('fEstado').value,
  fecha: $('fFecha').value || today(),
@@ -11291,23 +11463,31 @@
  reunionId: $('fReunionId').value,
  descripcion: $('fDescripcion').value.trim(),
  etiquetas: $('fEtiquetas').value.trim(),
- tamano: previewSize || data.tamano || 0,
- base64: previewBase64 || data.base64 || ''
+ tamano: previewSize || data.tamano || file?.size || 0,
+ base64: data.base64 || '',
+ url: data.url || data.downloadURL || data.storageUrl || '',
+ storagePath: data.storagePath || '',
+ almacenamiento: data.almacenamiento || 'Firestore dividido',
+ firestoreSoloMetadatos: false
  };
- if (data.id) await updateRecord('archivos', data.id, payload);
- else await addRecord('archivos', payload);
- closeModal(); toast(data.id ? 'Archivo actualizado' : 'Archivo guardado en Firestore');
- } catch(e) { toast(e.message || 'No se pudo guardar el archivo'); }
+ await saveFileRecordInFirestoreChunks(file, payload, data, $('fSizeAlert'));
+ closeModal(); toast(data.id ? 'Archivo actualizado en Firestore' : 'Archivo guardado en Firestore por fragmentos');
+ } catch(e) {
+ if ($('saveFile')) { $('saveFile').disabled = false; $('saveFile').textContent = data.id ? 'Actualizar archivo' : 'Subir y guardar'; }
+ toast(e.message || 'No se pudo guardar el archivo');
+ }
  };
  }
 
  function filePreviewHtml(file) {
+ const src = fileSource(file);
  const media = fileIsImage(file)
- ? (file.base64 ? `<img src="${file.base64}" alt="${escapeHtml(file.nombre || 'Archivo')}">` : 'Imagen sin cargar')
- : `<div><div style="font-size:38px;margin-bottom:8px;">${fileIsPdf(file) ? '' : ''}</div><strong>${escapeHtml(fileKind(file).toUpperCase())}</strong><br><small>${escapeHtml(file.tipo || 'Sin tipo')}</small></div>`;
+ ? (src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(file.nombre || 'Archivo')}">` : 'Imagen sin cargar')
+ : `<div><div style="font-size:38px;margin-bottom:8px;">${fileIsPdf(file) ? 'PDF' : fileKind(file).toUpperCase()}</div><strong>${escapeHtml(fileKind(file).toUpperCase())}</strong><br><small>${escapeHtml(file.tipo || 'Sin tipo')}</small></div>`;
  return `<div class="file-preview-card">
  <div class="file-preview-media">${media}</div>
  <div class="file-title-line"><div><h3>${escapeHtml(file.nombre || 'Archivo')}</h3><small>${escapeHtml(file.categoria || 'Otro')} · ${fileSize(file.tamano)}</small></div>${statusPill(file.estado || 'Activo')}</div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;">${file.firestoreChunks || file.firestoreFragmentado ? '<span class="pill success">Firestore 2 MB</span>' : (file.storagePath || file.url ? '<span class="pill success">Storage antiguo</span>' : '<span class="pill warning">Base64 antiguo</span>')}${file.chunkCount ? `<span class="pill">${file.chunkCount} fragmentos</span>` : ''}</div>
  <div class="file-meta-grid">
  <div class="file-meta-item"><span>Cliente</span><strong>${escapeHtml(file.clienteId ? clientName(file.clienteId) : 'Sin cliente')}</strong></div>
  <div class="file-meta-item"><span>Cuenta/proyecto</span><strong>${escapeHtml(file.negocioId ? businessName(file.negocioId) : 'Sin proyecto')}</strong></div>
@@ -11315,7 +11495,7 @@
  <div class="file-meta-item"><span>Fecha</span><strong>${escapeHtml(file.fecha || '-')}</strong></div>
  </div>
  ${file.descripcion ? `<p style="margin:0;color:var(--muted);line-height:1.45;">${escapeHtml(file.descripcion)}</p>` : ''}
- ${fileIsHeavy(file) ? `<span class="file-size-warning"> Está cerca del límite recomendado para Firestore</span>` : ''}
+ ${fileIsHeavy(file) ? `<span class="file-size-warning"> Archivo guardado en Firestore por fragmentos</span>` : ''}
  </div>`;
  }
 
@@ -11642,7 +11822,7 @@
  <div class="field"><label>Referencia</label><input id="payRef" placeholder="Número o soporte"></div>
  </div>
  <div class="field"><label>Observación</label><textarea id="payObs" placeholder="Opcional"></textarea></div>
- <div class="field"><label>Comprobante opcional</label><input id="payFile" type="file" accept="image/*,.pdf"></div>
+ <div class="field"><label>Comprobante opcional en Firestore</label><input id="payFile" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.zip"></div>
  <div class="message">Saldo actual: <strong>${peso(saldo)}</strong>. Si el abono cubre el saldo, la cuenta quedará como pagada.</div>
  </div>
  </div>
@@ -11657,8 +11837,8 @@
  const payment = { valor, fecha: $('payFecha').value || today(), metodo: $('payMetodo').value, referencia: $('payRef').value.trim(), observacion: $('payObs').value.trim() };
  const file = $('payFile').files[0];
  if (file) {
- if (file.size > 650 * 1024) return toast('El comprobante supera 650 KB');
- payment.comprobante = { nombre: file.name, tipo: file.type || 'application/octet-stream', tamano: file.size, base64: await readFileRaw(file) };
+ const uploaded = await uploadSupportToFirestore(file, { categoria: 'Comprobante de pago', clienteId: c.clienteId, negocioId: c.negocioId, cuentaCobroId: c.id, fecha: payment.fecha });
+ payment.comprobante = { nombre: file.name, tipo: file.type || 'application/octet-stream', tamano: file.size, archivoId: uploaded.archivoId, almacenamiento: 'Firestore dividido', firestoreChunks: true };
  }
  const abonos = [...(c.abonos || []), payment];
  const temp = { ...c, abonos };
@@ -11747,30 +11927,42 @@
  }
  window.createTaskFromCharge = createTaskFromCharge;
 
- function viewBase64(id) {
+ async function viewBase64(id) {
  const file = state.archivos.find(f => f.id === id);
- if (!file) return;
+ if (!file) return toast('Archivo no encontrado');
+ const src = await readFileFromFirestoreChunks(file);
+ if (!src) return toast('Este archivo no tiene datos disponibles');
  const win = window.open('', '_blank');
- if (!win) return toast('El navegador bloqueó la ventana emergente');
+ if (!win) return toast('Permite ventanas emergentes para ver el archivo');
  if (fileIsImage(file)) {
- win.document.write(`<title>${escapeHtml(file.nombre || 'Archivo')}</title><body style="margin:0;display:grid;place-items:center;min-height:100vh;background:#111;"><img src="${file.base64}" style="max-width:100%;max-height:100vh;object-fit:contain;"></body>`);
- } else if (fileIsPdf(file)) {
- win.document.write(`<title>${escapeHtml(file.nombre || 'PDF')}</title><iframe src="${file.base64}" style="width:100%;height:100vh;border:0;"></iframe>`);
- } else {
- win.document.write(`<title>${escapeHtml(file.nombre || 'Archivo')}</title><body style="font-family:system-ui;padding:30px;"><h2>${escapeHtml(file.nombre || 'Archivo')}</h2><p>Tipo: ${escapeHtml(file.tipo || '')}</p><a href="${file.base64}" download="${escapeHtml(file.nombre || 'archivo')}">Descargar archivo</a></body>`);
+ win.document.write(`<title>${escapeHtml(file.nombre || 'Archivo')}</title><body style="margin:0;background:#111;display:grid;place-items:center;min-height:100vh;"><img src="${escapeHtml(src)}" style="max-width:96vw;max-height:96vh;object-fit:contain;"></body>`);
+ return;
  }
+ if (fileIsPdf(file) && String(src).startsWith('data:application/pdf')) {
+ win.document.write(`<title>${escapeHtml(file.nombre || 'Archivo')}</title><iframe src="${escapeHtml(src)}" style="border:0;width:100vw;height:100vh;"></iframe>`);
+ return;
  }
+ win.document.write(`<title>${escapeHtml(file.nombre || 'Archivo')}</title><body style="font-family:system-ui;padding:30px;"><h2>${escapeHtml(file.nombre || 'Archivo')}</h2><p>Tipo: ${escapeHtml(file.tipo || '')}</p><p>Ubicación: ${escapeHtml(file.almacenamiento || 'Firestore dividido')}</p><a href="${escapeHtml(src)}" target="_blank" rel="noopener" download="${escapeHtml(file.nombre || 'archivo')}">Descargar archivo</a></body>`);
+}
 
- function downloadBase64(id) {
+async function downloadBase64(id) {
  const file = state.archivos.find(f => f.id === id);
- if (!file) return;
+ if (!file) return toast('Archivo no encontrado');
+ const src = await readFileFromFirestoreChunks(file);
+ if (!src) return toast('Este archivo no tiene datos disponibles');
  const a = document.createElement('a');
- a.href = file.base64;
+ a.href = src;
  a.download = file.nombre || 'archivo';
  document.body.appendChild(a);
  a.click();
  a.remove();
- }
+}
+
+async function openStoredFileById(id) {
+ if (!id) return toast('Archivo no encontrado');
+ await viewBase64(id);
+}
+window.openStoredFileById = openStoredFileById;
 
  function showFileDetail(id) {
  const file = state.archivos.find(f => f.id === id);
@@ -11812,16 +12004,20 @@
  async function useFileAsConfig(id, target) {
  const file = state.archivos.find(f => f.id === id);
  if (!file || !fileIsImage(file)) return toast('Solo puedes usar imágenes como logo o firma');
+ const src = fileSource(file);
+ if (!src) return toast('La imagen no tiene URL disponible');
  const field = target === 'signature' ? 'signature' : 'logo';
- await setDoc(configRef(), { [field]: file.base64, actualizadoEn: serverTimestamp() }, { merge: true });
+ await setDoc(configRef(), { [field]: src, actualizadoEn: serverTimestamp() }, { merge: true });
  toast(field === 'logo' ? 'Logo general actualizado' : 'Firma general actualizada');
  }
 
  async function useFileAsBusinessLogo(id) {
  const file = state.archivos.find(f => f.id === id);
  if (!file || !fileIsImage(file)) return toast('Solo puedes usar imágenes como logo de proyecto');
+ const src = fileSource(file);
+ if (!src) return toast('La imagen no tiene URL disponible');
  if (!file.negocioId) return toast('Primero asocia el archivo a una cuenta/proyecto');
- await updateRecord('negocios', file.negocioId, { logo: file.base64 });
+ await updateRecord('negocios', file.negocioId, { logo: src });
  toast('Logo de cuenta/proyecto actualizado');
  }
 
