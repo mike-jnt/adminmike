@@ -7609,7 +7609,7 @@
  <div class="card-headline">
  <div>
  <h3>Biblioteca de archivos</h3>
- <p>Archivos de hasta 2 MB guardados directamente en Firestore mediante fragmentos organizados.</p>
+ <p>Archivos de hasta 3 MB guardados directamente en Firestore mediante fragmentos organizados.</p>
  </div>
  <div class="quote-actions-row">
  <button class="btn secondary small" onclick="renderFiles()">Actualizar</button>
@@ -7617,7 +7617,7 @@
  </div>
  </div>
  <div class="file-drop-hint">
- <strong>Nuevo sistema:</strong> puedes subir archivos de hasta 2 MB directamente en Firestore. El sistema divide cada archivo en fragmentos seguros y guarda los metadatos en el registro principal.
+ <strong>Nuevo sistema:</strong> puedes subir archivos de hasta 3 MB directamente en Firestore. El sistema divide cada archivo en fragmentos seguros y guarda los metadatos en el registro principal.
  </div>
  <div id="filesGrid" class="files-board"></div>
  </div>
@@ -10699,7 +10699,7 @@
  .slice(0, 120) || 'archivo';
  }
 
- const FIRESTORE_FILE_MAX_BYTES = 2 * 1024 * 1024;
+ const FIRESTORE_FILE_MAX_BYTES = 3 * 1024 * 1024;
  const FIRESTORE_FILE_CHUNK_SIZE = 650000;
 
  function splitTextIntoChunks(text, size = FIRESTORE_FILE_CHUNK_SIZE) {
@@ -10764,7 +10764,7 @@
  return existingData.id;
  }
  if (file.size > FIRESTORE_FILE_MAX_BYTES) {
- throw new Error(`Firestore directo está configurado para máximo 2 MB por archivo. Este archivo pesa ${fileSize(file.size)}.`);
+ throw new Error(`Firestore directo está configurado para máximo ${fileSize(FIRESTORE_FILE_MAX_BYTES)} por archivo. Este archivo pesa ${fileSize(file.size)}.`);
  }
  if (alertEl) {
  alertEl.classList.remove('hidden');
@@ -12690,7 +12690,7 @@
  $('modalBody').innerHTML = `
  <div class="file-form-layout">
  <div class="file-form-panel">
- <div class="message"><strong>Nuevo manejo de archivos:</strong> el archivo se guarda directamente en Firestore dividido en fragmentos. Límite recomendado: 2 MB por archivo.</div>
+ <div class="message"><strong>Nuevo manejo de archivos:</strong> el archivo se guarda directamente en Firestore dividido en fragmentos. Límite máximo: ${fileSize(FIRESTORE_FILE_MAX_BYTES)} por archivo.</div>
  <div class="field"><label>Archivo ${data.id ? '(opcional para reemplazar)' : ''}</label><input id="fFile" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar,.ppt,.pptx,.csv" /></div>
  <div id="fSizeAlert" class="message hidden"></div>
  <div class="form-row">
@@ -12720,7 +12720,7 @@
  <div class="field"><label>Etiquetas</label><input id="fEtiquetas" value="${escapeHtml(data.etiquetas || '')}" placeholder="logo, soporte, pago, cliente..." /></div>
  </div>
  <div class="file-preview-panel">
- <div class="file-preview-title"><h4>Vista previa</h4><span class="pill">Firestore hasta 2 MB</span></div>
+ <div class="file-preview-title"><h4>Vista previa</h4><span class="pill">Firestore hasta ${fileSize(FIRESTORE_FILE_MAX_BYTES)}</span></div>
  <div id="fileLivePreview"></div>
  </div>
  </div>`;
@@ -12763,8 +12763,13 @@
  previewUrl = fileIsImage({ tipo: previewType }) ? URL.createObjectURL(file) : '';
  if (!$('fNombre').value.trim()) $('fNombre').value = file.name;
  alert.classList.remove('hidden');
+ if (file.size > FIRESTORE_FILE_MAX_BYTES) {
+ alert.style.borderColor = 'rgba(239,68,68,.45)';
+ alert.textContent = `Archivo demasiado pesado: ${file.name} · ${fileSize(file.size)}. Máximo permitido: ${fileSize(FIRESTORE_FILE_MAX_BYTES)}.`;
+ } else {
  alert.style.borderColor = 'rgba(14,165,233,.35)';
  alert.textContent = `Archivo seleccionado: ${file.name} · ${fileSize(file.size)}. Se guardará en Firestore dividido en fragmentos.`;
+ }
  updatePreview();
  });
  updatePreview();
@@ -12818,7 +12823,7 @@
  return `<div class="file-preview-card">
  <div class="file-preview-media">${media}</div>
  <div class="file-title-line"><div><h3>${escapeHtml(file.nombre || 'Archivo')}</h3><small>${escapeHtml(file.categoria || 'Otro')} · ${fileSize(file.tamano)}</small></div>${statusPill(file.estado || 'Activo')}</div>
- <div style="display:flex;gap:6px;flex-wrap:wrap;">${file.firestoreChunks || file.firestoreFragmentado ? '<span class="pill success">Firestore 2 MB</span>' : (file.storagePath || file.url ? '<span class="pill success">Storage antiguo</span>' : '<span class="pill warning">Base64 antiguo</span>')}${file.chunkCount ? `<span class="pill">${file.chunkCount} fragmentos</span>` : ''}</div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;">${file.firestoreChunks || file.firestoreFragmentado ? '<span class="pill success">Firestore ' + fileSize(FIRESTORE_FILE_MAX_BYTES) + '</span>' : (file.storagePath || file.url ? '<span class="pill success">Storage antiguo</span>' : '<span class="pill warning">Base64 antiguo</span>')}${file.chunkCount ? `<span class="pill">${file.chunkCount} fragmentos</span>` : ''}</div>
  <div class="file-meta-grid">
  <div class="file-meta-item"><span>Cliente</span><strong>${escapeHtml(file.clienteId ? clientName(file.clienteId) : 'Sin cliente')}</strong></div>
  <div class="file-meta-item"><span>Cuenta/proyecto</span><strong>${escapeHtml(file.negocioId ? businessName(file.negocioId) : 'Sin proyecto')}</strong></div>
