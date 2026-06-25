@@ -6525,6 +6525,276 @@
       }
     }
 
+
+    /* =========================================================
+       CORRECCIÓN RESPONSIVE MÓVIL - evita que el contenido se salga
+       ========================================================= */
+    @media (max-width: 720px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+      }
+
+      #appPage,
+      #appPage .app-shell,
+      #appPage .main,
+      #appPage .content,
+      #appPage .section,
+      #appPage .section.active {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+      }
+
+      #appPage .content {
+        padding: 12px !important;
+        margin: 0 !important;
+      }
+
+      /* Header móvil en dos filas para que Menú, Modo y Cotización no empujen la pantalla */
+      #appPage .topbar {
+        height: auto !important;
+        min-height: 0 !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        padding: 10px 12px !important;
+        overflow: hidden !important;
+      }
+
+      #appPage .topbar > div:first-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-columns: auto minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: 10px !important;
+      }
+
+      #appPage .topbar h1 {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        font-size: clamp(19px, 6vw, 24px) !important;
+        line-height: 1.12 !important;
+      }
+
+      #appPage .mobile-menu {
+        min-width: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      #appPage .top-actions {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        justify-content: stretch !important;
+      }
+
+      #appPage .top-actions .btn.small {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 40px !important;
+        padding: 9px 8px !important;
+        white-space: normal !important;
+        line-height: 1.15 !important;
+        font-size: 12px !important;
+      }
+
+      #appPage #btnInstallAppHeader {
+        display: none !important;
+      }
+
+      /* Tarjetas y héroes: todo queda dentro del ancho del celular */
+      #appPage .dashboard-hero,
+      #appPage .business-page-hero,
+      #appPage .finance-page-hero,
+      #appPage .quote-page-hero,
+      #appPage .meeting-page-hero,
+      #appPage .task-page-hero,
+      #appPage .charge-page-hero,
+      #appPage .files-page-hero,
+      #appPage .reports-page-hero,
+      #appPage .quick-actions-card,
+      #appPage .card,
+      #appPage .stat-card,
+      #appPage .business-kpi,
+      #appPage .business-card,
+      #appPage .quote-card,
+      #appPage .finance-movement-card,
+      #appPage .file-card-v2,
+      #appPage .charge-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+      }
+
+      #appPage .dashboard-hero,
+      #appPage .business-page-hero,
+      #appPage .finance-page-hero,
+      #appPage .quote-page-hero,
+      #appPage .meeting-page-hero,
+      #appPage .task-page-hero,
+      #appPage .charge-page-hero,
+      #appPage .files-page-hero,
+      #appPage .reports-page-hero {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        padding: 18px !important;
+      }
+
+      #appPage .hero-copy,
+      #appPage .hero-actions,
+      #appPage .quick-title,
+      #appPage .card-headline,
+      #appPage .smart-list,
+      #appPage .smart-item {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      #appPage .hero-copy h2,
+      #appPage .hero-copy p,
+      #appPage .business-page-hero h2,
+      #appPage .business-page-hero p,
+      #appPage .finance-page-hero h2,
+      #appPage .finance-page-hero p,
+      #appPage .quote-page-hero h2,
+      #appPage .quote-page-hero p,
+      #appPage .meeting-page-hero h2,
+      #appPage .meeting-page-hero p,
+      #appPage .task-page-hero h2,
+      #appPage .task-page-hero p,
+      #appPage .charge-page-hero h2,
+      #appPage .charge-page-hero p,
+      #appPage .files-page-hero h2,
+      #appPage .files-page-hero p,
+      #appPage .reports-page-hero h2,
+      #appPage .reports-page-hero p,
+      #appPage .eyebrow,
+      #appPage .hero-chip,
+      #appPage .pill,
+      #appPage .quick-title h3,
+      #appPage .quick-title p,
+      #appPage .card-headline h3,
+      #appPage .card-headline p {
+        max-width: 100% !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+      }
+
+      #appPage .hero-copy h2 {
+        font-size: clamp(28px, 9vw, 40px) !important;
+        line-height: 1.02 !important;
+      }
+
+      #appPage .hero-copy p {
+        white-space: normal !important;
+        line-height: 1.45 !important;
+      }
+
+      #appPage .hero-chips {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+
+      #appPage .hero-chip {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        white-space: normal !important;
+      }
+
+      #appPage .hero-actions,
+      #appPage .business-hero-actions,
+      #appPage .quote-actions-row {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        gap: 8px !important;
+      }
+
+      #appPage .hero-actions .btn,
+      #appPage .business-hero-actions .btn,
+      #appPage .quote-actions-row .btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        white-space: normal !important;
+        line-height: 1.2 !important;
+      }
+
+      #appPage .quick-title,
+      #appPage .card-headline,
+      #appPage .toolbar {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+
+      #appPage .period-switch {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #appPage .quick-grid,
+      #appPage .insight-grid,
+      #appPage .grid.cols-4,
+      #appPage .grid.cols-3,
+      #appPage .grid.cols-2,
+      #appPage .business-metrics-grid,
+      #appPage #financeSummary.business-metrics-grid,
+      #appPage #clientMetrics.business-metrics-grid,
+      #appPage #meetingMetrics.business-metrics-grid,
+      #appPage #taskMetrics.business-metrics-grid,
+      #appPage .report-executive-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      #appPage .quick-grid button,
+      #appPage .smart-item,
+      #appPage .insight-card {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      #appPage .topbar h1 {
+        font-size: 18px !important;
+      }
+
+      #appPage .top-actions .btn.small {
+        font-size: 11px !important;
+        padding: 8px 6px !important;
+      }
+
+      #appPage .hero-copy h2 {
+        font-size: 28px !important;
+      }
+    }
+
+
   </style>
 
   <!-- PWA / Instalación móvil -->
