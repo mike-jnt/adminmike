@@ -6957,6 +6957,7 @@
  </div>
  </div>
  <div class="quick-grid">
+ <button onclick="openModal('quickflow')"><span>⚡</span><strong>Flujo rápido</strong><small>Cliente + proyecto + cotización</small></button>
  <button onclick="openModal('client')"><span>CL</span><strong>Cliente</strong><small>Registrar contacto</small></button>
  <button onclick="openModal('business')"><span>CP</span><strong>Cuenta/Proyecto</strong><small>Cliente o servicio</small></button>
  <button onclick="openModal('finance')"><span>FN</span><strong>Ingreso / gasto</strong><small>Movimiento financiero</small></button>
@@ -7966,6 +7967,8 @@
  const $ = (id) => document.getElementById(id);
  const peso = (value) => Number(value || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
  const today = () => new Date().toISOString().slice(0, 10);
+ const localDatePlus = (days = 0) => { const d = new Date(); d.setDate(d.getDate() + Number(days || 0)); return d.toISOString().slice(0, 10); };
+ const normalizeText = (value = '') => String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
  const escapeHtml = (value = '') => String(value)
  .replaceAll('&', '&amp;')
  .replaceAll('<', '&lt;')
@@ -8794,7 +8797,10 @@
  window.businessQuickIncome = businessQuickIncome;
 
  function businessQuickQuote(id) {
- openModal('quote', { negocioId: id });
+ const b = state.negocios.find(x => x.id === id);
+ const c = state.clientes.find(x => x.negocioId === id);
+ const service = b ? businessDisplayType(b) : 'Servicio profesional';
+ openModal('quote', { negocioId: id, clienteId: c?.id || '', servicioPrincipal: service, items: [{ descripcion: service, detalle: b?.necesidades || b?.descripcion || service, cantidad: 1, valor: Number(b?.valorMensualEstimado || b?.metaMensual || 0), descuento: 0 }] });
  }
  window.businessQuickQuote = businessQuickQuote;
 
@@ -9072,7 +9078,8 @@
 
  function clientQuickQuote(id) {
  const c = state.clientes.find(x => x.id === id);
- openModal('quote', { clienteId: id, negocioId: c?.negocioId || '' });
+ const service = c ? clientService(c) : 'Servicio profesional';
+ openModal('quote', { clienteId: id, negocioId: c?.negocioId || '', servicioPrincipal: service, items: [{ descripcion: service, detalle: c?.necesidad || c?.acuerdos || service, cantidad: 1, valor: Number(c?.valorEstimado || 0), descuento: 0 }] });
  }
  window.clientQuickQuote = clientQuickQuote;
 
@@ -9084,7 +9091,7 @@
 
  function clientQuickCharge(id) {
  const c = state.clientes.find(x => x.id === id);
- openModal('charge', { clienteId: id, negocioId: c?.negocioId || '' });
+ openModal('charge', { clienteId: id, negocioId: c?.negocioId || '', total: Number(c?.valorEstimado || 0), concepto: `Cobro por ${c ? clientService(c) : 'servicio'} - ${c?.nombre || 'cliente'}` });
  }
  window.clientQuickCharge = clientQuickCharge;
 
@@ -10280,6 +10287,7 @@
  }
 
  function quoteHasCharge(id) {
+ if (!id) return false;
  return state.cuentasCobro.some(c => c.cotizacionId === id);
  }
 
@@ -11367,6 +11375,7 @@
 
  function openModal(type, data = null) {
  const forms = {
+ quickflow: quickFlowForm,
  business: businessForm,
  client: clientForm,
  meeting: meetingForm,
@@ -11381,7 +11390,283 @@
  $('modalBackdrop').classList.add('show');
  }
 
+
  window.openModal = openModal;
+
+ function findExistingBusinessQuick(nombre) {
+ const key = normalizeText(nombre);
+ if (!key) return null;
+ return state.negocios.find(b => normalizeText(b.nombre) === key) || null;
+ }
+
+ function findExistingClientQuick({ nombre = '', telefono = '', email = '' } = {}) {
+ const cleanPhone = String(telefono || '').replace(/\D/g, '').slice(-10);
+ const cleanEmail = normalizeText(email);
+ const cleanName = normalizeText(nombre);
+ return state.clientes.find(c => {
+ const phone = String(c.whatsapp || c.telefono || '').replace(/\D/g, '').slice(-10);
+ const mail = normalizeText(c.email || '');
+ const name = normalizeText(c.nombre || '');
+ return (cleanPhone && phone && cleanPhone === phone) || (cleanEmail && mail && cleanEmail === mail) || (cleanName && name && cleanName === name);
+ }) || null;
+ }
+
+ function quickFlowPreviewHtml(d = {}) {
+ const steps = [];
+ steps.push(`<div class="business-alert">1. ${d.clienteId ? 'Actualiza' : 'Crea'} el cliente: <strong>${escapeHtml(d.nombre || 'Nombre pendiente')}</strong>.</div>`);
+ if (d.crearProyecto) steps.push(`<div class="business-alert">2. ${d.negocioId ? 'Vincula' : 'Crea'} la cuenta/proyecto con servicio: <strong>${escapeHtml(d.servicio || 'Servicio')}</strong>.</div>`);
+ if (d.crearCotizacion) steps.push(`<div class="business-alert">3. Genera cotización por <strong>${peso(d.valor)}</strong> en estado <strong>${escapeHtml(d.estadoCotizacion || 'Enviada')}</strong>.</div>`);
+ if (d.crearCobro) steps.push(`<div class="business-alert">4. Crea cuenta de cobro y movimiento por cobrar automáticamente.</div>`);
+ if (!d.crearCotizacion && !d.crearCobro) steps.push(`<div class="business-alert">Se guardará solo el cliente y su proyecto relacionado.</div>`);
+ return `<article class="business-card business-preview-card">
+ <div class="business-card-top">
+ <div class="business-avatar" style="background:#2563eb;">⚡</div>
+ <div class="business-title">
+ <h3>Flujo rápido comercial</h3>
+ <p>${escapeHtml(d.servicio || 'Servicio por definir')} · ${escapeHtml(d.ciudad || 'Sin ciudad')}</p>
+ <div class="business-tags"><span class="pill">Automático</span><span class="pill">Sin duplicar datos</span></div>
+ </div>
+ </div>
+ <div class="business-card-body">
+ <div class="business-card-stats">
+ <div class="business-card-stat"><span>Cliente</span><strong>${escapeHtml(d.nombre || '-')}</strong></div>
+ <div class="business-card-stat"><span>Valor</span><strong>${peso(d.valor)}</strong></div>
+ <div class="business-card-stat"><span>Cotización</span><strong>${d.crearCotizacion ? 'Sí' : 'No'}</strong></div>
+ <div class="business-card-stat"><span>Cobro</span><strong>${d.crearCobro ? 'Sí' : 'No'}</strong></div>
+ </div>
+ <div class="business-alerts">${steps.join('')}</div>
+ </div>
+ </article>`;
+ }
+
+ async function quickFlowForm(data = {}) {
+ $('modalTitle').textContent = 'Flujo rápido comercial';
+ const defaultService = data.servicio || data.servicioPrincipal || 'Marketing digital';
+ $('modalBody').innerHTML = `
+ <div class="business-form-layout quick-flow-layout">
+ <div class="business-form-panel">
+ <div class="message"><strong>Modo sencillo:</strong> llena solo los datos básicos. El sistema puede crear el cliente, la cuenta/proyecto, la cotización, la cuenta de cobro y el movimiento financiero en un solo paso.</div>
+ <div class="business-form-section">
+ <h4>1. Cliente</h4>
+ <div class="field"><label>Usar cliente existente</label><select id="qfClienteExistente"><option value="">Crear nuevo cliente</option>${state.clientes.map(c => `<option value="${c.id}">${escapeHtml(c.nombre)}${c.telefono ? ' · ' + escapeHtml(c.telefono) : ''}</option>`).join('')}</select></div>
+ <div class="form-row">
+ <div class="field"><label>Nombre del cliente o empresa</label><input id="qfNombre" value="${escapeHtml(data.nombre || '')}" placeholder="Ej: Restaurante La Parepa"></div>
+ <div class="field"><label>Tipo</label><select id="qfTipoCliente"><option>Empresa</option><option>Persona natural</option><option>Emprendimiento</option><option>Contacto de empresa</option></select></div>
+ </div>
+ <div class="form-row cols-3">
+ <div class="field"><label>Teléfono / WhatsApp</label><input id="qfTelefono" value="${escapeHtml(data.telefono || '')}" placeholder="3001234567"></div>
+ <div class="field"><label>Email</label><input id="qfEmail" type="email" value="${escapeHtml(data.email || '')}"></div>
+ <div class="field"><label>Ciudad</label><input id="qfCiudad" value="${escapeHtml(data.ciudad || '')}"></div>
+ </div>
+ </div>
+
+ <div class="business-form-section">
+ <h4>2. Proyecto o servicio</h4>
+ <div class="form-row">
+ <div class="field"><label>Cuenta/proyecto existente</label><select id="qfNegocioExistente">${options(state.negocios, data.negocioId || '', 'Crear o vincular automáticamente')}</select></div>
+ <div class="field"><label>Servicio</label><select id="qfServicio">${['Marketing digital','Página web','Software / POS','Diseño gráfico','Asesoría','Automatización','Otro'].map(v => `<option ${defaultService===v?'selected':''}>${v}</option>`).join('')}</select></div>
+ </div>
+ <label class="message" style="margin:0;"><input id="qfCrearProyecto" type="checkbox" checked style="width:auto;margin-right:8px;"> Crear/vincular cuenta proyecto automáticamente si no selecciono una.</label>
+ <div class="field"><label>Necesidad o alcance principal</label><textarea id="qfDetalle" placeholder="Ej: necesita página web, pauta, diseño de contenido o sistema de ventas.">${escapeHtml(data.detalle || '')}</textarea></div>
+ </div>
+
+ <div class="business-form-section">
+ <h4>3. Cotización</h4>
+ <label class="message" style="margin:0 0 12px;"><input id="qfCrearCotizacion" type="checkbox" checked style="width:auto;margin-right:8px;"> Crear cotización automáticamente.</label>
+ <div class="form-row cols-3">
+ <div class="field"><label>Valor a cotizar</label><input id="qfValor" type="number" min="0" value="${data.valor || data.valorEstimado || ''}" placeholder="Ej: 900000"></div>
+ <div class="field"><label>Estado de la cotización</label><select id="qfEstadoCotizacion"><option>Enviada</option><option>Borrador</option><option>Aprobada</option></select></div>
+ <div class="field"><label>Vence</label><input id="qfVence" type="date" value="${data.vence || localDatePlus(15)}"></div>
+ </div>
+ </div>
+
+ <div class="business-form-section">
+ <h4>4. Cobro automático</h4>
+ <label class="message" style="margin:0 0 12px;"><input id="qfCrearCobro" type="checkbox" style="width:auto;margin-right:8px;"> Crear cuenta de cobro y cuenta por cobrar. Recomendado cuando la cotización ya está aprobada.</label>
+ <div class="form-row">
+ <div class="field"><label>Vencimiento del cobro</label><input id="qfVenceCobro" type="date" value="${localDatePlus(5)}"></div>
+ <div class="field"><label>Método de pago sugerido</label><select id="qfMetodoPago"><option>Transferencia bancaria</option><option>Nequi</option><option>Daviplata</option><option>Efectivo</option><option>PSE</option><option>Otro</option></select></div>
+ </div>
+ </div>
+ </div>
+ <aside class="business-live-preview">
+ <div class="business-preview-head"><div><strong>Qué hará el sistema</strong><span>Vista previa del flujo automático.</span></div><span class="pill">Automático</span></div>
+ <div id="quickFlowPreview"></div>
+ <div class="preview-note">Este flujo evita crear primero cliente, luego proyecto, luego cotización y después cobro por separado. Los módulos originales siguen disponibles para editar detalles.</div>
+ </aside>
+ </div>`;
+ $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveQuickFlow">Guardar flujo completo</button>`;
+
+ const readDraft = () => ({
+ clienteId: $('qfClienteExistente').value,
+ negocioId: $('qfNegocioExistente').value,
+ nombre: $('qfNombre').value.trim(),
+ tipoCliente: $('qfTipoCliente').value,
+ telefono: $('qfTelefono').value.trim(),
+ email: $('qfEmail').value.trim(),
+ ciudad: $('qfCiudad').value.trim(),
+ servicio: $('qfServicio').value,
+ crearProyecto: $('qfCrearProyecto').checked,
+ detalle: $('qfDetalle').value.trim(),
+ crearCotizacion: $('qfCrearCotizacion').checked,
+ valor: Number($('qfValor').value || 0),
+ estadoCotizacion: $('qfEstadoCotizacion').value,
+ vence: $('qfVence').value,
+ crearCobro: $('qfCrearCobro').checked,
+ venceCobro: $('qfVenceCobro').value,
+ metodoPago: $('qfMetodoPago').value
+ });
+ const updatePreview = () => { $('quickFlowPreview').innerHTML = quickFlowPreviewHtml(readDraft()); };
+
+ $('qfClienteExistente').addEventListener('change', () => {
+ const c = state.clientes.find(x => x.id === $('qfClienteExistente').value);
+ if (c) {
+ $('qfNombre').value = c.nombre || '';
+ $('qfTipoCliente').value = c.tipoCliente || c.tipo || 'Persona natural';
+ $('qfTelefono').value = c.whatsapp || c.telefono || '';
+ $('qfEmail').value = c.email || '';
+ $('qfCiudad').value = c.ciudad || '';
+ $('qfNegocioExistente').value = c.negocioId || '';
+ if (c.servicioInteres) $('qfServicio').value = c.servicioInteres;
+ if (c.valorEstimado && !$('qfValor').value) $('qfValor').value = c.valorEstimado;
+ if (c.necesidad && !$('qfDetalle').value) $('qfDetalle').value = c.necesidad;
+ }
+ updatePreview();
+ });
+ $('qfEstadoCotizacion').addEventListener('change', () => {
+ if ($('qfEstadoCotizacion').value === 'Aprobada') $('qfCrearCobro').checked = true;
+ updatePreview();
+ });
+ $('modalBody').querySelectorAll('input,select,textarea').forEach(el => {
+ el.addEventListener('input', updatePreview);
+ el.addEventListener('change', updatePreview);
+ });
+ updatePreview();
+
+ $('saveQuickFlow').onclick = async () => {
+ try {
+ $('saveQuickFlow').disabled = true;
+ const d = readDraft();
+ if (!d.nombre) { $('saveQuickFlow').disabled = false; return toast('Agrega el nombre del cliente o empresa'); }
+ if ((d.crearCotizacion || d.crearCobro) && !d.valor) { $('saveQuickFlow').disabled = false; return toast('Agrega el valor a cotizar o cobrar'); }
+
+ let negocioId = d.negocioId || '';
+ if (!negocioId && d.crearProyecto) {
+ const existingBusiness = findExistingBusinessQuick(d.nombre);
+ if (existingBusiness) negocioId = existingBusiness.id;
+ else {
+ const bRef = await addRecord('negocios', {
+ nombre: d.nombre,
+ personaTipo: d.tipoCliente === 'Persona natural' ? 'Persona natural' : d.tipoCliente === 'Emprendimiento' ? 'Emprendimiento' : 'Empresa',
+ tipo: d.servicio,
+ tipoServicio: d.servicio,
+ estado: d.crearCobro ? 'Activo' : 'En seguimiento',
+ etapa: d.crearCotizacion ? 'Propuesta enviada' : 'Primer contacto',
+ prioridad: 'Media',
+ contacto: d.nombre,
+ telefono: d.telefono,
+ email: d.email,
+ ciudad: d.ciudad,
+ proximoSeguimiento: localDatePlus(3),
+ valorMensualEstimado: d.valor,
+ metaMensual: d.valor,
+ presupuestoMensual: 0,
+ fechaInicio: today(),
+ descripcion: d.detalle || d.servicio,
+ necesidades: d.detalle,
+ notas: 'Creado automáticamente desde Flujo rápido.'
+ });
+ negocioId = bRef.id;
+ }
+ }
+
+ let clienteId = d.clienteId || '';
+ const clientPayload = {
+ nombre: d.nombre,
+ tipoCliente: d.tipoCliente,
+ tipo: d.tipoCliente,
+ negocioId,
+ ciudad: d.ciudad,
+ telefono: d.telefono,
+ whatsapp: d.telefono,
+ email: d.email,
+ servicioInteres: d.servicio,
+ estadoComercial: d.crearCobro ? 'Pendiente de pago' : d.crearCotizacion ? 'Cotización enviada' : 'Nuevo',
+ prioridad: 'Media',
+ fuente: 'Registro interno',
+ valorEstimado: d.valor,
+ fechaPrimerContacto: today(),
+ proximoSeguimiento: d.crearCobro ? '' : localDatePlus(3),
+ necesidad: d.detalle,
+ acuerdos: d.crearCobro ? 'Cuenta de cobro creada automáticamente.' : '',
+ notas: 'Creado/actualizado desde Flujo rápido.'
+ };
+ if (!clienteId) {
+ const existingClient = findExistingClientQuick(clientPayload);
+ if (existingClient) {
+ clienteId = existingClient.id;
+ await updateRecord('clientes', clienteId, { ...existingClient, ...clientPayload, nombre: existingClient.nombre || clientPayload.nombre });
+ } else {
+ const cRef = await addRecord('clientes', clientPayload);
+ clienteId = cRef.id;
+ }
+ } else {
+ await updateRecord('clientes', clienteId, clientPayload);
+ }
+
+ let quoteId = '';
+ let quotePayload = null;
+ if (d.crearCotizacion) {
+ quotePayload = {
+ numero: await nextQuoteNumber(),
+ fecha: today(),
+ vence: d.vence || localDatePlus(15),
+ estado: d.estadoCotizacion,
+ prioridad: 'Media',
+ servicioPrincipal: d.servicio,
+ responsable: state.config.name || 'Mike Asesorías y Diseños',
+ clienteId,
+ negocioId,
+ items: [{ descripcion: d.servicio, detalle: d.detalle || d.servicio, cantidad: 1, valor: d.valor, descuento: 0 }],
+ descuentoGeneral: 0,
+ descuentoGeneralTipo: 'valor',
+ aplicaImpuesto: false,
+ impuestoPorcentaje: 0,
+ observacionDescuento: '',
+ condiciones: defaultQuoteConditions(),
+ notas: 'Generada automáticamente desde Flujo rápido.',
+ total: d.valor
+ };
+ const qRef = await addRecord('cotizaciones', quotePayload);
+ quoteId = qRef.id;
+ }
+
+ if (d.crearCobro) {
+ const qForCharge = quotePayload || {
+ id: '',
+ numero: '',
+ vence: d.venceCobro || localDatePlus(5),
+ servicioPrincipal: d.servicio,
+ clienteId,
+ negocioId,
+ items: [{ descripcion: d.servicio, detalle: d.detalle || d.servicio, cantidad: 1, valor: d.valor, descuento: 0 }],
+ descuentoGeneral: 0,
+ descuentoGeneralTipo: 'valor',
+ aplicaImpuesto: false,
+ impuestoPorcentaje: 0
+ };
+ await createChargeFromQuoteData(qForCharge, quoteId, { vencimiento: d.venceCobro, metodoPago: d.metodoPago, markConverted: !!quoteId });
+ }
+
+ closeModal();
+ toast(d.crearCobro ? 'Flujo completo guardado: cliente, proyecto, cotización y cobro' : d.crearCotizacion ? 'Cliente, proyecto y cotización guardados' : 'Cliente y proyecto guardados');
+ } catch (error) {
+ $('saveQuickFlow').disabled = false;
+ toast(error.message || 'No se pudo guardar el flujo rápido');
+ }
+ };
+ }
+ window.quickFlowForm = quickFlowForm;
 
 
  function businessFormPreviewCard(b = {}) {
@@ -11696,6 +11981,7 @@
  <div class="field"><label>Cuenta / proyecto relacionado</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Sin cuenta/proyecto')}</select></div>
  <div class="field"><label>Cargo o rol</label><input id="fCargo" value="${escapeHtml(data.cargo || '')}" placeholder="Ej: Gerente, propietario, encargado" /></div>
  </div>
+ <label class="message" style="margin:0;"><input id="fAutoProyecto" type="checkbox" ${data.negocioId ? '' : 'checked'} style="width:auto;margin-right:8px;"> Crear cuenta/proyecto automáticamente si no selecciono una.</label>
  <div class="form-row cols-3">
  <div class="field"><label>Documento / NIT / CC</label><input id="fDocumento" value="${escapeHtml(data.documento || '')}" /></div>
  <div class="field"><label>Ciudad</label><input id="fCiudad" value="${escapeHtml(data.ciudad || '')}" /></div>
@@ -11815,10 +12101,41 @@
  updatePreview();
 
  $('saveClient').onclick = async () => {
+ try {
  const payload = readDraft();
  if (!payload.nombre) return toast('El cliente necesita nombre');
+ if (!payload.negocioId && $('fAutoProyecto')?.checked) {
+ const existingBusiness = findExistingBusinessQuick(payload.nombre);
+ if (existingBusiness) payload.negocioId = existingBusiness.id;
+ else {
+ const bRef = await addRecord('negocios', {
+ nombre: payload.nombre,
+ personaTipo: payload.tipoCliente === 'Persona natural' ? 'Persona natural' : payload.tipoCliente === 'Proveedor' ? 'Aliado' : 'Empresa',
+ tipo: payload.servicioInteres,
+ tipoServicio: payload.servicioInteres,
+ estado: payload.estadoComercial === 'Cliente activo' ? 'Activo' : 'En seguimiento',
+ etapa: payload.estadoComercial === 'Cotización enviada' ? 'Propuesta enviada' : 'Primer contacto',
+ prioridad: payload.prioridad,
+ contacto: payload.nombre,
+ telefono: payload.telefono || payload.whatsapp,
+ email: payload.email,
+ ciudad: payload.ciudad,
+ direccion: payload.direccion,
+ proximoSeguimiento: payload.proximoSeguimiento,
+ valorMensualEstimado: payload.valorEstimado,
+ metaMensual: payload.valorEstimado,
+ presupuestoMensual: 0,
+ fechaInicio: today(),
+ descripcion: payload.necesidad || payload.servicioInteres,
+ necesidades: payload.necesidad,
+ notas: 'Cuenta/proyecto creada automáticamente desde el formulario de cliente.'
+ });
+ payload.negocioId = bRef.id;
+ }
+ }
  data.id ? await updateRecord('clientes', data.id, payload) : await addRecord('clientes', payload);
- closeModal(); toast('Cliente guardado');
+ closeModal(); toast(payload.negocioId ? 'Cliente guardado y vinculado a proyecto' : 'Cliente guardado');
+ } catch (error) { toast(error.message || 'No se pudo guardar el cliente'); }
  };
  }
 
@@ -12421,7 +12738,7 @@
  <div class="form-row cols-4">
  <div class="field"><label>Número</label><input id="fNumero" value="${escapeHtml(number)}" /></div>
  <div class="field"><label>Fecha</label><input id="fFecha" type="date" value="${data.fecha || today()}" /></div>
- <div class="field"><label>Vence</label><input id="fVence" type="date" value="${data.vence || ''}" /></div>
+ <div class="field"><label>Vence</label><input id="fVence" type="date" value="${data.vence || localDatePlus(15)}" /></div>
  <div class="field"><label>Estado</label><select id="fEstado"><option ${quoteStatus(data)==='Borrador'?'selected':''}>Borrador</option><option ${quoteStatus(data)==='Enviada'?'selected':''}>Enviada</option><option ${quoteStatus(data)==='En revisión'?'selected':''}>En revisión</option><option ${quoteStatus(data)==='Aprobada'?'selected':''}>Aprobada</option><option ${quoteStatus(data)==='Rechazada'?'selected':''}>Rechazada</option><option ${quoteStatus(data)==='Vencida'?'selected':''}>Vencida</option><option ${quoteStatus(data)==='Convertida a cuenta de cobro'?'selected':''}>Convertida a cuenta de cobro</option><option ${quoteStatus(data)==='Anulada'?'selected':''}>Anulada</option></select></div>
  </div>
  <div class="form-row cols-3">
@@ -12471,6 +12788,7 @@
  <h4> Condiciones y observaciones</h4>
  <div class="field"><label>Condiciones comerciales</label><textarea id="fCondiciones">${escapeHtml(data.condiciones || defaultQuoteConditions())}</textarea></div>
  <div class="field"><label>Observaciones internas o mensaje adicional</label><textarea id="fNotas">${escapeHtml(data.notas || '')}</textarea></div>
+ <label class="message" style="margin-top:12px;"><input id="fCrearCobroAuto" type="checkbox" ${quoteStatus(data)==='Aprobada' && !quoteHasCharge(data.id) ? 'checked' : ''} style="width:auto;margin-right:8px;"> Si queda aprobada, crear cuenta de cobro y movimiento por cobrar automáticamente.</label>
  </div>
  </div>
 
@@ -12535,6 +12853,27 @@
  };
  renderItems();
  $('addItemBtn').onclick = () => { items.push({ descripcion: '', detalle: '', cantidad: 1, valor: 0, descuento: 0 }); renderItems(); };
+ const applyClientDefaults = () => {
+ const c = state.clientes.find(x => x.id === $('fCliente')?.value);
+ if (!c) return updatePreview();
+ if (!$('fNegocio').value && c.negocioId) $('fNegocio').value = c.negocioId;
+ const service = clientService(c);
+ if (!$('fServicio').value.trim() && service !== 'Servicio por definir') $('fServicio').value = service;
+ if (Number(c.valorEstimado || 0) > 0 && items.length && !items.some(i => Number(i.valor || 0) > 0)) {
+ items[0].descripcion = service !== 'Servicio por definir' ? service : 'Servicio profesional';
+ items[0].detalle = c.necesidad || c.acuerdos || 'Servicio solicitado por el cliente.';
+ items[0].cantidad = 1;
+ items[0].valor = Number(c.valorEstimado || 0);
+ renderItems();
+ return;
+ }
+ updatePreview();
+ };
+ $('fCliente')?.addEventListener('change', applyClientDefaults);
+ $('fEstado')?.addEventListener('change', () => {
+ if ($('fEstado').value === 'Aprobada' && $('fCrearCobroAuto')) $('fCrearCobroAuto').checked = true;
+ updatePreview();
+ });
  document.querySelectorAll('[data-template]').forEach(btn => btn.addEventListener('click', () => {
  const tpl = quoteTemplates()[btn.dataset.template];
  if (!tpl) return;
@@ -12552,14 +12891,26 @@
  setTimeout(() => $('printArea').classList.add('hidden'), 500);
  };
  $('saveQuote').onclick = async () => {
+ try {
  const payload = formData();
  const cleanItems = payload.items.filter(i => i.descripcion && Number(i.valor) > 0);
  payload.items = cleanItems;
  payload.total = quoteTotals(payload).total;
  if (!payload.clienteId) return toast('Selecciona un cliente');
  if (!payload.items.length) return toast('Agrega al menos un ítem con valor');
- data.id ? await updateRecord('cotizaciones', data.id, payload) : await addRecord('cotizaciones', payload);
+ let quoteId = data.id || '';
+ if (data.id) await updateRecord('cotizaciones', data.id, payload);
+ else {
+ const qRef = await addRecord('cotizaciones', payload);
+ quoteId = qRef.id;
+ }
+ if ($('fCrearCobroAuto')?.checked && payload.estado === 'Aprobada') {
+ await createChargeFromQuoteData(payload, quoteId, { markConverted: true });
+ closeModal(); toast('Cotización, cuenta de cobro y movimiento por cobrar creados');
+ return;
+ }
  closeModal(); toast('Cotización guardada');
+ } catch (error) { toast(error.message || 'No se pudo guardar la cotización'); }
  };
  updatePreview();
  }
@@ -12574,7 +12925,7 @@
  <div class="form-row cols-4">
  <div class="field"><label>Número</label><input id="fNumero" value="${escapeHtml(number)}" /></div>
  <div class="field"><label>Fecha de emisión</label><input id="fFecha" type="date" value="${data.fecha || today()}" /></div>
- <div class="field"><label>Vencimiento</label><input id="fVencimiento" type="date" value="${data.vencimiento || data.fechaVencimiento || ''}" /></div>
+ <div class="field"><label>Vencimiento</label><input id="fVencimiento" type="date" value="${data.vencimiento || data.fechaVencimiento || localDatePlus(5)}" /></div>
  <div class="field"><label>Estado</label><select id="fEstado"><option ${data.estado==='Borrador'?'selected':''}>Borrador</option><option ${(!data.estado || data.estado==='Pendiente')?'selected':''}>Pendiente</option><option ${data.estado==='Enviada'?'selected':''}>Enviada</option><option ${data.estado==='Parcial'?'selected':''}>Parcial</option><option ${data.estado==='Pagada'?'selected':''}>Pagada</option><option ${data.estado==='Vencida'?'selected':''}>Vencida</option><option ${data.estado==='Anulada'?'selected':''}>Anulada</option></select></div>
  </div>
  <div class="form-row">
@@ -12640,7 +12991,13 @@
  $(id)?.addEventListener('change', updatePreview);
  });
  $('fCliente').addEventListener('change', async () => {
+ const c = state.clientes.find(x => x.id === $('fCliente').value);
  if (!data.id) $('fNumero').value = await nextChargeNumber($('fCliente').value);
+ if (c) {
+ if (!$('fNegocio').value && c.negocioId) $('fNegocio').value = c.negocioId;
+ if (!$('fTotal').value && Number(c.valorEstimado || 0) > 0) $('fTotal').value = c.valorEstimado;
+ if (!$('fConcepto').value.trim()) $('fConcepto').value = `Cobro por ${clientService(c)} - ${c.nombre || 'cliente'}`;
+ }
  updatePreview();
  });
  $('fCotizacion').addEventListener('change', () => {
@@ -13047,6 +13404,52 @@
  }
  window.approveQuote = approveQuote;
 
+
+ function buildChargeConceptFromQuote(q = {}) {
+ return `Cuenta de cobro generada desde cotización ${q.numero || ''} - ${q.servicioPrincipal || (q.items || []).map(i => i.descripcion).filter(Boolean).join(', ') || 'servicios profesionales'}`.trim();
+ }
+
+ async function createChargeFromQuoteData(q = {}, quoteId = '', opts = {}) {
+ const existing = quoteId ? state.cuentasCobro.find(c => c.cotizacionId === quoteId) : null;
+ if (existing && !opts.force) return { skipped: true, existing };
+ const total = quoteTotals(q).total || Number(opts.total || 0);
+ if (!q.clienteId) throw new Error('Selecciona un cliente para crear la cuenta de cobro');
+ if (!total) throw new Error('La cuenta de cobro necesita un valor mayor a cero');
+ const number = await nextChargeNumber(q.clienteId);
+ const concept = opts.concepto || buildChargeConceptFromQuote(q);
+ const chargeRef = await addRecord('cuentasCobro', {
+ numero: number,
+ fecha: opts.fecha || today(),
+ vencimiento: opts.vencimiento || q.vence || localDatePlus(5),
+ estado: 'Pendiente',
+ total,
+ clienteId: q.clienteId,
+ negocioId: q.negocioId || '',
+ concepto: concept,
+ metodoPago: opts.metodoPago || 'Transferencia bancaria',
+ pago: opts.pago || paymentInstructions() || state.config.bank || '',
+ cotizacionId: quoteId || q.id || ''
+ });
+ await addRecord('finanzas', {
+ fecha: opts.fecha || today(),
+ vencimiento: opts.vencimiento || q.vence || localDatePlus(5),
+ tipo: 'cuenta por cobrar',
+ estado: 'Pendiente',
+ valor: total,
+ concepto: concept,
+ categoria: q.servicioPrincipal || 'Cotización aprobada',
+ metodo: opts.metodoPago || 'Pendiente',
+ clienteId: q.clienteId,
+ negocioId: q.negocioId || '',
+ cuentaCobroId: chargeRef?.id || '',
+ cotizacionId: quoteId || q.id || '',
+ notas: quoteId ? `Movimiento generado desde la cotización ${q.numero || ''}.` : 'Movimiento generado desde flujo rápido.'
+ });
+ if ((quoteId || q.id) && opts.markConverted !== false) await updateRecord('cotizaciones', quoteId || q.id, { estado: 'Convertida a cuenta de cobro' });
+ return { chargeId: chargeRef?.id || '', number };
+ }
+ window.createChargeFromQuoteData = createChargeFromQuoteData;
+
  function quoteWhatsApp(id) {
  const q = state.cotizaciones.find(x => x.id === id);
  if (!q) return;
@@ -13062,36 +13465,8 @@
  const q = state.cotizaciones.find(x => x.id === id);
  if (!q) return;
  const existing = state.cuentasCobro.find(c => c.cotizacionId === q.id);
- if (existing && !confirm('Esta cotización ya tiene una cuenta de cobro asociada. ¿Quieres crear otra?')) return;
- const number = await nextChargeNumber(q.clienteId);
- const total = quoteTotals(q).total;
- const concept = `Cuenta de cobro generada desde cotización ${q.numero} - ${q.servicioPrincipal || (q.items || []).map(i => i.descripcion).filter(Boolean).join(', ') || 'servicios profesionales'}`;
- await addRecord('cuentasCobro', {
- numero: number,
- fecha: today(),
- estado: 'Pendiente',
- total,
- clienteId: q.clienteId,
- negocioId: q.negocioId,
- concepto: concept,
- pago: state.config.bank || '',
- cotizacionId: q.id
- });
- await addRecord('finanzas', {
- fecha: today(),
- vencimiento: q.vence || '',
- tipo: 'cuenta por cobrar',
- estado: 'Pendiente',
- valor: total,
- concepto: concept,
- categoria: q.servicioPrincipal || 'Cotización aprobada',
- metodo: 'Pendiente',
- clienteId: q.clienteId,
- negocioId: q.negocioId,
- cotizacionId: q.id,
- notas: `Movimiento generado desde la cotización ${q.numero}.`
- });
- await updateRecord('cotizaciones', q.id, { estado: 'Convertida a cuenta de cobro' });
+ const result = await createChargeFromQuoteData(q, q.id, { force: !!existing && confirm('Esta cotización ya tiene una cuenta de cobro asociada. ¿Quieres crear otra?') });
+ if (result?.skipped) return;
  toast('Cuenta de cobro y movimiento por cobrar creados');
  }
  window.quoteToCharge = quoteToCharge;
