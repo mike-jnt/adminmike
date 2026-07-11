@@ -6795,6 +6795,784 @@
     }
 
 
+    /* =========================================================
+       CORRECCIÓN DE CONTRASTE GLOBAL
+       Regla: fondos claros con texto oscuro y fondos oscuros con texto claro.
+       ========================================================= */
+    #appPage {
+      color: #f8fafc;
+    }
+
+    #appPage .sidebar,
+    #appPage .topbar,
+    #appPage .dashboard-hero,
+    #appPage .business-page-hero,
+    #appPage .finance-page-hero,
+    #appPage .quote-page-hero,
+    #appPage .meeting-page-hero,
+    #appPage .task-page-hero,
+    #appPage .charge-page-hero,
+    #appPage .files-page-hero,
+    #appPage .reports-page-hero,
+    #appPage .quick-actions-card,
+    #appPage .card,
+    #appPage .stat-card,
+    #appPage .smart-card,
+    #appPage .business-card,
+    #appPage .business-kpi,
+    #appPage .quote-card,
+    #appPage .finance-movement-card,
+    #appPage .charge-card,
+    #appPage .file-card-v2,
+    #appPage .file-preview-card,
+    #appPage .meeting-today-strip,
+    #appPage .task-column,
+    #appPage .business-filter-card,
+    #appPage .files-filter-card,
+    #appPage .charge-filter-card,
+    #appPage .reports-filter-card,
+    #appPage .finance-filter-card,
+    #appPage .quote-filter-card,
+    .modal,
+    .modal-head,
+    .modal-foot {
+      color: #f8fafc !important;
+    }
+
+    #appPage .card h1,
+    #appPage .card h2,
+    #appPage .card h3,
+    #appPage .card h4,
+    #appPage .quick-title h3,
+    #appPage .card-headline h3,
+    #appPage .business-title h3,
+    #appPage .quote-card-title h3,
+    #appPage .finance-card-title h3,
+    #appPage .file-title-line h3,
+    #appPage .charge-card-head h3,
+    #appPage .hero-copy h2,
+    #appPage .business-page-hero h2,
+    #appPage .finance-page-hero h2,
+    #appPage .quote-page-hero h2,
+    #appPage .meeting-page-hero h2,
+    #appPage .task-page-hero h2,
+    #appPage .charge-page-hero h2,
+    #appPage .files-page-hero h2,
+    #appPage .reports-page-hero h2,
+    .modal h1,
+    .modal h2,
+    .modal h3,
+    .modal h4 {
+      color: #ffffff !important;
+    }
+
+    #appPage label,
+    #appPage small,
+    #appPage .hint,
+    #appPage .card-headline p,
+    #appPage .quick-title p,
+    #appPage .business-title p,
+    #appPage .finance-card-title p,
+    #appPage .quote-card-title small,
+    #appPage .file-title-line small,
+    #appPage .charge-card-head small,
+    #appPage .hero-copy p,
+    #appPage .business-page-hero p,
+    #appPage .finance-page-hero p,
+    #appPage .quote-page-hero p,
+    #appPage .meeting-page-hero p,
+    #appPage .task-page-hero p,
+    #appPage .charge-page-hero p,
+    #appPage .files-page-hero p,
+    #appPage .reports-page-hero p,
+    .modal label,
+    .modal small,
+    .modal .hint,
+    .modal p {
+      color: #cbd5e1 !important;
+    }
+
+    #appPage input,
+    #appPage select,
+    #appPage textarea,
+    .modal input,
+    .modal select,
+    .modal textarea {
+      background: rgba(2, 6, 23, 0.60) !important;
+      color: #f8fafc !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+    }
+
+    #appPage input::placeholder,
+    #appPage textarea::placeholder,
+    .modal input::placeholder,
+    .modal textarea::placeholder {
+      color: rgba(226, 232, 240, 0.58) !important;
+    }
+
+    #appPage select option,
+    .modal select option {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+    }
+
+    #appPage .quick-grid button,
+    #appPage .smart-item,
+    #appPage .business-card-top,
+    #appPage .quote-card-top,
+    #appPage .finance-card-top,
+    #appPage .task-column-head,
+    #appPage .meeting-strip-item,
+    #appPage .business-mini-card,
+    #appPage .business-card-stat,
+    #appPage .client-contact-item,
+    #appPage .meeting-meta-item,
+    #appPage .task-meta-item,
+    #appPage .finance-meta-item,
+    #appPage .quote-meta-item,
+    #appPage .file-meta-item,
+    #appPage .charge-meta-item,
+    #appPage .business-detail-panel,
+    #appPage .finance-form-section,
+    #appPage .business-form-section,
+    #appPage .quote-form-section,
+    #appPage .empty,
+    #appPage .calendar-day,
+    #appPage .client-history-item,
+    #appPage .task-timeline-item,
+    #appPage .meeting-timeline-item,
+    #appPage .finance-mini-item,
+    #appPage .finance-project-item,
+    #appPage .report-insight,
+    #appPage .report-highlight-card {
+      color: #f8fafc !important;
+    }
+
+    #appPage .btn,
+    .modal .btn,
+    #appPage .eyebrow,
+    #appPage .section-kicker {
+      color: #020617 !important;
+    }
+
+    #appPage .btn.secondary,
+    .modal .btn.secondary,
+    #appPage .nav button,
+    #appPage .hero-chip,
+    #appPage .pill,
+    #appPage .period-switch,
+    #appPage .business-alert,
+    #appPage .file-size-warning,
+    #appPage .charge-priority-tag,
+    #appPage .message,
+    #appPage .preview-note,
+    #appPage .file-drop-hint,
+    #appPage .finance-proof-box,
+    .modal .message,
+    .modal .preview-note {
+      color: #f8fafc !important;
+    }
+
+    #appPage table,
+    #appPage td,
+    #appPage th {
+      color: #f8fafc;
+    }
+
+    #appPage .doc-preview,
+    #appPage .doc-preview *,
+    #appPage .quote-preview-doc,
+    #appPage .quote-preview-doc *,
+    #printArea,
+    #printArea * {
+      color: #111827 !important;
+    }
+
+    #appPage .doc-preview,
+    #appPage .quote-preview-doc,
+    #printArea .doc-preview,
+    #printArea .quote-preview-doc {
+      background: #ffffff !important;
+      border-color: #e5e7eb !important;
+    }
+
+    #appPage .doc-preview .doc-head,
+    #appPage .quote-preview-doc-head,
+    #appPage .doc-table th,
+    #appPage .doc-preview th,
+    #printArea .doc-preview th,
+    #printArea .doc-table th {
+      background: #111827 !important;
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-preview .doc-head *,
+    #appPage .quote-preview-doc-head *,
+    #appPage .doc-preview th *,
+    #appPage .doc-table th *,
+    #printArea .doc-preview th *,
+    #printArea .doc-table th * {
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-logo,
+    #appPage .doc-logo *,
+    #appPage .quote-preview-logo,
+    #appPage .quote-preview-logo * {
+      background: #ffffff !important;
+      color: #111827 !important;
+    }
+
+    #appPage .quote-template-help {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    @media print {
+      #appPage .doc-preview,
+      #appPage .doc-preview *,
+      #appPage .quote-preview-doc,
+      #appPage .quote-preview-doc *,
+      #printArea,
+      #printArea * {
+        color: #111827 !important;
+      }
+      #appPage .doc-preview th,
+      #appPage .doc-table th,
+      #printArea .doc-preview th,
+      #printArea .doc-table th {
+        color: #ffffff !important;
+      }
+    }
+
+
+    /* =========================================================
+       Contraste fino V6
+       Regla principal: fondos oscuros con texto blanco;
+       documentos y áreas blancas con texto oscuro.
+    ========================================================= */
+    #appPage {
+      --text-on-dark: #f8fafc;
+      --muted-on-dark: rgba(226, 232, 240, 0.78);
+      --soft-on-dark: rgba(203, 213, 225, 0.70);
+      --text-on-light: #111827;
+      --muted-on-light: #4b5563;
+    }
+
+    #appPage .sidebar,
+    #appPage .topbar,
+    #appPage .dashboard-hero,
+    #appPage .business-page-hero,
+    #appPage .client-page-hero,
+    #appPage .meeting-page-hero,
+    #appPage .task-page-hero,
+    #appPage .finance-page-hero,
+    #appPage .quote-page-hero,
+    #appPage .charge-page-hero,
+    #appPage .files-page-hero,
+    #appPage .reports-page-hero,
+    #appPage .quick-actions-card,
+    #appPage .card,
+    #appPage .stat-card,
+    #appPage .smart-card,
+    #appPage .business-card,
+    #appPage .business-kpi,
+    #appPage .quote-card,
+    #appPage .finance-movement-card,
+    #appPage .charge-card,
+    #appPage .file-card-v2,
+    #appPage .file-preview-card,
+    #appPage .meeting-today-strip,
+    #appPage .task-column,
+    #appPage .business-filter-card,
+    #appPage .client-filter-card,
+    #appPage .meeting-filter-card,
+    #appPage .task-filter-card,
+    #appPage .finance-filter-card,
+    #appPage .quote-filter-card,
+    #appPage .charge-filter-card,
+    #appPage .files-filter-card,
+    #appPage .reports-filter-card,
+    #appPage .business-card-top,
+    #appPage .finance-card-top,
+    #appPage .quote-card-top,
+    #appPage .task-column-head,
+    #appPage .smart-item,
+    #appPage .business-mini-card,
+    #appPage .business-card-stat,
+    #appPage .client-contact-item,
+    #appPage .meeting-strip-item,
+    #appPage .meeting-meta-item,
+    #appPage .task-meta-item,
+    #appPage .finance-meta-item,
+    #appPage .quote-meta-item,
+    #appPage .charge-meta-item,
+    #appPage .file-meta-item,
+    #appPage .business-form-section,
+    #appPage .finance-form-section,
+    #appPage .quote-form-section,
+    #appPage .business-detail-panel,
+    #appPage .empty,
+    #appPage .calendar-day,
+    #appPage .client-history-item,
+    #appPage .task-timeline-item,
+    #appPage .meeting-timeline-item,
+    #appPage .finance-mini-item,
+    #appPage .finance-project-item,
+    #appPage .report-insight,
+    #appPage .report-highlight-card,
+    #appPage table,
+    #appPage .table-wrap,
+    .modal,
+    .modal-head,
+    .modal-foot {
+      color: var(--text-on-dark) !important;
+    }
+
+    #appPage .sidebar :is(h1,h2,h3,h4,strong,b,span),
+    #appPage .topbar :is(h1,h2,h3,h4,strong,b,span),
+    #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) :is(h1,h2,h3,h4,strong,b),
+    #appPage :is(.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.meeting-today-strip,.task-column,.quick-actions-card) :is(h1,h2,h3,h4,strong,b,.value,.quote-total,.finance-amount,.charge-amount,.smart-item-title,.business-title h3,.quote-card-title h3,.finance-card-title h3,.file-title-line h3,.charge-card-head h3),
+    #appPage :is(.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-detail-panel,.business-form-section,.finance-form-section,.quote-form-section,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card) :is(h1,h2,h3,h4,strong,b,span),
+    #appPage table :is(th,td,strong,b,span) {
+      color: var(--text-on-dark) !important;
+    }
+
+    #appPage :is(.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.meeting-today-strip,.task-column,.quick-actions-card,.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-detail-panel,.business-form-section,.finance-form-section,.quote-form-section,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card) :is(p,small,label,.hint,.label,.meta,.smart-item-meta,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,.business-progress-label,.doc-meta) {
+      color: var(--muted-on-dark) !important;
+    }
+
+    #appPage .pill,
+    #appPage .hero-chip,
+    #appPage .business-alert,
+    #appPage .file-size-warning,
+    #appPage .charge-priority-tag,
+    #appPage .message,
+    #appPage .preview-note,
+    #appPage .file-drop-hint,
+    #appPage .finance-proof-box {
+      color: var(--text-on-dark) !important;
+    }
+
+    #appPage .btn.secondary,
+    #appPage .link-btn,
+    .modal .btn.secondary {
+      color: var(--text-on-dark) !important;
+    }
+
+    #appPage input,
+    #appPage select,
+    #appPage textarea,
+    .modal input,
+    .modal select,
+    .modal textarea {
+      color: var(--text-on-dark) !important;
+    }
+
+    /* Botones/etiquetas con fondo claro: conservar texto oscuro para legibilidad. */
+    #appPage .btn:not(.secondary),
+    .modal .btn:not(.secondary),
+    #appPage .eyebrow,
+    #appPage .section-kicker,
+    #appPage .brand-logo,
+    #appPage .nav button.active .nav-icon,
+    #appPage .nav button:hover .nav-icon {
+      color: #020617 !important;
+    }
+
+    /* Fondos blancos de documentos, vistas previas e impresión: texto oscuro. */
+    #appPage .doc-preview,
+    #appPage .doc-preview *,
+    #appPage .quote-preview-doc,
+    #appPage .quote-preview-doc *,
+    #printArea,
+    #printArea * {
+      color: var(--text-on-light) !important;
+    }
+
+    #appPage .doc-preview,
+    #appPage .quote-preview-doc,
+    #printArea .doc-preview,
+    #printArea .quote-preview-doc,
+    #appPage .doc-preview table,
+    #appPage .doc-table,
+    #appPage .doc-total table,
+    #appPage .quote-preview-doc table {
+      background: #ffffff !important;
+      color: var(--text-on-light) !important;
+      border-color: #e5e7eb !important;
+    }
+
+    #appPage .doc-meta,
+    #appPage .quote-preview-doc small,
+    #appPage .doc-preview small {
+      color: var(--muted-on-light) !important;
+    }
+
+    #appPage .doc-preview .doc-head,
+    #appPage .quote-preview-doc-head,
+    #appPage .doc-table th,
+    #appPage .doc-preview th,
+    #appPage .quote-preview-doc th,
+    #printArea .doc-preview th,
+    #printArea .doc-table th {
+      background: #111827 !important;
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-preview .doc-head *,
+    #appPage .quote-preview-doc-head *,
+    #appPage .doc-table th *,
+    #appPage .doc-preview th *,
+    #appPage .quote-preview-doc th *,
+    #printArea .doc-preview th *,
+    #printArea .doc-table th * {
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-logo,
+    #appPage .doc-logo *,
+    #appPage .quote-preview-logo,
+    #appPage .quote-preview-logo * {
+      background: #ffffff !important;
+      color: var(--text-on-light) !important;
+    }
+
+    @media print {
+      #appPage .doc-preview,
+      #appPage .doc-preview *,
+      #appPage .quote-preview-doc,
+      #appPage .quote-preview-doc *,
+      #printArea,
+      #printArea * {
+        color: var(--text-on-light) !important;
+      }
+      #appPage .doc-preview .doc-head,
+      #appPage .doc-preview .doc-head *,
+      #appPage .quote-preview-doc-head,
+      #appPage .quote-preview-doc-head *,
+      #appPage .doc-preview th,
+      #appPage .doc-preview th *,
+      #appPage .doc-table th,
+      #appPage .doc-table th *,
+      #printArea .doc-preview th,
+      #printArea .doc-preview th *,
+      #printArea .doc-table th,
+      #printArea .doc-table th * {
+        color: #ffffff !important;
+      }
+    }
+
+
+    /* =========================================================
+       Ajuste final V7 - Tema claro/oscuro y colores por sección
+       - En modo claro: superficies blancas con texto oscuro.
+       - En modo oscuro: superficies oscuras con texto claro.
+       - Los documentos imprimibles siempre quedan blancos con texto oscuro.
+    ========================================================= */
+
+    body:not(.dark) #appPage {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f1f5f9;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #e5e7eb;
+      --border: var(--line);
+      --card: var(--panel);
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+      color: var(--text) !important;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(var(--section-rgb), 0.12), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(99, 102, 241, 0.08), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+    }
+
+    body.dark #appPage {
+      --bg: #020617;
+      --panel: rgba(15, 23, 42, 0.92);
+      --panel-soft: rgba(30, 41, 59, 0.78);
+      --text: #f8fafc;
+      --muted: rgba(226, 232, 240, 0.76);
+      --line: rgba(255, 255, 255, 0.13);
+      --border: var(--line);
+      --card: var(--panel);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      color: var(--text) !important;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(147, 197, 253, 0.16), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(99, 102, 241, 0.14), transparent 30%),
+        radial-gradient(circle at 50% 88%, rgba(var(--section-rgb), 0.12), transparent 32%),
+        linear-gradient(135deg, #020617 0%, #0f172a 48%, #111827 100%) !important;
+    }
+
+    body:not(.dark) #appPage[data-section="dashboard"] { --section-color: #2563eb; --section-rgb: 37, 99, 235; --accent: #2563eb; --primary: #2563eb; }
+    body:not(.dark) #appPage[data-section="negocios"] { --section-color: #4f46e5; --section-rgb: 79, 70, 229; --accent: #4f46e5; --primary: #4f46e5; }
+    body:not(.dark) #appPage[data-section="clientes"] { --section-color: #0f766e; --section-rgb: 15, 118, 110; --accent: #0f766e; --primary: #0f766e; }
+    body:not(.dark) #appPage[data-section="agenda"] { --section-color: #7c3aed; --section-rgb: 124, 58, 237; --accent: #7c3aed; --primary: #7c3aed; }
+    body:not(.dark) #appPage[data-section="tareas"] { --section-color: #d97706; --section-rgb: 217, 119, 6; --accent: #d97706; --primary: #d97706; }
+    body:not(.dark) #appPage[data-section="finanzas"] { --section-color: #059669; --section-rgb: 5, 150, 105; --accent: #059669; --primary: #059669; }
+    body:not(.dark) #appPage[data-section="cotizaciones"] { --section-color: #ea580c; --section-rgb: 234, 88, 12; --accent: #ea580c; --primary: #ea580c; }
+    body:not(.dark) #appPage[data-section="cuentas"] { --section-color: #0284c7; --section-rgb: 2, 132, 199; --accent: #0284c7; --primary: #0284c7; }
+    body:not(.dark) #appPage[data-section="archivos"] { --section-color: #0891b2; --section-rgb: 8, 145, 178; --accent: #0891b2; --primary: #0891b2; }
+    body:not(.dark) #appPage[data-section="reportes"] { --section-color: #6d28d9; --section-rgb: 109, 40, 217; --accent: #6d28d9; --primary: #6d28d9; }
+    body:not(.dark) #appPage[data-section="configuracion"] { --section-color: #475569; --section-rgb: 71, 85, 105; --accent: #475569; --primary: #475569; }
+
+    body.dark #appPage[data-section="dashboard"] { --section-color: #93c5fd; --section-rgb: 147, 197, 253; --accent: #93c5fd; --primary: #93c5fd; }
+    body.dark #appPage[data-section="negocios"] { --section-color: #a5b4fc; --section-rgb: 165, 180, 252; --accent: #a5b4fc; --primary: #a5b4fc; }
+    body.dark #appPage[data-section="clientes"] { --section-color: #5eead4; --section-rgb: 94, 234, 212; --accent: #5eead4; --primary: #5eead4; }
+    body.dark #appPage[data-section="agenda"] { --section-color: #c4b5fd; --section-rgb: 196, 181, 253; --accent: #c4b5fd; --primary: #c4b5fd; }
+    body.dark #appPage[data-section="tareas"] { --section-color: #fcd34d; --section-rgb: 252, 211, 77; --accent: #fcd34d; --primary: #fcd34d; }
+    body.dark #appPage[data-section="finanzas"] { --section-color: #34d399; --section-rgb: 52, 211, 153; --accent: #34d399; --primary: #34d399; }
+    body.dark #appPage[data-section="cotizaciones"] { --section-color: #fdba74; --section-rgb: 253, 186, 116; --accent: #fdba74; --primary: #fdba74; }
+    body.dark #appPage[data-section="cuentas"] { --section-color: #7dd3fc; --section-rgb: 125, 211, 252; --accent: #7dd3fc; --primary: #7dd3fc; }
+    body.dark #appPage[data-section="archivos"] { --section-color: #67e8f9; --section-rgb: 103, 232, 249; --accent: #67e8f9; --primary: #67e8f9; }
+    body.dark #appPage[data-section="reportes"] { --section-color: #d8b4fe; --section-rgb: 216, 180, 254; --accent: #d8b4fe; --primary: #d8b4fe; }
+    body.dark #appPage[data-section="configuracion"] { --section-color: #e2e8f0; --section-rgb: 226, 232, 240; --accent: #e2e8f0; --primary: #e2e8f0; }
+
+    body:not(.dark) #appPage :is(.topbar,.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero,.quick-actions-card,.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card,.table-wrap),
+    body:not(.dark) .modal,
+    body:not(.dark) .modal-head,
+    body:not(.dark) .modal-foot {
+      color: #111827 !important;
+      border-color: rgba(148, 163, 184, 0.24) !important;
+    }
+
+    body:not(.dark) #appPage :is(.quick-actions-card,.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card),
+    body:not(.dark) .modal {
+      background: rgba(255, 255, 255, 0.94) !important;
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.075) !important;
+    }
+
+    body:not(.dark) #appPage :is(.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.modal-head,.modal-foot),
+    body:not(.dark) .modal-head,
+    body:not(.dark) .modal-foot {
+      background: rgba(248, 250, 252, 0.96) !important;
+    }
+
+    body:not(.dark) #appPage :is(.topbar) {
+      background: rgba(255, 255, 255, 0.88) !important;
+      color: #111827 !important;
+      border-bottom-color: rgba(148, 163, 184, 0.26) !important;
+    }
+
+    body:not(.dark) #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) {
+      background:
+        radial-gradient(circle at top right, rgba(var(--section-rgb), 0.13), transparent 38%),
+        linear-gradient(135deg, #ffffff, #f1f5f9) !important;
+      border-color: rgba(var(--section-rgb), 0.18) !important;
+    }
+
+    body:not(.dark) #appPage :is(.brand-row h2,.topbar h1,.card h3,.card-headline h3,.business-title h3,.quote-card-title h3,.finance-card-title h3,.file-title-line h3,.charge-card-head h3,.hero-copy h2,.section-title,h1,h2,h3,h4,strong,b,.value,.quote-total,.finance-amount,.charge-amount,.smart-item-title) {
+      color: #111827 !important;
+    }
+
+    body:not(.dark) #appPage :is(.brand-row span,.user-mini,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,.hint,.stat-card .label,.stat-card .hint,label,.doc-meta,p,small,.meta,.smart-item-meta,.business-progress-label) {
+      color: #4b5563 !important;
+    }
+
+    body.dark #appPage :is(.topbar,.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero,.quick-actions-card,.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card,.table-wrap),
+    body.dark .modal,
+    body.dark .modal-head,
+    body.dark .modal-foot {
+      color: #f8fafc !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    body.dark #appPage :is(.quick-actions-card,.card,.stat-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card),
+    body.dark .modal {
+      background: rgba(15, 23, 42, 0.88) !important;
+      box-shadow: 0 20px 58px rgba(0, 0, 0, 0.30) !important;
+    }
+
+    body.dark #appPage :is(.business-card-top,.finance-card-top,.quote-card-top,.task-column-head),
+    body.dark .modal-head,
+    body.dark .modal-foot {
+      background: rgba(15, 23, 42, 0.94) !important;
+    }
+
+    body.dark #appPage :is(.brand-row h2,.topbar h1,.card h3,.card-headline h3,.business-title h3,.quote-card-title h3,.finance-card-title h3,.file-title-line h3,.charge-card-head h3,.hero-copy h2,.section-title,h1,h2,h3,h4,strong,b,.value,.quote-total,.finance-amount,.charge-amount,.smart-item-title) {
+      color: #f8fafc !important;
+    }
+
+    body.dark #appPage :is(.brand-row span,.user-mini,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,.hint,.stat-card .label,.stat-card .hint,label,.doc-meta,p,small,.meta,.smart-item-meta,.business-progress-label) {
+      color: rgba(226, 232, 240, 0.76) !important;
+    }
+
+    body:not(.dark) #appPage input,
+    body:not(.dark) #appPage select,
+    body:not(.dark) #appPage textarea,
+    body:not(.dark) .modal input,
+    body:not(.dark) .modal select,
+    body:not(.dark) .modal textarea {
+      background: #ffffff !important;
+      color: #111827 !important;
+      border-color: #d1d5db !important;
+    }
+
+    body.dark #appPage input,
+    body.dark #appPage select,
+    body.dark #appPage textarea,
+    body.dark .modal input,
+    body.dark .modal select,
+    body.dark .modal textarea {
+      background: #0b1728 !important;
+      color: #f8fafc !important;
+      border-color: rgba(255, 255, 255, 0.16) !important;
+    }
+
+    body.dark #appPage input::placeholder,
+    body.dark #appPage textarea::placeholder,
+    body.dark .modal input::placeholder,
+    body.dark .modal textarea::placeholder {
+      color: rgba(203, 213, 225, 0.62) !important;
+    }
+
+    body.dark #appPage option,
+    body.dark .modal option {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+    }
+
+    body:not(.dark) #appPage .btn.secondary,
+    body:not(.dark) .modal .btn.secondary,
+    body:not(.dark) #appPage .link-btn {
+      background: #ffffff !important;
+      color: #111827 !important;
+      border-color: #d1d5db !important;
+    }
+
+    body.dark #appPage .btn.secondary,
+    body.dark .modal .btn.secondary,
+    body.dark #appPage .link-btn {
+      background: rgba(15, 23, 42, 0.86) !important;
+      color: #f8fafc !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    body:not(.dark) #appPage .btn:not(.secondary),
+    body:not(.dark) .modal .btn:not(.secondary) {
+      color: #ffffff !important;
+    }
+
+    body.dark #appPage .btn:not(.secondary),
+    body.dark .modal .btn:not(.secondary) {
+      color: #020617 !important;
+    }
+
+    body.dark #appPage .btn.success,
+    body.dark #appPage .btn.warning,
+    body.dark #appPage .btn.danger,
+    body.dark .modal .btn.success,
+    body.dark .modal .btn.warning,
+    body.dark .modal .btn.danger {
+      color: #ffffff !important;
+    }
+
+    body:not(.dark) #appPage :is(.eyebrow,.section-kicker,.hero-chip,.pill,.quick-grid span,.stat-card .icon,.insight-icon,.meeting-time-badge,.task-avatar,.finance-avatar,.business-kpi-icon,.quote-alert > span) {
+      background: rgba(var(--section-rgb), 0.08) !important;
+      border-color: rgba(var(--section-rgb), 0.20) !important;
+      color: var(--section-color) !important;
+    }
+
+    body.dark #appPage :is(.eyebrow,.section-kicker,.hero-chip,.pill,.quick-grid span,.stat-card .icon,.insight-icon,.meeting-time-badge,.task-avatar,.finance-avatar,.business-kpi-icon,.quote-alert > span) {
+      background: rgba(var(--section-rgb), 0.11) !important;
+      border-color: rgba(var(--section-rgb), 0.24) !important;
+      color: var(--section-color) !important;
+    }
+
+    body:not(.dark) #appPage th,
+    body:not(.dark) #appPage table th {
+      background: #eef2f7 !important;
+      color: #334155 !important;
+    }
+
+    body:not(.dark) #appPage td,
+    body:not(.dark) #appPage table td {
+      color: #111827 !important;
+      border-color: #e5e7eb !important;
+    }
+
+    body.dark #appPage th,
+    body.dark #appPage table th {
+      background: rgba(15, 23, 42, 0.96) !important;
+      color: #cbd5e1 !important;
+    }
+
+    body.dark #appPage td,
+    body.dark #appPage table td {
+      color: #f8fafc !important;
+      border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+
+    body:not(.dark) #appPage .nav button {
+      color: rgba(248, 250, 252, 0.82) !important;
+    }
+
+    body.dark #appPage .nav button {
+      color: rgba(248, 250, 252, 0.82) !important;
+    }
+
+    body:not(.dark) #appPage .nav button.active,
+    body:not(.dark) #appPage .nav button:hover,
+    body.dark #appPage .nav button.active,
+    body.dark #appPage .nav button:hover {
+      color: #ffffff !important;
+    }
+
+    #appPage .brand-logo,
+    #appPage .nav button.active .nav-icon,
+    #appPage .nav button:hover .nav-icon {
+      color: #020617 !important;
+    }
+
+    /* Documentos y vistas de impresión siempre claros, inclusive en modo oscuro. */
+    #appPage .doc-preview,
+    #appPage .quote-preview-doc,
+    #printArea,
+    #appPage .doc-preview table,
+    #appPage .doc-table,
+    #appPage .doc-total table,
+    #appPage .quote-preview-doc table {
+      background: #ffffff !important;
+      color: #111827 !important;
+      border-color: #e5e7eb !important;
+    }
+
+    #appPage .doc-preview *,
+    #appPage .quote-preview-doc *,
+    #printArea * {
+      color: #111827 !important;
+    }
+
+    #appPage .doc-preview .doc-head,
+    #appPage .quote-preview-doc-head,
+    #appPage .doc-table th,
+    #appPage .doc-preview th,
+    #appPage .quote-preview-doc th,
+    #printArea .doc-preview th,
+    #printArea .doc-table th {
+      background: #111827 !important;
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-preview .doc-head *,
+    #appPage .quote-preview-doc-head *,
+    #appPage .doc-table th *,
+    #appPage .doc-preview th *,
+    #appPage .quote-preview-doc th *,
+    #printArea .doc-preview th *,
+    #printArea .doc-table th * {
+      color: #ffffff !important;
+    }
+
+    #appPage .doc-meta,
+    #appPage .quote-preview-doc small,
+    #appPage .doc-preview small {
+      color: #4b5563 !important;
+    }
+
+
   </style>
 
   <!-- PWA / Instalación móvil -->
@@ -12761,16 +13539,17 @@
  </div>
 
  <div class="quote-form-section">
- <h4> Plantillas rápidas</h4>
+ <h4> Plantillas rápidas para agregar servicios</h4>
+ <div class="message quote-template-help">Elige una plantilla y se agregará como servicio adicional. No se borran los servicios que ya tengas escritos.</div>
  <div class="quote-template-grid">
- ${Object.entries(quoteTemplates()).map(([key, t]) => `<button type="button" class="quote-template-btn" data-template="${key}"><strong>${escapeHtml(t.label)}</strong><small>${escapeHtml(t.hint)}</small></button>`).join('')}
+ ${Object.entries(quoteTemplates()).map(([key, t]) => `<button type="button" class="quote-template-btn" data-template="${key}"><strong>+ ${escapeHtml(t.label)}</strong><small>${escapeHtml(t.hint)}</small></button>`).join('')}
  </div>
  </div>
 
  <div class="quote-form-section">
- <h4> Ítems cotizados</h4>
+ <h4> Servicios cotizados</h4>
  <div id="itemsBox" class="items-box"></div>
- <button class="btn secondary small" id="addItemBtn" type="button">+ Agregar ítem</button>
+ <button class="btn secondary small" id="addItemBtn" type="button">+ Agregar otro servicio</button>
  </div>
 
  <div class="quote-form-section">
@@ -12877,9 +13656,20 @@
  document.querySelectorAll('[data-template]').forEach(btn => btn.addEventListener('click', () => {
  const tpl = quoteTemplates()[btn.dataset.template];
  if (!tpl) return;
- items.splice(0, items.length, ...tpl.items.map(i => ({ ...i })));
+ const incoming = tpl.items.map(i => ({ ...i }));
+ const isEmptyItem = (item = {}) => !String(item.descripcion || '').trim() && !String(item.detalle || '').trim() && !Number(item.valor || 0);
+ const hasFilledItems = items.some(item => !isEmptyItem(item));
+ if (!hasFilledItems) {
+ items.splice(0, items.length, ...incoming);
+ } else {
+ for (let i = items.length - 1; i >= 0; i--) {
+ if (isEmptyItem(items[i])) items.splice(i, 1);
+ }
+ items.push(...incoming);
+ }
  if (!$('fServicio').value.trim()) $('fServicio').value = tpl.label;
  renderItems();
+ toast(`Servicio agregado: ${tpl.label}`);
  }));
  ['fNumero','fFecha','fVence','fEstado','fPrioridad','fServicio','fResponsable','fCliente','fNegocio','fReunion','fTarea','fDescGeneral','fDescTipo','fAplicaImpuesto','fImpuesto','fObsDescuento','fCondiciones','fNotas'].forEach(id => $(id)?.addEventListener('input', updatePreview));
  ['fEstado','fPrioridad','fCliente','fNegocio','fReunion','fTarea','fDescTipo','fAplicaImpuesto'].forEach(id => $(id)?.addEventListener('change', updatePreview));
