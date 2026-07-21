@@ -10973,6 +10973,181 @@ body.dark #appPage.sidebar-collapsed .side-bottom {
  return state.cuentasCobro.some(c => c.cotizacionId === quoteId && !['Anulada','Borrador'].includes(chargeStatus(c)));
  }
 
+
+
+ function pickFirstValue(...values) {
+ return values.find(v => v !== undefined && v !== null && String(v).trim() !== '') || '';
+ }
+
+ function normalizedMoneyValue(...values) {
+ const raw = pickFirstValue(...values);
+ if (typeof raw === 'number') return raw;
+ const clean = String(raw || '').replace(/[^0-9.-]/g, '');
+ return Number(clean || 0);
+ }
+
+ function normalizeRecordForCollection(name, item = {}) {
+ const r = { ...item };
+ if (name === 'clientes') {
+ r.nombre = pickFirstValue(r.nombre, r.empresa, r.razonSocial, r.cliente, r.nombreCliente, 'Cliente sin nombre');
+ r.whatsapp = pickFirstValue(r.whatsapp, r.telefono, r.celular, r.phone);
+ r.telefono = pickFirstValue(r.telefono, r.whatsapp, r.celular, r.phone);
+ r.email = pickFirstValue(r.email, r.correo, r.mail);
+ r.ciudad = pickFirstValue(r.ciudad, r.municipio, r.ubicacion);
+ r.tipoCliente = pickFirstValue(r.tipoCliente, r.tipo, r.personaTipo, 'Contacto');
+ r.servicioInteres = pickFirstValue(r.servicioInteres, r.servicioNecesita, r.servicio, r.tipoServicio, r.servicioPrincipal, r.tipo);
+ r.descripcionServicio = pickFirstValue(r.descripcionServicio, r.descripcion, r.necesidad, r.necesidadPrincipal, r.detalle, r.alcance, r.acuerdos);
+ r.valorEstimado = normalizedMoneyValue(r.valorEstimado, r.valor, r.valorMensualEstimado, r.metaMensual, r.total, r.monto);
+ r.estadoComercial = pickFirstValue(r.estadoComercial, r.estado, 'Nuevo');
+ r.prioridad = pickFirstValue(r.prioridad, 'Media');
+ r.proximoSeguimiento = pickFirstValue(r.proximoSeguimiento, r.fechaSeguimiento, r.siguienteSeguimiento, r.fechaLimite);
+ }
+ if (name === 'negocios') {
+ r.nombre = pickFirstValue(r.nombre, r.empresa, r.razonSocial, r.nombreProyecto, r.proyecto, r.clienteNombre, 'Servicio sin nombre');
+ r.tipoServicio = pickFirstValue(r.tipoServicio, r.tipo, r.servicio, r.servicioInteres);
+ r.tipo = pickFirstValue(r.tipo, r.tipoServicio, r.servicio, r.servicioInteres);
+ r.telefono = pickFirstValue(r.telefono, r.whatsapp, r.celular);
+ r.email = pickFirstValue(r.email, r.correo);
+ r.ciudad = pickFirstValue(r.ciudad, r.municipio);
+ r.valorMensualEstimado = normalizedMoneyValue(r.valorMensualEstimado, r.valorEstimado, r.valor, r.metaMensual);
+ r.metaMensual = normalizedMoneyValue(r.metaMensual, r.valorMensualEstimado, r.valorEstimado, r.valor);
+ r.descripcion = pickFirstValue(r.descripcion, r.descripcionServicio, r.necesidades, r.necesidad, r.alcance);
+ r.estado = pickFirstValue(r.estado, r.estadoComercial, 'En seguimiento');
+ r.prioridad = pickFirstValue(r.prioridad, 'Media');
+ r.proximoSeguimiento = pickFirstValue(r.proximoSeguimiento, r.fechaSeguimiento);
+ }
+ if (name === 'cotizaciones') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.estado = pickFirstValue(r.estado, r.status, 'Borrador');
+ r.fecha = pickFirstValue(r.fecha, r.fechaEmision, r.createdDate, today());
+ r.vence = pickFirstValue(r.vence, r.vencimiento, r.fechaVencimiento);
+ r.servicioPrincipal = pickFirstValue(r.servicioPrincipal, r.servicio, r.tipoServicio);
+ r.items = Array.isArray(r.items) ? r.items : [];
+ r.total = normalizedMoneyValue(r.total, r.valorTotal, r.valor, quoteTotals(r).total);
+ }
+ if (name === 'cuentasCobro') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.cotizacionId = pickFirstValue(r.cotizacionId, r.quoteId);
+ r.estado = pickFirstValue(r.estado, r.status, 'Pendiente');
+ r.fecha = pickFirstValue(r.fecha, r.fechaEmision, today());
+ r.vencimiento = pickFirstValue(r.vencimiento, r.fechaVencimiento, r.vence);
+ r.total = normalizedMoneyValue(r.total, r.valorTotal, r.valor, r.monto);
+ r.concepto = pickFirstValue(r.concepto, r.descripcion, r.detalle, r.servicio);
+ r.abonos = Array.isArray(r.abonos) ? r.abonos : [];
+ }
+ if (name === 'finanzas') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.cotizacionId = pickFirstValue(r.cotizacionId, r.quoteId);
+ r.cuentaCobroId = pickFirstValue(r.cuentaCobroId, r.chargeId, r.cobroId);
+ r.tipo = pickFirstValue(r.tipo, r.movimiento, r.clase, 'ingreso');
+ r.estado = pickFirstValue(r.estado, r.status, 'Pendiente');
+ r.fecha = pickFirstValue(r.fecha, r.fechaMovimiento, today());
+ r.valor = normalizedMoneyValue(r.valor, r.total, r.monto, r.valorTotal);
+ r.concepto = pickFirstValue(r.concepto, r.descripcion, r.detalle);
+ }
+ if (name === 'tareas') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.estado = pickFirstValue(r.estado, r.status, 'Pendiente');
+ r.fecha = pickFirstValue(r.fecha, r.fechaLimite, r.vencimiento);
+ r.fechaLimite = pickFirstValue(r.fechaLimite, r.fecha, r.vencimiento);
+ r.prioridad = pickFirstValue(r.prioridad, 'Media');
+ }
+ if (name === 'reuniones') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.estado = pickFirstValue(r.estado, r.status, 'Pendiente');
+ r.fecha = pickFirstValue(r.fecha, r.fechaReunion, today());
+ r.servicio = pickFirstValue(r.servicio, r.tipoServicio, r.servicioInteres);
+ }
+ if (name === 'archivos') {
+ r.clienteId = pickFirstValue(r.clienteId, r.clientId);
+ r.negocioId = pickFirstValue(r.negocioId, r.proyectoId, r.businessId);
+ r.cotizacionId = pickFirstValue(r.cotizacionId, r.quoteId);
+ r.cuentaCobroId = pickFirstValue(r.cuentaCobroId, r.chargeId, r.cobroId);
+ r.finanzaId = pickFirstValue(r.finanzaId, r.financeId);
+ r.tareaId = pickFirstValue(r.tareaId, r.taskId);
+ r.reunionId = pickFirstValue(r.reunionId, r.meetingId);
+ r.nombre = pickFirstValue(r.nombre, r.filename, r.name, 'Archivo');
+ r.tipo = pickFirstValue(r.tipo, r.mimeType, r.type, 'application/octet-stream');
+ r.url = pickFirstValue(r.url, r.downloadURL, r.storageUrl);
+ }
+ return r;
+ }
+
+ function linkRecordsInMemory() {
+ const byId = (list = []) => Object.fromEntries(list.filter(x => x?.id).map(x => [x.id, x]));
+ const clientsById = byId(state.clientes);
+ const businessesById = byId(state.negocios);
+ const quotesById = byId(state.cotizaciones);
+ const chargesById = byId(state.cuentasCobro);
+ const findClientByName = (name = '') => state.clientes.find(c => normalizeText(c.nombre) === normalizeText(name));
+ const findBusinessForClient = (client = {}) => {
+ if (!client) return null;
+ return (client.negocioId && businessesById[client.negocioId])
+ || state.negocios.find(b => b.clienteId === client.id)
+ || state.negocios.find(b => normalizeText(b.nombre) === normalizeText(client.nombre));
+ };
+ state.clientes.forEach(c => {
+ if (!c.negocioId) {
+ const b = findBusinessForClient(c);
+ if (b?.id) c.negocioId = b.id;
+ }
+ });
+ state.negocios.forEach(b => {
+ if (!b.clienteId) {
+ const c = findClientByName(b.nombre || b.contacto || b.clienteNombre || '');
+ if (c?.id) b.clienteId = c.id;
+ }
+ });
+ state.cotizaciones.forEach(q => {
+ if (!q.clienteId && q.clienteNombre) {
+ const c = findClientByName(q.clienteNombre);
+ if (c?.id) q.clienteId = c.id;
+ }
+ const c = clientsById[q.clienteId];
+ if (!q.negocioId && c?.negocioId) q.negocioId = c.negocioId;
+ if (!q.negocioId) {
+ const b = findBusinessForClient(c);
+ if (b?.id) q.negocioId = b.id;
+ }
+ if (!q.servicioPrincipal) q.servicioPrincipal = clientService(c || businessesById[q.negocioId] || {});
+ if (!q.total) q.total = quoteTotals(q).total;
+ });
+ state.cuentasCobro.forEach(ch => {
+ const q = quotesById[ch.cotizacionId];
+ if (!ch.clienteId && q?.clienteId) ch.clienteId = q.clienteId;
+ const c = clientsById[ch.clienteId];
+ if (!ch.negocioId && q?.negocioId) ch.negocioId = q.negocioId;
+ if (!ch.negocioId && c?.negocioId) ch.negocioId = c.negocioId;
+ if (!ch.concepto) ch.concepto = q?.servicioPrincipal || clientService(c || businessesById[ch.negocioId] || {});
+ });
+ state.finanzas.forEach(f => {
+ const ch = chargesById[f.cuentaCobroId];
+ const q = quotesById[f.cotizacionId || ch?.cotizacionId];
+ if (!f.clienteId && ch?.clienteId) f.clienteId = ch.clienteId;
+ if (!f.clienteId && q?.clienteId) f.clienteId = q.clienteId;
+ const c = clientsById[f.clienteId];
+ if (!f.negocioId && ch?.negocioId) f.negocioId = ch.negocioId;
+ if (!f.negocioId && q?.negocioId) f.negocioId = q.negocioId;
+ if (!f.negocioId && c?.negocioId) f.negocioId = c.negocioId;
+ });
+ [...state.tareas, ...state.reuniones, ...state.archivos].forEach(r => {
+ const c = clientsById[r.clienteId];
+ if (!r.negocioId && c?.negocioId) r.negocioId = c.negocioId;
+ });
+ }
+
+ function normalizeDatabaseState() {
+ ['negocios','clientes','reuniones','tareas','finanzas','cotizaciones','cuentasCobro','archivos'].forEach(key => {
+ state[key] = (state[key] || []).map(item => normalizeRecordForCollection(key, item));
+ });
+ linkRecordsInMemory();
+ }
+
  function getClientCommercialProfile(clienteId = '') {
  const client = state.clientes.find(c => c.id === clienteId) || null;
  const negocio = findClientBusiness(client || {});
@@ -11166,14 +11341,32 @@ body.dark #appPage.sidebar-collapsed .side-bottom {
  }
  }
 
+
+ function recordTimeMs(record = {}) {
+ const candidates = [record.actualizadoEn, record.creadoEn, record.fecha, record.vencimiento, record.fechaLimite];
+ for (const value of candidates) {
+ try {
+ if (!value) continue;
+ if (value.toMillis) return value.toMillis();
+ if (value.toDate) return value.toDate().getTime();
+ const d = new Date(value);
+ if (!Number.isNaN(d.getTime())) return d.getTime();
+ } catch {}
+ }
+ return 0;
+ }
+
  function setupSnapshots() {
  state.unsubscribers.forEach(unsub => unsub());
  state.unsubscribers = [];
 
  const watch = (name, key, ordered = true) => {
- const ref = ordered ? query(collectionRef(name), orderBy('creadoEn', 'desc')) : collectionRef(name);
+ // Se carga la colección completa sin orderBy para no perder documentos antiguos que no tengan creadoEn.
+ const ref = collectionRef(name);
  const unsub = onSnapshot(ref, (snapshot) => {
- state[key] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+ let rows = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+ if (ordered) rows = rows.sort((a, b) => recordTimeMs(b) - recordTimeMs(a));
+ state[key] = rows;
  renderAll();
  }, (err) => console.error(`Error ${name}`, err));
  state.unsubscribers.push(unsub);
@@ -11292,6 +11485,7 @@ body.dark #appPage.sidebar-collapsed .side-bottom {
  window.setSection = setSection;
 
  function renderAll() {
+ normalizeDatabaseState();
  renderBrand();
  renderDashboard();
  renderBusinesses();
