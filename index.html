@@ -7573,11 +7573,1356 @@
     }
 
 
-  </style>
+  
+
+/* =========================================================
+   Gestión 360 · Paleta psicológica + interfaz inteligente
+   Azul profundo: concentración · Cyan/teal: energía · Verde: avance
+   Ámbar: acción · Rojo: urgencia controlada · Violeta: análisis
+   ========================================================= */
+:root {
+ --bg: #F8FAFC;
+ --panel: #FFFFFF;
+ --panel-soft: #F1F5F9;
+ --text: #0F172A;
+ --muted: #64748B;
+ --line: #E2E8F0;
+ --brand: #2563EB;
+ --brand-dark: #1D4ED8;
+ --success: #22C55E;
+ --warning: #F59E0B;
+ --danger: #EF4444;
+ --cyan: #06B6D4;
+ --teal: #14B8A6;
+ --purple: #8B5CF6;
+ --deep: #0F172A;
+ --deep-soft: #1E293B;
+ --sidebar: #0F172A;
+ --sidebarText: #F8FAFC;
+ --sidebarMuted: #CBD5E1;
+ --shadow: 0 22px 50px rgba(15, 23, 42, 0.10);
+ --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.07);
+ --focus-ring: 0 0 0 4px rgba(6, 182, 212, .18);
+}
+body.dark {
+ --bg: #0F172A;
+ --panel: #111827;
+ --panel-soft: #1E293B;
+ --text: #F8FAFC;
+ --muted: #CBD5E1;
+ --line: rgba(255,255,255,.10);
+ --brand: #06B6D4;
+ --brand-dark: #2563EB;
+ --success: #22C55E;
+ --warning: #F59E0B;
+ --danger: #F87171;
+ --cyan: #22D3EE;
+ --teal: #2DD4BF;
+ --purple: #A78BFA;
+ --sidebar: #020617;
+ --sidebarText: #F8FAFC;
+ --sidebarMuted: #CBD5E1;
+ --shadow: 0 24px 60px rgba(0,0,0,.38);
+ --shadow-soft: 0 16px 36px rgba(0,0,0,.22);
+}
+body {
+ background:
+   radial-gradient(circle at 12% 0%, rgba(6,182,212,.10), transparent 28%),
+   radial-gradient(circle at 88% 10%, rgba(139,92,246,.10), transparent 26%),
+   var(--bg);
+}
+body.dark .content {
+ background:
+   radial-gradient(circle at 10% 0%, rgba(6,182,212,.08), transparent 26%),
+   radial-gradient(circle at 90% 0%, rgba(139,92,246,.09), transparent 24%);
+}
+input:focus, select:focus, textarea:focus { box-shadow: var(--focus-ring); }
+.btn { background: linear-gradient(135deg, var(--brand), var(--cyan)); box-shadow: 0 10px 24px rgba(37,99,235,.18); }
+.btn.secondary { background: var(--panel-soft); color: var(--text); border: 1px solid var(--line); box-shadow: none; }
+.btn.success { background: linear-gradient(135deg, #16A34A, #22C55E); color:#fff; }
+.btn.warning { background: linear-gradient(135deg, #D97706, #F59E0B); color:#fff; }
+.btn.danger { background: linear-gradient(135deg, #DC2626, #EF4444); color:#fff; }
+body.dark .btn.secondary { background: rgba(255,255,255,.08); color: #F8FAFC; border-color: rgba(255,255,255,.14); }
+.dashboard-hero, .business-page-hero, .charge-page-hero, .files-page-hero, .reports-page-hero {
+ background:
+   linear-gradient(135deg, rgba(15,23,42,.96), rgba(37,99,235,.82)),
+   radial-gradient(circle at top right, rgba(6,182,212,.55), transparent 40%);
+ color: #F8FAFC !important;
+ border: 1px solid rgba(255,255,255,.12);
+ box-shadow: var(--shadow);
+}
+.dashboard-hero *, .business-page-hero *, .charge-page-hero *, .files-page-hero *, .reports-page-hero * { color: inherit; }
+.hero-chip { background: rgba(255,255,255,.12); color:#F8FAFC; border:1px solid rgba(255,255,255,.16); }
+.card, .quick-actions-card, .business-card, .quote-card, .finance-movement-card, .charge-card, .file-card-v2 {
+ background: var(--panel);
+ color: var(--text);
+ border-color: var(--line);
+}
+body.dark .card, body.dark .quick-actions-card, body.dark .business-card, body.dark .quote-card, body.dark .finance-movement-card, body.dark .charge-card, body.dark .file-card-v2 {
+ background: linear-gradient(180deg, rgba(17,24,39,.96), rgba(15,23,42,.96));
+ color: #F8FAFC;
+ border-color: rgba(255,255,255,.10);
+}
+.quote-preview-doc, .charge-preview-document, .quote-print-doc, .charge-print-doc, .print-document, .document-white {
+ background:#FFFFFF !important;
+ color:#0F172A !important;
+}
+.quote-preview-doc *, .charge-preview-document *, .quote-print-doc *, .charge-print-doc *, .print-document *, .document-white * { color: inherit; }
+.quote-preview-doc-head, .charge-doc-head, .print-doc-head { background:#0F172A !important; color:#F8FAFC !important; }
+
+.assistant360-panel {
+ margin: 18px 0 20px;
+ border-radius: 26px;
+ padding: 18px;
+ background:
+   linear-gradient(135deg, rgba(15,23,42,.98), rgba(30,41,59,.94)),
+   radial-gradient(circle at 12% 0%, rgba(6,182,212,.30), transparent 34%);
+ color:#F8FAFC;
+ border:1px solid rgba(255,255,255,.12);
+ box-shadow: var(--shadow);
+}
+.assistant360-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:14px; }
+.assistant360-head h3 { margin:0; font-size:22px; letter-spacing:-.03em; }
+.assistant360-head p { margin:4px 0 0; color:#CBD5E1; }
+.assistant360-badge { display:flex; align-items:center; gap:8px; background:rgba(6,182,212,.16); color:#CFFAFE; border:1px solid rgba(103,232,249,.28); padding:8px 12px; border-radius:999px; font-weight:900; white-space:nowrap; }
+.assistant360-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; }
+.assistant360-card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:14px; display:flex; flex-direction:column; gap:10px; min-height:150px; }
+.assistant360-card strong { color:#F8FAFC; font-size:15px; }
+.assistant360-card p { color:#CBD5E1; margin:0; line-height:1.45; font-size:13px; }
+.assistant360-card .meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.assistant360-card .tag { border-radius:999px; padding:5px 9px; font-size:11px; font-weight:900; background:rgba(255,255,255,.10); color:#E2E8F0; }
+.assistant360-card.danger { border-color:rgba(248,113,113,.35); background:rgba(239,68,68,.12); }
+.assistant360-card.warning { border-color:rgba(245,158,11,.35); background:rgba(245,158,11,.12); }
+.assistant360-card.success { border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.12); }
+.assistant360-card.info { border-color:rgba(34,211,238,.35); background:rgba(6,182,212,.12); }
+.assistant360-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
+.assistant360-actions .btn { padding:8px 10px; border-radius:11px; font-size:12px; }
+.flow-note, .auto-service-hint, .client-intelligence-note {
+ background: linear-gradient(135deg, rgba(6,182,212,.10), rgba(20,184,166,.10));
+ border: 1px solid rgba(6,182,212,.22);
+ color: var(--text);
+ border-radius: 16px;
+ padding: 12px 14px;
+ font-weight: 800;
+ line-height: 1.45;
+}
+body.dark .flow-note, body.dark .auto-service-hint, body.dark .client-intelligence-note { color:#E0F2FE; background:rgba(6,182,212,.10); border-color:rgba(103,232,249,.22); }
+.advanced-fields { border:1px solid var(--line); border-radius:18px; padding:12px 14px; background:var(--panel-soft); margin-top:12px; }
+.advanced-fields summary { cursor:pointer; font-weight:900; color:var(--text); }
+.advanced-fields .advanced-inner { margin-top:14px; }
+body.dark .advanced-fields { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.10); }
+.hidden-auto-field { opacity:.88; }
+@media (max-width: 980px) { .assistant360-grid { grid-template-columns:1fr; } .assistant360-head { flex-direction:column; } }
+
+
+/* =========================================================
+   GESTIÓN 360 · INTERFAZ MINIMALISTA ALTO CONTRASTE
+   Regla final solicitada:
+   - Modo oscuro: negro real con textos blancos.
+   - Modo claro: fondo blanco con textos negros.
+   - Colores reducidos: solo acentos funcionales para acciones y estados.
+   ========================================================= */
+:root {
+  --bg: #ffffff !important;
+  --panel: #ffffff !important;
+  --panel-soft: #f7f7f7 !important;
+  --card: #ffffff !important;
+  --text: #111111 !important;
+  --muted: #555555 !important;
+  --line: #e5e5e5 !important;
+  --border: #e5e5e5 !important;
+  --brand: #111111 !important;
+  --brand-dark: #000000 !important;
+  --primary: #111111 !important;
+  --accent: #111111 !important;
+  --sidebar: #000000 !important;
+  --sidebarText: #ffffff !important;
+  --sidebarMuted: #d4d4d4 !important;
+  --success: #15803d !important;
+  --warning: #b45309 !important;
+  --danger: #b91c1c !important;
+  --cyan: #111111 !important;
+  --teal: #111111 !important;
+  --purple: #111111 !important;
+  --active-accent: #111111 !important;
+  --active-soft: #f3f4f6 !important;
+  --active-line: #d4d4d4 !important;
+  --active-text: #111111 !important;
+  --shadow: 0 12px 28px rgba(0, 0, 0, .08) !important;
+  --shadow-soft: 0 8px 20px rgba(0, 0, 0, .06) !important;
+  --focus-ring: 0 0 0 3px rgba(17, 17, 17, .12) !important;
+}
+
+body.dark {
+  --bg: #000000 !important;
+  --panel: #000000 !important;
+  --panel-soft: #111111 !important;
+  --card: #000000 !important;
+  --text: #ffffff !important;
+  --muted: #d4d4d4 !important;
+  --line: rgba(255, 255, 255, .18) !important;
+  --border: rgba(255, 255, 255, .18) !important;
+  --brand: #ffffff !important;
+  --brand-dark: #e5e5e5 !important;
+  --primary: #ffffff !important;
+  --accent: #ffffff !important;
+  --sidebar: #000000 !important;
+  --sidebarText: #ffffff !important;
+  --sidebarMuted: #cfcfcf !important;
+  --success: #22c55e !important;
+  --warning: #f59e0b !important;
+  --danger: #ef4444 !important;
+  --cyan: #ffffff !important;
+  --teal: #ffffff !important;
+  --purple: #ffffff !important;
+  --active-accent: #ffffff !important;
+  --active-soft: #111111 !important;
+  --active-line: rgba(255, 255, 255, .22) !important;
+  --active-text: #ffffff !important;
+  --shadow: none !important;
+  --shadow-soft: none !important;
+  --focus-ring: 0 0 0 3px rgba(255, 255, 255, .18) !important;
+}
+
+html,
+body,
+#appPage,
+#appPage .app,
+#appPage .app-shell,
+#appPage .main,
+#appPage .content,
+#appPage .section {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body,
+body.dark,
+body .content,
+body.dark .content,
+.auth-page,
+body.dark .auth-page {
+  background-image: none !important;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Contenedores principales: blanco/negro limpio */
+.auth-card,
+.auth-feature,
+.auth-benefit,
+.card,
+.quick-actions-card,
+.stat-card,
+.smart-card,
+.business-kpi,
+.business-card,
+.finance-movement-card,
+.quote-card,
+.charge-card,
+.file-card-v2,
+.file-preview-card,
+.meeting-today-strip,
+.task-column,
+.business-filter-card,
+.files-filter-card,
+.charge-filter-card,
+.reports-filter-card,
+.finance-filter-card,
+.quote-filter-card,
+.modal,
+.modal-head,
+.modal-foot,
+.advanced-fields,
+.assistant360-panel,
+.assistant360-card,
+.dashboard-hero,
+.business-page-hero,
+.finance-page-hero,
+.quote-page-hero,
+.meeting-page-hero,
+.task-page-hero,
+.charge-page-hero,
+.files-page-hero,
+.reports-page-hero {
+  background: var(--panel) !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  box-shadow: var(--shadow-soft) !important;
+  backdrop-filter: none !important;
+}
+
+body.dark .auth-card,
+body.dark .auth-feature,
+body.dark .auth-benefit,
+body.dark .card,
+body.dark .quick-actions-card,
+body.dark .stat-card,
+body.dark .smart-card,
+body.dark .business-kpi,
+body.dark .business-card,
+body.dark .finance-movement-card,
+body.dark .quote-card,
+body.dark .charge-card,
+body.dark .file-card-v2,
+body.dark .file-preview-card,
+body.dark .meeting-today-strip,
+body.dark .task-column,
+body.dark .business-filter-card,
+body.dark .files-filter-card,
+body.dark .charge-filter-card,
+body.dark .reports-filter-card,
+body.dark .finance-filter-card,
+body.dark .quote-filter-card,
+body.dark .modal,
+body.dark .modal-head,
+body.dark .modal-foot,
+body.dark .advanced-fields,
+body.dark .assistant360-panel,
+body.dark .assistant360-card,
+body.dark .dashboard-hero,
+body.dark .business-page-hero,
+body.dark .finance-page-hero,
+body.dark .quote-page-hero,
+body.dark .meeting-page-hero,
+body.dark .task-page-hero,
+body.dark .charge-page-hero,
+body.dark .files-page-hero,
+body.dark .reports-page-hero {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: none !important;
+}
+
+/* Texto: evitar blancos sobre blanco o negros sobre negro */
+#appPage,
+#appPage *,
+.auth-page,
+.auth-page *,
+.modal,
+.modal * {
+  color: inherit;
+}
+
+body:not(.dark) #appPage,
+body:not(.dark) #appPage h1,
+body:not(.dark) #appPage h2,
+body:not(.dark) #appPage h3,
+body:not(.dark) #appPage h4,
+body:not(.dark) #appPage p,
+body:not(.dark) #appPage strong,
+body:not(.dark) #appPage span,
+body:not(.dark) #appPage small,
+body:not(.dark) #appPage label,
+body:not(.dark) .modal,
+body:not(.dark) .modal * {
+  color: #111111 !important;
+}
+
+body.dark #appPage,
+body.dark #appPage h1,
+body.dark #appPage h2,
+body.dark #appPage h3,
+body.dark #appPage h4,
+body.dark #appPage p,
+body.dark #appPage strong,
+body.dark #appPage span,
+body.dark #appPage small,
+body.dark #appPage label,
+body.dark .modal,
+body.dark .modal * {
+  color: #ffffff !important;
+}
+
+body:not(.dark) #appPage .muted,
+body:not(.dark) #appPage .hint,
+body:not(.dark) #appPage small,
+body:not(.dark) #appPage .card-headline p,
+body:not(.dark) #appPage .quick-title p,
+body:not(.dark) #appPage .assistant360-head p,
+body:not(.dark) #appPage .assistant360-card p,
+body:not(.dark) #appPage .smart-item-meta {
+  color: #555555 !important;
+}
+body.dark #appPage .muted,
+body.dark #appPage .hint,
+body.dark #appPage small,
+body.dark #appPage .card-headline p,
+body.dark #appPage .quick-title p,
+body.dark #appPage .assistant360-head p,
+body.dark #appPage .assistant360-card p,
+body.dark #appPage .smart-item-meta {
+  color: #d4d4d4 !important;
+}
+
+/* Barra superior y menú lateral */
+.sidebar,
+body.dark .sidebar {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+.sidebar *,
+body.dark .sidebar * {
+  color: #ffffff !important;
+}
+.topbar,
+body:not(.dark) .topbar {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e5e5 !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06) !important;
+}
+body.dark .topbar {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: none !important;
+}
+body.dark .topbar * { color: #ffffff !important; }
+
+.brand-logo,
+.auth-brand-icon,
+.auth-card-logo {
+  background: #111111 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+body.dark .brand-logo,
+body.dark .auth-brand-icon,
+body.dark .auth-card-logo {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.nav button {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: rgba(255,255,255,.78) !important;
+  box-shadow: none !important;
+}
+.nav button .nav-icon,
+#nav button .nav-icon,
+#nav button[data-section] .nav-icon {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+.nav button.active,
+.nav button:hover,
+#nav button.active,
+#nav button:hover {
+  background: rgba(255,255,255,.12) !important;
+  border-color: rgba(255,255,255,.18) !important;
+  color: #ffffff !important;
+  box-shadow: inset 3px 0 0 #ffffff !important;
+}
+.nav button.active .nav-icon,
+.nav button:hover .nav-icon,
+#nav button.active .nav-icon,
+#nav button:hover .nav-icon {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+.nav button.active .nav-icon *,
+.nav button:hover .nav-icon * { color: #000000 !important; }
+
+/* Botones simples y sin exceso de color */
+.btn,
+.btn:not(.secondary):not(.danger):not(.success):not(.warning) {
+  background: #111111 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #111111 !important;
+  box-shadow: none !important;
+}
+body.dark .btn,
+body.dark .btn:not(.secondary):not(.danger):not(.success):not(.warning) {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+.btn.secondary,
+body:not(.dark) .btn.secondary {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #d4d4d4 !important;
+}
+body.dark .btn.secondary {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.30) !important;
+}
+.btn.success { background: #15803d !important; color: #ffffff !important; border-color: #15803d !important; }
+.btn.warning { background: #b45309 !important; color: #ffffff !important; border-color: #b45309 !important; }
+.btn.danger { background: #b91c1c !important; color: #ffffff !important; border-color: #b91c1c !important; }
+body.dark .btn.success { background: #22c55e !important; color: #000000 !important; border-color: #22c55e !important; }
+body.dark .btn.warning { background: #f59e0b !important; color: #000000 !important; border-color: #f59e0b !important; }
+body.dark .btn.danger { background: #ef4444 !important; color: #ffffff !important; border-color: #ef4444 !important; }
+.btn:hover { transform: translateY(-1px); }
+
+/* Campos de formulario */
+input,
+select,
+textarea,
+.auth-input-wrap input,
+body.dark .auth-input-wrap input {
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+body:not(.dark) input,
+body:not(.dark) select,
+body:not(.dark) textarea {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #d4d4d4 !important;
+}
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.28) !important;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--brand) !important;
+  box-shadow: var(--focus-ring) !important;
+}
+input::placeholder,
+textarea::placeholder { color: var(--muted) !important; }
+
+/* Chips, pills y notas con estilo neutro */
+.hero-chip,
+.pill,
+.eyebrow,
+.section-kicker,
+.assistant360-badge,
+.smart-item,
+.flow-note,
+.auto-service-hint,
+.client-intelligence-note,
+.auth-secure-note,
+.auth-brand .badge,
+.auth-brand-footer span {
+  background: var(--panel-soft) !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+body.dark .hero-chip,
+body.dark .pill,
+body.dark .eyebrow,
+body.dark .section-kicker,
+body.dark .assistant360-badge,
+body.dark .smart-item,
+body.dark .flow-note,
+body.dark .auto-service-hint,
+body.dark .client-intelligence-note,
+body.dark .auth-secure-note,
+body.dark .auth-brand .badge,
+body.dark .auth-brand-footer span {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+}
+
+.quick-grid button,
+body.dark .quick-grid button,
+.insight-card,
+body.dark .insight-card {
+  background: var(--panel) !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+.quick-grid button > span,
+.quick-icon,
+.stat-card .icon,
+.insight-icon,
+.meeting-time-badge,
+.task-avatar,
+.finance-avatar,
+.business-kpi-icon,
+.quote-alert > span,
+body.dark .quick-grid button > span,
+body.dark .quick-icon,
+body.dark .stat-card .icon,
+body.dark .insight-icon,
+body.dark .meeting-time-badge,
+body.dark .task-avatar,
+body.dark .finance-avatar,
+body.dark .business-kpi-icon,
+body.dark .quote-alert > span {
+  background: var(--panel-soft) !important;
+  background-image: none !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+
+/* Asistente 360: limpio, sin tarjetas multicolor; solo borde por prioridad */
+.assistant360-card.danger,
+.assistant360-card.warning,
+.assistant360-card.success,
+.assistant360-card.info {
+  background: var(--panel) !important;
+  color: var(--text) !important;
+}
+.assistant360-card.danger { border-left: 4px solid var(--danger) !important; }
+.assistant360-card.warning { border-left: 4px solid var(--warning) !important; }
+.assistant360-card.success { border-left: 4px solid var(--success) !important; }
+.assistant360-card.info { border-left: 4px solid var(--brand) !important; }
+.assistant360-card .tag {
+  background: var(--panel-soft) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line) !important;
+}
+
+/* Estados: únicos lugares con color funcional */
+.pill.success,
+.status-success,
+.badge-success { background: rgba(21,128,61,.10) !important; color: #15803d !important; border-color: rgba(21,128,61,.22) !important; }
+.pill.warning,
+.status-warning,
+.badge-warning { background: rgba(180,83,9,.10) !important; color: #92400e !important; border-color: rgba(180,83,9,.24) !important; }
+.pill.danger,
+.status-danger,
+.badge-danger { background: rgba(185,28,28,.10) !important; color: #991b1b !important; border-color: rgba(185,28,28,.24) !important; }
+body.dark .pill.success,
+body.dark .status-success,
+body.dark .badge-success { background: rgba(34,197,94,.14) !important; color: #bbf7d0 !important; border-color: rgba(34,197,94,.32) !important; }
+body.dark .pill.warning,
+body.dark .status-warning,
+body.dark .badge-warning { background: rgba(245,158,11,.16) !important; color: #fde68a !important; border-color: rgba(245,158,11,.34) !important; }
+body.dark .pill.danger,
+body.dark .status-danger,
+body.dark .badge-danger { background: rgba(239,68,68,.16) !important; color: #fecaca !important; border-color: rgba(239,68,68,.34) !important; }
+
+/* Tablas */
+th,
+td,
+.table th,
+.table td,
+body:not(.dark) #appPage th,
+body:not(.dark) #appPage td,
+body:not(.dark) #appPage table th,
+body:not(.dark) #appPage table td {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e5e5 !important;
+}
+th,
+body:not(.dark) #appPage th,
+body:not(.dark) #appPage table th {
+  background: #f7f7f7 !important;
+  color: #111111 !important;
+}
+body.dark th,
+body.dark td,
+body.dark #appPage th,
+body.dark #appPage td,
+body.dark #appPage table th,
+body.dark #appPage table td {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+}
+body.dark th,
+body.dark #appPage th,
+body.dark #appPage table th {
+  background: #111111 !important;
+}
+
+/* Documentos: siempre blancos con letra negra para imprimir/profesional */
+#appPage .doc-preview,
+#appPage .quote-preview-doc,
+#appPage .charge-preview-document,
+#appPage .quote-print-doc,
+#appPage .charge-print-doc,
+#appPage .print-document,
+#appPage .document-white,
+#printArea,
+#printArea * {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e5e5 !important;
+  box-shadow: none !important;
+}
+#appPage .doc-preview *,
+#appPage .quote-preview-doc *,
+#appPage .charge-preview-document *,
+#appPage .quote-print-doc *,
+#appPage .charge-print-doc *,
+#appPage .print-document *,
+#appPage .document-white * {
+  color: #111111 !important;
+}
+#appPage .doc-preview .doc-head,
+#appPage .doc-preview th,
+#appPage .doc-table th,
+#appPage .quote-preview-doc-head,
+#appPage .charge-doc-head,
+#appPage .print-doc-head,
+#printArea .doc-preview th,
+#printArea .doc-table th {
+  background: #111111 !important;
+  color: #ffffff !important;
+}
+#appPage .doc-preview .doc-head *,
+#appPage .doc-preview th *,
+#appPage .doc-table th *,
+#appPage .quote-preview-doc-head *,
+#appPage .charge-doc-head *,
+#appPage .print-doc-head * {
+  color: #ffffff !important;
+}
+
+/* Reducir adornos que recargan visualmente */
+.auth-page::before,
+.auth-page::after,
+.auth-card::before,
+.auth-benefit::after,
+.business-kpi::before,
+.stat-card::before,
+.business-card::before,
+.finance-movement-card::before,
+.quote-card::before,
+.charge-card::before,
+.file-card-v2::before {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .dashboard-hero,
+  .business-page-hero,
+  .finance-page-hero,
+  .quote-page-hero,
+  .meeting-page-hero,
+  .task-page-hero,
+  .charge-page-hero,
+  .files-page-hero,
+  .reports-page-hero,
+  .assistant360-panel {
+    border-radius: 18px !important;
+  }
+}
+
+
+
+/* Herencia de color en botones e insignias para evitar iconos/textos con contraste incorrecto */
+.btn *,
+.btn .ui-icon,
+.btn svg,
+.btn path,
+.brand-logo *,
+.auth-brand-icon *,
+.auth-card-logo * {
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+body:not(.dark) .btn:not(.secondary):not(.danger):not(.success):not(.warning) *,
+body:not(.dark) .btn:not(.secondary):not(.danger):not(.success):not(.warning) .ui-icon {
+  color: #ffffff !important;
+}
+body.dark .btn:not(.secondary):not(.danger):not(.success):not(.warning) *,
+body.dark .btn:not(.secondary):not(.danger):not(.success):not(.warning) .ui-icon {
+  color: #000000 !important;
+}
+body:not(.dark) .btn.secondary *,
+body:not(.dark) .btn.secondary .ui-icon {
+  color: #111111 !important;
+}
+body.dark .btn.secondary *,
+body.dark .btn.secondary .ui-icon {
+  color: #ffffff !important;
+}
+
+  
+
+/* =========================================================
+   Gestión 360 · Contraste final + interfaz limpia
+   Modo claro: fondo blanco y texto negro.
+   Modo oscuro: fondo negro y texto blanco.
+   Los colores quedan reservados solo para estados y acciones.
+   ========================================================= */
+:root {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel-soft: #f5f5f5;
+  --text: #111111;
+  --muted: #4b5563;
+  --line: #e5e7eb;
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --brand: #111827;
+  --brand-dark: #000000;
+  --primary: #111827;
+  --accent: #111827;
+  --sidebar: #050505;
+  --sidebarText: #ffffff;
+  --sidebarMuted: #d1d5db;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --shadow: 0 10px 28px rgba(0,0,0,.08);
+  --shadow-soft: 0 6px 18px rgba(0,0,0,.06);
+}
+body.dark {
+  --bg: #000000;
+  --panel: #080808;
+  --panel-soft: #111111;
+  --text: #ffffff;
+  --muted: #d1d5db;
+  --line: #2a2a2a;
+  --border: #2a2a2a;
+  --card: #080808;
+  --brand: #ffffff;
+  --brand-dark: #e5e7eb;
+  --primary: #ffffff;
+  --accent: #ffffff;
+  --sidebar: #000000;
+  --sidebarText: #ffffff;
+  --sidebarMuted: #d1d5db;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow: none;
+  --shadow-soft: none;
+}
+html, body { background: var(--bg) !important; color: var(--text) !important; }
+body, #appPage, #authPage, .main, .content { background: var(--bg) !important; color: var(--text) !important; }
+body.dark .content, body:not(.dark) .content { background: transparent !important; }
+
+/* Encabezado expandible/contraíble */
+#appPage .topbar {
+  min-height: 68px !important;
+  height: auto !important;
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  transition: min-height .18s ease, padding .18s ease, background .18s ease !important;
+}
+#appPage .topbar-main {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+#appPage .topbar h1 {
+  color: var(--text) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+#appPage .header-toggle { flex: 0 0 auto !important; }
+#appPage.header-collapsed .topbar {
+  min-height: 52px !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+#appPage.header-collapsed #topActions {
+  display: none !important;
+}
+#appPage.header-collapsed .topbar h1 { font-size: 18px !important; }
+#appPage.header-collapsed .header-toggle svg { transform: rotate(180deg); }
+
+/* Fondos y textos generales */
+body:not(.dark) #appPage :is(.topbar,.card,.stat-card,.quick-actions-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card,.table-wrap,.modal,.modal-head,.modal-foot,.auth-card,.auth-feature,.pwa-install-banner) {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e7eb !important;
+  box-shadow: var(--shadow-soft) !important;
+  backdrop-filter: none !important;
+}
+body.dark #appPage :is(.topbar,.card,.stat-card,.quick-actions-card,.smart-card,.business-card,.business-kpi,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.file-preview-card,.meeting-today-strip,.task-column,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,.business-card-top,.finance-card-top,.quote-card-top,.task-column-head,.smart-item,.business-mini-card,.business-card-stat,.client-contact-item,.meeting-strip-item,.meeting-meta-item,.task-meta-item,.finance-meta-item,.quote-meta-item,.charge-meta-item,.file-meta-item,.business-form-section,.finance-form-section,.quote-form-section,.business-detail-panel,.empty,.calendar-day,.client-history-item,.task-timeline-item,.meeting-timeline-item,.finance-mini-item,.finance-project-item,.report-insight,.report-highlight-card,.table-wrap,.modal,.modal-head,.modal-foot,.auth-card,.auth-feature,.pwa-install-banner) {
+  background: #080808 !important;
+  color: #ffffff !important;
+  border-color: #2a2a2a !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Héroes y paneles grandes limpios */
+body:not(.dark) #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+body.dark #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) {
+  background: #080808 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+  box-shadow: none !important;
+}
+body:not(.dark) #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) *,
+body:not(.dark) #appPage :is(.topbar,.card,.stat-card,.quick-actions-card,.business-card,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.smart-item) :is(h1,h2,h3,h4,h5,h6,p,span,small,label,strong,b,div,td,th,li) { color: inherit !important; }
+body.dark #appPage :is(.dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero) *,
+body.dark #appPage :is(.topbar,.card,.stat-card,.quick-actions-card,.business-card,.quote-card,.finance-movement-card,.charge-card,.file-card-v2,.smart-item) :is(h1,h2,h3,h4,h5,h6,p,span,small,label,strong,b,div,td,th,li) { color: inherit !important; }
+
+/* Textos secundarios */
+body:not(.dark) #appPage :is(.muted,.hint,.meta,.doc-meta,.stat-card .label,.stat-card .hint,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,label,small) { color: #4b5563 !important; }
+body.dark #appPage :is(.muted,.hint,.meta,.doc-meta,.stat-card .label,.stat-card .hint,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,label,small) { color: #d1d5db !important; }
+
+/* Formularios */
+body:not(.dark) :is(input,select,textarea) { background: #ffffff !important; color: #111111 !important; border-color: #d1d5db !important; }
+body.dark :is(input,select,textarea) { background: #000000 !important; color: #ffffff !important; border-color: #2a2a2a !important; }
+body.dark :is(input,textarea)::placeholder { color: #9ca3af !important; }
+body.dark option { background: #000000 !important; color: #ffffff !important; }
+
+/* Botones: menos color y contraste correcto */
+#appPage .btn, .modal .btn { box-shadow: none !important; background: #111827 !important; color: #ffffff !important; border: 1px solid #111827 !important; }
+body.dark #appPage .btn, body.dark .modal .btn { background: #ffffff !important; color: #000000 !important; border-color: #ffffff !important; }
+#appPage .btn.secondary, .modal .btn.secondary, #appPage .link-btn, .modal .link-btn {
+  background: #ffffff !important; color: #111111 !important; border: 1px solid #d1d5db !important;
+}
+body.dark #appPage .btn.secondary, body.dark .modal .btn.secondary, body.dark #appPage .link-btn, body.dark .modal .link-btn {
+  background: #080808 !important; color: #ffffff !important; border-color: #333333 !important;
+}
+#appPage .btn.success, .modal .btn.success { background: #16a34a !important; color: #ffffff !important; border-color: #16a34a !important; }
+#appPage .btn.warning, .modal .btn.warning { background: #d97706 !important; color: #ffffff !important; border-color: #d97706 !important; }
+#appPage .btn.danger, .modal .btn.danger { background: #dc2626 !important; color: #ffffff !important; border-color: #dc2626 !important; }
+
+/* Estados: único lugar donde se conservan colores */
+#appPage .pill, #appPage .tag, #appPage .hero-chip, #appPage .eyebrow, #appPage .section-kicker {
+  background: #f5f5f5 !important; color: #111111 !important; border: 1px solid #e5e7eb !important;
+}
+body.dark #appPage .pill, body.dark #appPage .tag, body.dark #appPage .hero-chip, body.dark #appPage .eyebrow, body.dark #appPage .section-kicker {
+  background: #111111 !important; color: #ffffff !important; border-color: #333333 !important;
+}
+#appPage .pill.success, #appPage .tag.success, #appPage .assistant360-card.success .tag { background: rgba(22,163,74,.12) !important; color: #16a34a !important; border-color: rgba(22,163,74,.25) !important; }
+#appPage .pill.warning, #appPage .tag.warning, #appPage .assistant360-card.warning .tag { background: rgba(217,119,6,.12) !important; color: #d97706 !important; border-color: rgba(217,119,6,.25) !important; }
+#appPage .pill.danger, #appPage .tag.danger, #appPage .assistant360-card.danger .tag { background: rgba(220,38,38,.12) !important; color: #dc2626 !important; border-color: rgba(220,38,38,.25) !important; }
+body.dark #appPage .pill.success, body.dark #appPage .tag.success, body.dark #appPage .assistant360-card.success .tag { color: #4ade80 !important; }
+body.dark #appPage .pill.warning, body.dark #appPage .tag.warning, body.dark #appPage .assistant360-card.warning .tag { color: #fbbf24 !important; }
+body.dark #appPage .pill.danger, body.dark #appPage .tag.danger, body.dark #appPage .assistant360-card.danger .tag { color: #f87171 !important; }
+
+/* Tablas */
+body:not(.dark) #appPage :is(table,thead,tbody,tr,td,th) { background: #ffffff !important; color: #111111 !important; border-color: #e5e7eb !important; }
+body:not(.dark) #appPage th { background: #f5f5f5 !important; color: #111111 !important; }
+body.dark #appPage :is(table,thead,tbody,tr,td,th) { background: #080808 !important; color: #ffffff !important; border-color: #2a2a2a !important; }
+body.dark #appPage th { background: #111111 !important; color: #ffffff !important; }
+
+/* Menú lateral siempre oscuro, con letras blancas */
+#appPage .sidebar { background: #000000 !important; color: #ffffff !important; border-right: 1px solid #222222 !important; }
+#appPage .sidebar * { color: inherit !important; }
+#appPage .sidebar .user-mini, #appPage .brand-row span { color: #d1d5db !important; }
+#appPage .nav button { color: #ffffff !important; background: transparent !important; border-color: transparent !important; }
+#appPage .nav button.active, #appPage .nav button:hover { background: #1a1a1a !important; color: #ffffff !important; border-color: #333333 !important; }
+#appPage .nav button .nav-icon { background: #111111 !important; color: #ffffff !important; border-color: #333333 !important; }
+#appPage .nav button.active .nav-icon, #appPage .nav button:hover .nav-icon { background: #ffffff !important; color: #000000 !important; }
+#appPage .brand-logo { background: #ffffff !important; color: #000000 !important; box-shadow: none !important; }
+
+/* Documentos de cotización/cobro siempre profesionales: blanco + negro. */
+#appPage :is(.doc-preview,.quote-preview-doc,#printArea,.doc-table,.doc-total,.doc-total table,.quote-preview-doc table,.doc-preview table),
+#printArea {
+  background: #ffffff !important; color: #111111 !important; border-color: #e5e7eb !important;
+}
+#appPage :is(.doc-preview,.quote-preview-doc,#printArea,.doc-table,.doc-total) * , #printArea * { color: #111111 !important; }
+#appPage :is(.doc-preview .doc-head,.quote-preview-doc-head,.doc-table th,.doc-preview th,.quote-preview-doc th),
+#printArea :is(.doc-head,th) { background: #111111 !important; color: #ffffff !important; }
+#appPage :is(.doc-preview .doc-head,.quote-preview-doc-head,.doc-table th,.doc-preview th,.quote-preview-doc th) *,
+#printArea :is(.doc-head,th) * { color: #ffffff !important; }
+
+/* Móvil: header más respirable y contraíble */
+@media (max-width: 760px) {
+  #appPage .topbar {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+  #appPage .topbar-main { width: 100% !important; }
+  #appPage .topbar h1 { font-size: 18px !important; flex: 1 1 auto !important; }
+  #appPage #topActions { width: 100% !important; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; max-width: none !important; }
+  #appPage #topActions .btn { width: 100% !important; font-size: 12px !important; padding: 8px 6px !important; }
+  #appPage.header-collapsed .topbar { flex-direction: row !important; align-items: center !important; min-height: 52px !important; }
+  #appPage.header-collapsed #topActions { display: none !important; }
+  #appPage.header-collapsed .header-toggle span { display: none !important; }
+}
+
+  
+
+/* =========================================================
+   GESTIÓN 360 · AUDITORÍA FINAL DE CONTRASTE V3
+   Objetivo:
+   - Fondo blanco = texto negro.
+   - Fondo negro/oscuro = texto blanco.
+   - Botones con contraste garantizado.
+   - Documentos de cotización y cuenta de cobro siempre blancos con texto negro.
+   ========================================================= */
+
+:root {
+  --bg: #ffffff !important;
+  --panel: #ffffff !important;
+  --panel-soft: #f6f6f6 !important;
+  --card: #ffffff !important;
+  --text: #111111 !important;
+  --muted: #4b5563 !important;
+  --line: #dddddd !important;
+  --border: #dddddd !important;
+  --brand: #111111 !important;
+  --brand-dark: #000000 !important;
+  --primary: #111111 !important;
+  --accent: #111111 !important;
+  --success: #15803d !important;
+  --warning: #b45309 !important;
+  --danger: #b91c1c !important;
+  --shadow: 0 10px 24px rgba(0, 0, 0, .08) !important;
+  --shadow-soft: 0 8px 20px rgba(0, 0, 0, .06) !important;
+}
+
+body.dark {
+  --bg: #000000 !important;
+  --panel: #000000 !important;
+  --panel-soft: #0f0f0f !important;
+  --card: #000000 !important;
+  --text: #ffffff !important;
+  --muted: #d1d5db !important;
+  --line: #2b2b2b !important;
+  --border: #2b2b2b !important;
+  --brand: #ffffff !important;
+  --brand-dark: #e5e5e5 !important;
+  --primary: #ffffff !important;
+  --accent: #ffffff !important;
+  --success: #22c55e !important;
+  --warning: #f59e0b !important;
+  --danger: #ef4444 !important;
+  --shadow: none !important;
+  --shadow-soft: none !important;
+}
+
+html,
+body,
+#appPage,
+#appPage .app,
+#appPage .app-shell,
+#appPage .main,
+#appPage .content,
+#appPage .section,
+body:not(.dark) .modal-backdrop,
+body:not(.dark) .modal-backdrop.show {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body.dark,
+body.dark #appPage,
+body.dark #appPage .app,
+body.dark #appPage .app-shell,
+body.dark #appPage .main,
+body.dark #appPage .content,
+body.dark #appPage .section,
+body.dark .modal-backdrop,
+body.dark .modal-backdrop.show {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Paneles del sistema: colores base limpios */
+body:not(.dark) #appPage :is(
+  .topbar,.card,.auth-card,.auth-feature,.auth-benefit,.quick-actions-card,.stat-card,.smart-card,.smart-item,
+  .business-card,.business-kpi,.business-mini-card,.business-card-stat,.business-form-section,.business-form-panel,.business-detail-panel,
+  .client-card,.client-contact-item,.client-history-item,.client-live-preview,.client-preview-card,
+  .meeting-card,.meeting-calendar-card,.meeting-strip-item,.meeting-meta-item,.meeting-timeline-item,.meeting-preview-card,
+  .task-card,.task-column,.task-meta-item,.task-timeline-item,
+  .finance-movement-card,.finance-mini-card,.finance-mini-item,.finance-project-item,.finance-meta-item,.finance-form-section,.finance-form-panel,.finance-preview-card,
+  .quote-card,.quote-meta-item,.quote-form-section,.quote-form-panel,.quote-alert,.quote-doc-mini,.quote-live-preview,.quote-side-panel,.quote-template-help,
+  .charge-card,.charge-meta-item,.charge-side-panel,.charge-progress,.charge-abono-item,
+  .file-card-v2,.file-preview-card,.file-meta-item,.file-form-panel,
+  .filter-card,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,
+  .report-executive-card,.report-highlight-card,.report-insight,.insight-card,.table-wrap,.empty,.calendar-day,.preview-note,.items-box,
+  .dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero,
+  .assistant360-panel,.assistant360-card,.advanced-fields,.flow-note,.auto-service-hint,.client-intelligence-note,.pwa-install-banner,.pwa-ios-card,
+  .modal,.modal-head,.modal-body,.modal-foot
+) {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #111111 !important;
+  border-color: #dddddd !important;
+  box-shadow: var(--shadow-soft) !important;
+  backdrop-filter: none !important;
+}
+
+body.dark #appPage :is(
+  .topbar,.card,.auth-card,.auth-feature,.auth-benefit,.quick-actions-card,.stat-card,.smart-card,.smart-item,
+  .business-card,.business-kpi,.business-mini-card,.business-card-stat,.business-form-section,.business-form-panel,.business-detail-panel,
+  .client-card,.client-contact-item,.client-history-item,.client-live-preview,.client-preview-card,
+  .meeting-card,.meeting-calendar-card,.meeting-strip-item,.meeting-meta-item,.meeting-timeline-item,.meeting-preview-card,
+  .task-card,.task-column,.task-meta-item,.task-timeline-item,
+  .finance-movement-card,.finance-mini-card,.finance-mini-item,.finance-project-item,.finance-meta-item,.finance-form-section,.finance-form-panel,.finance-preview-card,
+  .quote-card,.quote-meta-item,.quote-form-section,.quote-form-panel,.quote-alert,.quote-doc-mini,.quote-live-preview,.quote-side-panel,.quote-template-help,
+  .charge-card,.charge-meta-item,.charge-side-panel,.charge-progress,.charge-abono-item,
+  .file-card-v2,.file-preview-card,.file-meta-item,.file-form-panel,
+  .filter-card,.business-filter-card,.client-filter-card,.meeting-filter-card,.task-filter-card,.finance-filter-card,.quote-filter-card,.charge-filter-card,.files-filter-card,.reports-filter-card,
+  .report-executive-card,.report-highlight-card,.report-insight,.insight-card,.table-wrap,.empty,.calendar-day,.preview-note,.items-box,
+  .dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero,
+  .assistant360-panel,.assistant360-card,.advanced-fields,.flow-note,.auto-service-hint,.client-intelligence-note,.pwa-install-banner,.pwa-ios-card,
+  .modal,.modal-head,.modal-body,.modal-foot
+) {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #2b2b2b !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Herencia estricta de texto por fondo */
+body:not(.dark) #appPage :is(
+  .topbar,.card,.quick-actions-card,.stat-card,.smart-card,.smart-item,.business-card,.client-card,.meeting-card,.task-card,
+  .finance-movement-card,.quote-card,.charge-card,.file-card-v2,.table-wrap,.modal,.modal-head,.modal-body,.modal-foot,
+  .dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero
+) :is(h1,h2,h3,h4,h5,h6,p,span,small,label,strong,b,div,td,th,li,i,em):not(.btn):not(.btn *):not(.pill):not(.tag):not(.badge):not(.hero-chip):not(.section-kicker):not(.eyebrow) {
+  color: #111111 !important;
+}
+
+body.dark #appPage :is(
+  .topbar,.card,.quick-actions-card,.stat-card,.smart-card,.smart-item,.business-card,.client-card,.meeting-card,.task-card,
+  .finance-movement-card,.quote-card,.charge-card,.file-card-v2,.table-wrap,.modal,.modal-head,.modal-body,.modal-foot,
+  .dashboard-hero,.business-page-hero,.client-page-hero,.meeting-page-hero,.task-page-hero,.finance-page-hero,.quote-page-hero,.charge-page-hero,.files-page-hero,.reports-page-hero
+) :is(h1,h2,h3,h4,h5,h6,p,span,small,label,strong,b,div,td,th,li,i,em):not(.btn):not(.btn *):not(.pill):not(.tag):not(.badge):not(.hero-chip):not(.section-kicker):not(.eyebrow) {
+  color: #ffffff !important;
+}
+
+body:not(.dark) #appPage :is(.muted,.hint,.meta,.doc-meta,.smart-item-meta,.stat-card .label,.stat-card .hint,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,label,small):not(.btn):not(.btn *) {
+  color: #4b5563 !important;
+}
+body.dark #appPage :is(.muted,.hint,.meta,.doc-meta,.smart-item-meta,.stat-card .label,.stat-card .hint,.card-headline p,.quick-title p,.business-title p,.finance-card-title p,.quote-card-title small,.file-title-line small,.charge-card-head small,label,small):not(.btn):not(.btn *) {
+  color: #d1d5db !important;
+}
+
+/* Formularios y desplegables */
+body:not(.dark) :is(input,select,textarea) {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #cfcfcf !important;
+  box-shadow: none !important;
+}
+body.dark :is(input,select,textarea) {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+  box-shadow: none !important;
+}
+body:not(.dark) :is(input,textarea)::placeholder { color: #6b7280 !important; }
+body.dark :is(input,textarea)::placeholder { color: #9ca3af !important; }
+body:not(.dark) option { background: #ffffff !important; color: #111111 !important; }
+body.dark option { background: #000000 !important; color: #ffffff !important; }
+
+/* Botones con contraste garantizado */
+#appPage .btn,
+.modal .btn,
+.auth-card .btn,
+.pwa-install-banner .btn {
+  background: #111111 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #111111 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+#appPage .btn *,
+.modal .btn *,
+.auth-card .btn *,
+.pwa-install-banner .btn * {
+  color: inherit !important;
+}
+body.dark #appPage .btn,
+body.dark .modal .btn,
+body.dark .auth-card .btn,
+body.dark .pwa-install-banner .btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+#appPage .btn.secondary,
+.modal .btn.secondary,
+.auth-card .btn.secondary,
+#appPage .link-btn,
+.modal .link-btn {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid #cfcfcf !important;
+}
+body.dark #appPage .btn.secondary,
+body.dark .modal .btn.secondary,
+body.dark .auth-card .btn.secondary,
+body.dark #appPage .link-btn,
+body.dark .modal .link-btn {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+#appPage .btn.success,
+.modal .btn.success { background: #15803d !important; color: #ffffff !important; border-color: #15803d !important; }
+#appPage .btn.warning,
+.modal .btn.warning { background: #b45309 !important; color: #ffffff !important; border-color: #b45309 !important; }
+#appPage .btn.danger,
+.modal .btn.danger { background: #b91c1c !important; color: #ffffff !important; border-color: #b91c1c !important; }
+body.dark #appPage .btn.success,
+body.dark .modal .btn.success { background: #22c55e !important; color: #000000 !important; border-color: #22c55e !important; }
+body.dark #appPage .btn.warning,
+body.dark .modal .btn.warning { background: #f59e0b !important; color: #000000 !important; border-color: #f59e0b !important; }
+body.dark #appPage .btn.danger,
+body.dark .modal .btn.danger { background: #ef4444 !important; color: #ffffff !important; border-color: #ef4444 !important; }
+
+/* Etiquetas/estados: legibles en ambos modos */
+#appPage :is(.pill,.tag,.badge,.assistant360-badge,.hero-chip,.eyebrow,.section-kicker,.charge-priority-tag,.meeting-time-badge) {
+  background: #f3f4f6 !important;
+  color: #111111 !important;
+  border: 1px solid #d1d5db !important;
+}
+body.dark #appPage :is(.pill,.tag,.badge,.assistant360-badge,.hero-chip,.eyebrow,.section-kicker,.charge-priority-tag,.meeting-time-badge) {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+#appPage :is(.pill.success,.tag.success,.badge-success,.assistant360-card.success .tag) { background: #dcfce7 !important; color: #166534 !important; border-color: #bbf7d0 !important; }
+#appPage :is(.pill.warning,.tag.warning,.badge-warning,.assistant360-card.warning .tag) { background: #fef3c7 !important; color: #92400e !important; border-color: #fde68a !important; }
+#appPage :is(.pill.danger,.tag.danger,.badge-danger,.assistant360-card.danger .tag) { background: #fee2e2 !important; color: #991b1b !important; border-color: #fecaca !important; }
+body.dark #appPage :is(.pill.success,.tag.success,.badge-success,.assistant360-card.success .tag) { background: rgba(34,197,94,.18) !important; color: #bbf7d0 !important; border-color: rgba(34,197,94,.35) !important; }
+body.dark #appPage :is(.pill.warning,.tag.warning,.badge-warning,.assistant360-card.warning .tag) { background: rgba(245,158,11,.18) !important; color: #fde68a !important; border-color: rgba(245,158,11,.35) !important; }
+body.dark #appPage :is(.pill.danger,.tag.danger,.badge-danger,.assistant360-card.danger .tag) { background: rgba(239,68,68,.18) !important; color: #fecaca !important; border-color: rgba(239,68,68,.35) !important; }
+#appPage :is(.pill,.tag,.badge,.assistant360-badge,.hero-chip,.eyebrow,.section-kicker) * { color: inherit !important; }
+
+/* Tablas */
+body:not(.dark) #appPage :is(table,thead,tbody,tr,td,th) {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e5e5 !important;
+}
+body:not(.dark) #appPage th { background: #f4f4f5 !important; color: #111111 !important; }
+body.dark #appPage :is(table,thead,tbody,tr,td,th) {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #2b2b2b !important;
+}
+body.dark #appPage th { background: #111111 !important; color: #ffffff !important; }
+
+/* Sidebar siempre negro con texto blanco */
+#appPage .sidebar,
+body.dark #appPage .sidebar {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-right: 1px solid #2b2b2b !important;
+}
+#appPage .sidebar * { color: inherit !important; }
+#appPage .sidebar .muted,
+#appPage .sidebar small,
+#appPage .sidebar .user-mini,
+#appPage .sidebar .brand-row span { color: #d1d5db !important; }
+#appPage .nav button { background: transparent !important; color: #ffffff !important; border-color: transparent !important; }
+#appPage .nav button * { color: inherit !important; }
+#appPage .nav button:hover,
+#appPage .nav button.active { background: #151515 !important; color: #ffffff !important; border-color: #333333 !important; }
+#appPage .nav button .nav-icon { background: #111111 !important; color: #ffffff !important; border-color: #333333 !important; }
+#appPage .nav button:hover .nav-icon,
+#appPage .nav button.active .nav-icon { background: #ffffff !important; color: #000000 !important; border-color: #ffffff !important; }
+#appPage .nav button:hover .nav-icon *,
+#appPage .nav button.active .nav-icon * { color: #000000 !important; }
+#appPage .brand-logo { background: #ffffff !important; color: #000000 !important; }
+#appPage .brand-logo * { color: #000000 !important; }
+
+/* Documentos y zonas blancas de cotización/cuenta de cobro: siempre blanco + negro */
+#appPage :is(
+  .doc-preview,.doc-preview *,.quote-preview-doc,.quote-preview-doc *,.quote-preview-doc-body,.quote-preview-doc-body *,
+  .quote-preview-lines,.quote-preview-lines *,.quote-preview-line,.quote-preview-line *,
+  .charge-preview-document,.charge-preview-document *,.charge-preview-panel,.charge-preview-panel *,
+  .charge-doc-layout,.charge-doc-layout *,#printArea,#printArea *,
+  .doc-table,.doc-table *,.doc-total,.doc-total *,.compact-doc,.compact-doc *
+) {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e5e5 !important;
+  box-shadow: none !important;
+}
+#appPage :is(.doc-head,.doc-head *,.quote-preview-doc-head,.quote-preview-doc-head *,.doc-table th,.doc-table th *, .doc-preview th,.doc-preview th *, .quote-preview-doc th,.quote-preview-doc th *, #printArea th,#printArea th *) {
+  background: #111111 !important;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border-color: #111111 !important;
+}
+#appPage :is(.doc-preview,.quote-preview-doc,.charge-preview-document,#printArea) :is(.btn,.link-btn) {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #111111 !important;
+}
+#appPage :is(.doc-preview,.quote-preview-doc,.charge-preview-document,#printArea) :is(.btn.secondary,.link-btn.secondary) {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #cfcfcf !important;
+}
+#appPage :is(.doc-preview,.quote-preview-doc,.charge-preview-document,#printArea) :is(.btn,.link-btn) * { color: inherit !important; }
+
+/* Si algún componente usa fondo blanco explícito, el texto queda negro. */
+body:not(.dark) #appPage [style*="background: white"],
+body:not(.dark) #appPage [style*="background:#fff"],
+body:not(.dark) #appPage [style*="background: #fff"],
+body:not(.dark) #appPage [style*="background-color: white"],
+body:not(.dark) #appPage [style*="background-color:#fff"],
+body:not(.dark) #appPage [style*="background-color: #fff"],
+body.dark #appPage [style*="background: white"],
+body.dark #appPage [style*="background:#fff"],
+body.dark #appPage [style*="background: #fff"],
+body.dark #appPage [style*="background-color: white"],
+body.dark #appPage [style*="background-color:#fff"],
+body.dark #appPage [style*="background-color: #fff"] {
+  color: #111111 !important;
+}
+
+/* Si algún componente usa fondo negro explícito, el texto queda blanco. */
+#appPage [style*="background: black"],
+#appPage [style*="background:#000"],
+#appPage [style*="background: #000"],
+#appPage [style*="background-color: black"],
+#appPage [style*="background-color:#000"],
+#appPage [style*="background-color: #000"] {
+  color: #ffffff !important;
+}
+
+/* El header expandible/contraíble conserva contraste en ambos modos. */
+#appPage.header-collapsed .topbar,
+body:not(.dark) #appPage.header-collapsed .topbar {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+body.dark #appPage.header-collapsed .topbar {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+#appPage .topbar .btn * { color: inherit !important; }
+
+@media (max-width: 760px) {
+  #appPage .topbar { background: var(--bg) !important; color: var(--text) !important; }
+  #appPage #topActions .btn { min-width: 0 !important; }
+}
+
+</style>
 
   <!-- PWA / Instalación móvil -->
-  <meta name="theme-color" content="#061427" />
-  <meta name="background-color" content="#061427" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="background-color" content="#ffffff" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -7593,6 +8938,688 @@
   </script>
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+
+
+<style id="gestion360-header-light-final-fix">
+/* =========================================================
+   Gestión 360 · Corrección final de header modo claro/oscuro
+   Modo claro: header blanco, texto negro, animaciones/iconos negros.
+   Modo oscuro: header negro, texto blanco, iconos blancos.
+   ========================================================= */
+body:not(.dark) #appPage #appHeader.topbar,
+body:not(.dark) #appPage #appHeader .topbar-main,
+body:not(.dark) #appPage #topActions {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border-color: #e5e7eb !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,.08) !important;
+}
+
+body:not(.dark) #appPage #appHeader,
+body:not(.dark) #appPage #appHeader *,
+body:not(.dark) #appPage #appHeader h1,
+body:not(.dark) #appPage #appHeader span,
+body:not(.dark) #appPage #appHeader strong,
+body:not(.dark) #appPage #appHeader b {
+  color: #000000 !important;
+}
+
+body:not(.dark) #appPage #appHeader .ui-icon,
+body:not(.dark) #appPage #appHeader svg,
+body:not(.dark) #appPage #appHeader path,
+body:not(.dark) #appPage #appHeader use {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+body:not(.dark) #appPage #appHeader .btn,
+body:not(.dark) #appPage #appHeader .btn.secondary,
+body:not(.dark) #appPage #appHeader .btn.small,
+body:not(.dark) #appPage #appHeader #btnQuickQuote,
+body:not(.dark) #appPage #appHeader #btnTheme,
+body:not(.dark) #appPage #appHeader #btnInstallAppHeader,
+body:not(.dark) #appPage #appHeader #btnMobileMenu,
+body:not(.dark) #appPage #appHeader #btnHeaderToggle {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage #appHeader .btn:hover,
+body:not(.dark) #appPage #appHeader .btn:focus,
+body:not(.dark) #appPage #appHeader #btnHeaderToggle:hover,
+body:not(.dark) #appPage #appHeader #btnHeaderToggle:focus {
+  background: #f3f4f6 !important;
+  color: #000000 !important;
+  border-color: #9ca3af !important;
+}
+
+body:not(.dark) #appPage #appHeader .btn *,
+body:not(.dark) #appPage #appHeader .btn .ui-icon,
+body:not(.dark) #appPage #appHeader .btn svg,
+body:not(.dark) #appPage #appHeader .btn path {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+body:not(.dark) #appPage.header-collapsed #appHeader.topbar,
+body:not(.dark) #appPage.header-collapsed #appHeader .topbar-main {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body:not(.dark) #appPage.header-collapsed #btnHeaderToggle .ui-icon,
+body:not(.dark) #appPage #btnHeaderToggle .ui-icon {
+  color: #000000 !important;
+  stroke: #000000 !important;
+  transition: transform .18s ease !important;
+}
+
+body.dark #appPage #appHeader.topbar,
+body.dark #appPage #appHeader .topbar-main,
+body.dark #appPage #topActions {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #222222 !important;
+  box-shadow: none !important;
+}
+
+body.dark #appPage #appHeader,
+body.dark #appPage #appHeader *,
+body.dark #appPage #appHeader h1,
+body.dark #appPage #appHeader span {
+  color: #ffffff !important;
+}
+
+body.dark #appPage #appHeader .ui-icon,
+body.dark #appPage #appHeader svg,
+body.dark #appPage #appHeader path,
+body.dark #appPage #appHeader use {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+body.dark #appPage #appHeader .btn,
+body.dark #appPage #appHeader .btn.secondary,
+body.dark #appPage #appHeader .btn.small,
+body.dark #appPage #appHeader #btnQuickQuote,
+body.dark #appPage #appHeader #btnTheme,
+body.dark #appPage #appHeader #btnInstallAppHeader,
+body.dark #appPage #appHeader #btnMobileMenu,
+body.dark #appPage #appHeader #btnHeaderToggle {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+  box-shadow: none !important;
+}
+
+body.dark #appPage #appHeader .btn:hover,
+body.dark #appPage #appHeader .btn:focus {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #555555 !important;
+}
+
+body.dark #appPage #appHeader .btn *,
+body.dark #appPage #appHeader .btn .ui-icon,
+body.dark #appPage #appHeader .btn svg,
+body.dark #appPage #appHeader .btn path {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* En móvil el header también debe respetar blanco/negro, sin heredar fondos oscuros. */
+@media (max-width: 760px) {
+  body:not(.dark) #appPage #appHeader.topbar,
+  body:not(.dark) #appPage #appHeader .topbar-main,
+  body:not(.dark) #appPage #topActions {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  body.dark #appPage #appHeader.topbar,
+  body.dark #appPage #appHeader .topbar-main,
+  body.dark #appPage #topActions {
+    background: #000000 !important;
+    color: #ffffff !important;
+  }
+}
+</style>
+
+
+
+<style id="gestion360-sidebar-light-final-fix">
+/* =========================================================
+   Gestión 360 · Corrección final del menú lateral
+   Modo claro: sidebar blanco, texto negro, iconos negros.
+   Modo oscuro: sidebar negro, texto blanco, iconos blancos.
+   ========================================================= */
+
+body:not(.dark) #appPage .sidebar {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .sidebar *,
+body:not(.dark) #appPage .sidebar :is(h1,h2,h3,h4,p,span,strong,b,small,label,div) {
+  color: #000000 !important;
+}
+
+body:not(.dark) #appPage .sidebar .brand-row span,
+body:not(.dark) #appPage .sidebar .user-mini,
+body:not(.dark) #appPage .sidebar small {
+  color: #4b5563 !important;
+}
+
+body:not(.dark) #appPage .side-top,
+body:not(.dark) #appPage .side-bottom {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+}
+
+body:not(.dark) #appPage .brand-logo {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .brand-logo *,
+body:not(.dark) #appPage .brand-logo svg,
+body:not(.dark) #appPage .brand-logo path {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+body:not(.dark) #appPage .nav button,
+body:not(.dark) #appPage #nav button,
+body:not(.dark) #appPage .sidebar .nav button {
+  background: transparent !important;
+  background-image: none !important;
+  color: #111111 !important;
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .nav button *,
+body:not(.dark) #appPage #nav button *,
+body:not(.dark) #appPage .sidebar .nav button * {
+  color: inherit !important;
+}
+
+body:not(.dark) #appPage .nav button .nav-icon,
+body:not(.dark) #appPage #nav button .nav-icon,
+body:not(.dark) #appPage .sidebar .nav button .nav-icon {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #111111 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .nav button .nav-icon *,
+body:not(.dark) #appPage .nav button .nav-icon svg,
+body:not(.dark) #appPage .nav button .nav-icon path {
+  color: #111111 !important;
+  stroke: #111111 !important;
+}
+
+body:not(.dark) #appPage .nav button:hover,
+body:not(.dark) #appPage .nav button.active,
+body:not(.dark) #appPage #nav button:hover,
+body:not(.dark) #appPage #nav button.active {
+  background: #f5f5f5 !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border-color: #d1d5db !important;
+  box-shadow: inset 3px 0 0 #000000 !important;
+}
+
+body:not(.dark) #appPage .nav button:hover .nav-icon,
+body:not(.dark) #appPage .nav button.active .nav-icon,
+body:not(.dark) #appPage #nav button:hover .nav-icon,
+body:not(.dark) #appPage #nav button.active .nav-icon {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+body:not(.dark) #appPage .nav button:hover .nav-icon *,
+body:not(.dark) #appPage .nav button.active .nav-icon *,
+body:not(.dark) #appPage .nav button:hover .nav-icon svg,
+body:not(.dark) #appPage .nav button.active .nav-icon svg,
+body:not(.dark) #appPage .nav button:hover .nav-icon path,
+body:not(.dark) #appPage .nav button.active .nav-icon path {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+body:not(.dark) #appPage .nav button.active::before {
+  background: #000000 !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .side-bottom .btn,
+body:not(.dark) #appPage .side-bottom .btn.secondary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark) #appPage .side-bottom .btn *,
+body:not(.dark) #appPage .side-bottom .btn svg,
+body:not(.dark) #appPage .side-bottom .btn path {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+body:not(.dark) #appPage .side-bottom .btn:hover,
+body:not(.dark) #appPage .side-bottom .btn.secondary:hover {
+  background: #f3f4f6 !important;
+  color: #000000 !important;
+  border-color: #9ca3af !important;
+}
+
+/* Modo oscuro: conservar menú negro limpio con texto blanco. */
+body.dark #appPage .sidebar {
+  background: #000000 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-right: 1px solid #222222 !important;
+}
+
+body.dark #appPage .sidebar *,
+body.dark #appPage .sidebar :is(h1,h2,h3,h4,p,span,strong,b,small,label,div) {
+  color: #ffffff !important;
+}
+
+body.dark #appPage .sidebar .brand-row span,
+body.dark #appPage .sidebar .user-mini,
+body.dark #appPage .sidebar small {
+  color: #d1d5db !important;
+}
+
+body.dark #appPage .side-top,
+body.dark #appPage .side-bottom {
+  background: #000000 !important;
+  border-color: #222222 !important;
+}
+
+body.dark #appPage .nav button,
+body.dark #appPage #nav button,
+body.dark #appPage .sidebar .nav button {
+  background: transparent !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.dark #appPage .nav button .nav-icon,
+body.dark #appPage #nav button .nav-icon,
+body.dark #appPage .sidebar .nav button .nav-icon {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+body.dark #appPage .nav button:hover,
+body.dark #appPage .nav button.active,
+body.dark #appPage #nav button:hover,
+body.dark #appPage #nav button.active {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+  box-shadow: inset 3px 0 0 #ffffff !important;
+}
+
+body.dark #appPage .nav button:hover .nav-icon,
+body.dark #appPage .nav button.active .nav-icon,
+body.dark #appPage #nav button:hover .nav-icon,
+body.dark #appPage #nav button.active .nav-icon {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+body.dark #appPage .nav button:hover .nav-icon *,
+body.dark #appPage .nav button.active .nav-icon *,
+body.dark #appPage .nav button:hover .nav-icon svg,
+body.dark #appPage .nav button.active .nav-icon svg,
+body.dark #appPage .nav button:hover .nav-icon path,
+body.dark #appPage .nav button.active .nav-icon path {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+/* Scroll del menú: visible y coherente en ambos modos. */
+body:not(.dark) #appPage .sidebar ::-webkit-scrollbar-thumb { background: #cfcfcf !important; }
+body.dark #appPage .sidebar ::-webkit-scrollbar-thumb { background: #444444 !important; }
+</style>
+
+
+<style id="gestion360-hamburger-expandible-final">
+/* Menú hamburguesa expandible/contraíble: escritorio y móvil */
+#appPage {
+  --sidebar-expanded-width: 250px;
+  --sidebar-collapsed-width: 88px;
+}
+
+#appPage .mobile-menu {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 44px !important;
+  min-height: 38px !important;
+}
+
+#appPage .mobile-menu .ui-icon {
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 auto !important;
+}
+
+@media (min-width: 1021px) {
+  #appPage.app-shell {
+    display: grid !important;
+    grid-template-columns: var(--sidebar-expanded-width) minmax(0, 1fr) !important;
+    transition: grid-template-columns .24s ease !important;
+  }
+
+  #appPage .sidebar {
+    width: var(--sidebar-expanded-width) !important;
+    max-width: var(--sidebar-expanded-width) !important;
+    overflow: hidden !important;
+    transition: width .24s ease, max-width .24s ease, background .18s ease, color .18s ease !important;
+  }
+
+  #appPage.sidebar-collapsed {
+    grid-template-columns: var(--sidebar-collapsed-width) minmax(0, 1fr) !important;
+  }
+
+  #appPage.sidebar-collapsed .sidebar {
+    width: var(--sidebar-collapsed-width) !important;
+    max-width: var(--sidebar-collapsed-width) !important;
+  }
+
+  #appPage.sidebar-collapsed .side-top {
+    padding: 18px 10px !important;
+  }
+
+  #appPage.sidebar-collapsed .brand-row {
+    justify-content: center !important;
+  }
+
+  #appPage.sidebar-collapsed .brand-row > div:not(.brand-logo) {
+    display: none !important;
+  }
+
+  #appPage.sidebar-collapsed .nav {
+    padding: 12px 10px !important;
+    gap: 10px !important;
+  }
+
+  #appPage.sidebar-collapsed .nav button {
+    justify-content: center !important;
+    padding: 12px 8px !important;
+    min-height: 48px !important;
+    gap: 0 !important;
+  }
+
+  #appPage.sidebar-collapsed .nav button span:not(.nav-icon) {
+    display: none !important;
+  }
+
+  #appPage.sidebar-collapsed .nav .nav-icon {
+    margin: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  #appPage.sidebar-collapsed .side-bottom {
+    padding: 12px 10px !important;
+  }
+
+  #appPage.sidebar-collapsed .user-mini {
+    display: none !important;
+  }
+
+  #appPage.sidebar-collapsed #btnLogout {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 8px !important;
+    justify-content: center !important;
+  }
+
+  #appPage.sidebar-collapsed #btnLogout svg {
+    margin: 0 !important;
+  }
+
+  #appPage.sidebar-collapsed #btnLogout:not(:hover) {
+    font-size: 0 !important;
+  }
+
+  #appPage.sidebar-collapsed #btnLogout:not(:hover) .ui-icon {
+    width: 21px !important;
+    height: 21px !important;
+  }
+}
+
+@media (max-width: 1020px) {
+  #appPage .mobile-menu .menu-label {
+    display: inline !important;
+  }
+
+  #appPage.sidebar-collapsed {
+    display: block !important;
+  }
+}
+
+/* El botón hamburguesa respeta modo claro y oscuro */
+body:not(.dark) #appPage #btnMobileMenu {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #d1d5db !important;
+}
+body:not(.dark) #appPage #btnMobileMenu * {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+body.dark #appPage #btnMobileMenu {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+body.dark #appPage #btnMobileMenu * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* El menú lateral contraído conserva buen contraste */
+body:not(.dark) #appPage.sidebar-collapsed .sidebar,
+body:not(.dark) #appPage.sidebar-collapsed .side-top,
+body:not(.dark) #appPage.sidebar-collapsed .side-bottom {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #e5e7eb !important;
+}
+body.dark #appPage.sidebar-collapsed .sidebar,
+body.dark #appPage.sidebar-collapsed .side-top,
+body.dark #appPage.sidebar-collapsed .side-bottom {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #222222 !important;
+}
+</style>
+
+<style id="gestion360-sidebar-hover-menu-final">
+/* Menú lateral: contraído por defecto en escritorio y expandible al pasar el mouse. */
+@media (min-width: 1021px) {
+  #appPage.app-shell {
+    grid-template-columns: var(--sidebar-collapsed-width, 88px) minmax(0, 1fr) !important;
+  }
+
+  #appPage .sidebar {
+    width: var(--sidebar-collapsed-width, 88px) !important;
+    max-width: var(--sidebar-collapsed-width, 88px) !important;
+    overflow: hidden !important;
+    transition: width .22s ease, max-width .22s ease, background .18s ease, color .18s ease !important;
+  }
+
+  #appPage.sidebar-hover-open,
+  #appPage:not(.sidebar-collapsed).sidebar-hover-open {
+    grid-template-columns: var(--sidebar-expanded-width, 250px) minmax(0, 1fr) !important;
+  }
+
+  #appPage.sidebar-hover-open .sidebar {
+    width: var(--sidebar-expanded-width, 250px) !important;
+    max-width: var(--sidebar-expanded-width, 250px) !important;
+  }
+
+  #appPage.sidebar-hover-open .side-top {
+    padding: 22px 18px !important;
+  }
+
+  #appPage.sidebar-hover-open .brand-row {
+    justify-content: flex-start !important;
+  }
+
+  #appPage.sidebar-hover-open .brand-row > div:not(.brand-logo) {
+    display: block !important;
+  }
+
+  #appPage.sidebar-hover-open .nav {
+    padding: 18px !important;
+    gap: 10px !important;
+  }
+
+  #appPage.sidebar-hover-open .nav button {
+    justify-content: flex-start !important;
+    padding: 12px 14px !important;
+    min-height: 48px !important;
+    gap: 12px !important;
+  }
+
+  #appPage.sidebar-hover-open .nav button span:not(.nav-icon) {
+    display: inline !important;
+  }
+
+  #appPage.sidebar-hover-open .nav .nav-icon {
+    margin: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  #appPage.sidebar-hover-open .side-bottom {
+    padding: 18px !important;
+  }
+
+  #appPage.sidebar-hover-open .user-mini {
+    display: block !important;
+  }
+
+  #appPage.sidebar-hover-open #btnLogout {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 14px !important;
+    justify-content: center !important;
+    font-size: 15px !important;
+  }
+
+  #appPage.sidebar-hover-open #btnLogout svg {
+    margin-right: 6px !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .side-top {
+    padding: 18px 10px !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .brand-row {
+    justify-content: center !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .brand-row > div:not(.brand-logo) {
+    display: none !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .nav {
+    padding: 12px 10px !important;
+    gap: 10px !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .nav button {
+    justify-content: center !important;
+    padding: 12px 8px !important;
+    min-height: 48px !important;
+    gap: 0 !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .nav button span:not(.nav-icon) {
+    display: none !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .nav .nav-icon {
+    margin: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .side-bottom {
+    padding: 12px 10px !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) .user-mini {
+    display: none !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) #btnLogout {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 8px !important;
+    justify-content: center !important;
+    font-size: 0 !important;
+  }
+
+  #appPage:not(.sidebar-hover-open) #btnLogout svg {
+    margin: 0 !important;
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  #appPage #btnMobileMenu .menu-label {
+    display: none !important;
+  }
+}
+
+/* Se elimina visualmente cualquier control antiguo de contraer header. */
+#btnHeaderToggle {
+  display: none !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -7628,6 +9655,8 @@
     <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 15H6L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
     <symbol id="icon-log-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></symbol>
 
+    <symbol id="icon-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3.4 8.4-8 9-4.6-.6-8-4-8-9V6l8-3Z"/><path d="m9 12 2 2 4-5"/></symbol>
     <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></symbol>
     <symbol id="icon-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.7 5.1L19 10l-5.3 1.9L12 17l-1.7-5.1L5 10l5.3-1.9L12 3Z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/><path d="M5 3l.8 2.2L8 6l-2.2.8L5 9l-.8-2.2L2 6l2.2-.8L5 3Z"/></symbol>
@@ -7675,7 +9704,7 @@
  </div>
  <nav class="nav" id="nav">
  <button data-section="dashboard" class="active"><span class="nav-icon">IN</span><span>Inicio</span></button>
- <button data-section="negocios"><span class="nav-icon">CP</span><span>Cuentas / Proyectos</span></button>
+ <button data-section="negocios"><span class="nav-icon">CP</span><span>Servicios activos</span></button>
  <button data-section="clientes"><span class="nav-icon">CL</span><span>Clientes</span></button>
  <button data-section="agenda"><span class="nav-icon">AG</span><span>Reuniones</span></button>
  <button data-section="tareas"><span class="nav-icon">TK</span><span>Tareas</span></button>
@@ -7693,12 +9722,12 @@
  </aside>
 
  <main class="main">
- <header class="topbar">
- <div style="display:flex;align-items:center;gap:10px;">
- <button class="btn secondary small mobile-menu" id="btnMobileMenu"><svg class="ui-icon"><use href="#icon-menu"></use></svg>Menú</button>
+ <header class="topbar" id="appHeader">
+ <div class="topbar-main">
+ <button class="btn secondary small mobile-menu" id="btnMobileMenu" type="button" aria-expanded="true" aria-controls="sidebar" title="Expandir o contraer menú"><svg class="ui-icon"><use href="#icon-menu"></use></svg><span class="menu-label">Menú</span></button>
  <h1 id="sectionTitle">Inicio</h1>
  </div>
- <div class="top-actions">
+ <div class="top-actions" id="topActions">
  <button class="btn secondary small" id="btnTheme"><svg class="ui-icon"><use href="#icon-moon"></use></svg>Modo</button>
  <button class="btn small" id="btnQuickQuote"><svg class="ui-icon"><use href="#icon-plus"></use></svg>Cotización</button>
  <button class="btn secondary small" id="btnInstallAppHeader" type="button"><svg class="ui-icon"><use href="#icon-download"></use></svg>Instalar</button>
@@ -7735,9 +9764,9 @@
  </div>
  </div>
  <div class="quick-grid">
- <button onclick="openModal('quickflow')"><span>⚡</span><strong>Flujo rápido</strong><small>Cliente + proyecto + cotización</small></button>
- <button onclick="openModal('client')"><span>CL</span><strong>Cliente</strong><small>Registrar contacto</small></button>
- <button onclick="openModal('business')"><span>CP</span><strong>Cuenta/Proyecto</strong><small>Cliente o servicio</small></button>
+ <button onclick="openModal('quickflow')"><span>⚡</span><strong>Flujo inteligente</strong><small>Cliente + servicio + cobro</small></button>
+ <button onclick="openModal('client')"><span>CL</span><strong>Cliente / servicio</strong><small>Deja todo listo</small></button>
+ <button onclick="openModal('business')"><span>CP</span><strong>Servicio interno</strong><small>Control avanzado</small></button>
  <button onclick="openModal('finance')"><span>FN</span><strong>Ingreso / gasto</strong><small>Movimiento financiero</small></button>
  <button onclick="openModal('meeting')"><span>AG</span><strong>Reunión</strong><small>Agendar compromiso</small></button>
  <button onclick="openModal('task')"><span>TK</span><strong>Tarea</strong><small>Crear pendiente</small></button>
@@ -7750,6 +9779,7 @@
  <div class="grid cols-4" id="statsGrid"></div>
 
  <div id="dashboardInsights" class="insight-grid"></div>
+ <div id="assistant360Panel" class="assistant360-panel"></div>
 
  <div class="grid cols-2 dashboard-main-grid">
  <div class="card smart-card">
@@ -7792,8 +9822,8 @@
  </div>
  <div class="card smart-card">
  <div class="card-headline">
- <div><h3>Resumen por cuenta/proyecto</h3><p>Servicios, clientes y rentabilidad estimada.</p></div>
- <button class="btn secondary small" onclick="openModal('business')">+ Cuenta/Proyecto</button>
+ <div><h3>Resumen por servicio activo</h3><p>Clientes, cobros y rentabilidad estimada.</p></div>
+ <button class="btn secondary small" onclick="openModal('business')">+ Servicio</button>
  </div>
  <div id="businessSummary" class="business-summary"></div>
  </div>
@@ -7803,14 +9833,14 @@
  <section id="negocios" class="section">
  <div class="business-page-hero">
  <div>
- <span class="eyebrow">Cuentas de servicio</span>
- <h2>Clientes, empresas y proyectos</h2>
- <p>Organiza cada empresa o persona natural que recibe tus servicios de marketing digital, páginas web, software POS, asesorías, diseño o automatización.</p>
+ <span class="eyebrow">Servicios activos</span>
+ <h2>Clientes, servicios y proyectos internos</h2>
+ <p>Controla los servicios activos creados automáticamente desde cada cliente, con valores, seguimiento, cobros y rentabilidad.</p>
  </div>
  <div class="business-hero-actions">
  <button class="btn secondary" onclick="openModal('finance')"><svg class="ui-icon"><use href="#icon-wallet"></use></svg>Movimiento</button>
  <button class="btn secondary" onclick="openModal('quote')"><svg class="ui-icon"><use href="#icon-receipt"></use></svg>Cotización</button>
- <button class="btn" onclick="openModal('business')">+ Nueva cuenta/proyecto</button>
+ <button class="btn" onclick="openModal('business')">+ Servicio interno</button>
  </div>
  </div>
 
@@ -8734,7 +10764,7 @@
  };
 
  const titles = {
- dashboard: 'Inicio', negocios: 'Cuentas / Proyectos', clientes: 'Clientes', agenda: 'Reuniones', tareas: 'Tareas',
+ dashboard: 'Inicio', negocios: 'Servicios activos', clientes: 'Clientes', agenda: 'Reuniones', tareas: 'Tareas',
  finanzas: 'Finanzas', cotizaciones: 'Cotizaciones', cuentas: 'Cuentas de cobro', archivos: 'Archivos',
  reportes: 'Reportes', configuracion: 'Configuración'
  };
@@ -8915,6 +10945,193 @@
  return `<span class="pill ${cls}">${escapeHtml(status || 'Sin estado')}</span>`;
  }
 
+
+ function daysBetweenDates(from, to) {
+ const a = parseLocalDate(from);
+ const b = parseLocalDate(to);
+ if (!a || !b) return null;
+ return Math.round((b - a) / 86400000);
+ }
+
+ function isActiveStatus(value = '') {
+ return !['Finalizada','Cancelada','Pagada','Anulada','Rechazada','Perdido','Inactivo'].includes(value || '');
+ }
+
+ function clientServiceDescription(c = {}, negocio = null) {
+ return c.descripcionServicio || c.descripcion || c.necesidad || c.acuerdos || negocio?.descripcion || negocio?.necesidades || 'Servicio solicitado por el cliente.';
+ }
+
+ function findClientBusiness(c = {}) {
+ if (!c) return null;
+ return state.negocios.find(b => b.id === c.negocioId)
+ || state.negocios.find(b => b.clienteId === c.id)
+ || findExistingBusinessQuick(c.nombre || '');
+ }
+
+ function hasChargeForQuote(quoteId = '') {
+ if (!quoteId) return false;
+ return state.cuentasCobro.some(c => c.cotizacionId === quoteId && !['Anulada','Borrador'].includes(chargeStatus(c)));
+ }
+
+ function getClientCommercialProfile(clienteId = '') {
+ const client = state.clientes.find(c => c.id === clienteId) || null;
+ const negocio = findClientBusiness(client || {});
+ const quotes = state.cotizaciones.filter(q => q.clienteId === clienteId);
+ const charges = state.cuentasCobro.filter(c => c.clienteId === clienteId);
+ const tasks = state.tareas.filter(t => t.clienteId === clienteId && isTaskActive(t));
+ const approvedQuotePending = quotes
+ .filter(q => quoteStatus(q) === 'Aprobada' && !hasChargeForQuote(q.id))
+ .sort((a,b) => String(b.fecha || '').localeCompare(String(a.fecha || '')))[0] || null;
+ const latestQuote = [...quotes].sort((a,b) => String(b.fecha || '').localeCompare(String(a.fecha || '')))[0] || null;
+ const value = Number(client?.valorEstimado || negocio?.valorMensualEstimado || negocio?.metaMensual || (latestQuote ? quoteTotals(latestQuote).total : 0) || 0);
+ const service = clientService(client || negocio || {});
+ const description = clientServiceDescription(client || {}, negocio);
+ return {
+ client,
+ negocio,
+ negocioId: client?.negocioId || negocio?.id || '',
+ service,
+ description,
+ value,
+ quotes,
+ charges,
+ tasks,
+ approvedQuotePending,
+ latestQuote,
+ pendingCharges: charges.filter(c => chargeBalance(c) > 0 && !['Pagada','Anulada'].includes(chargeStatus(c))),
+ nextFollowUp: client?.proximoSeguimiento || negocio?.proximoSeguimiento || ''
+ };
+ }
+
+ function clientProjectPayload(payload = {}, clienteId = '') {
+ return {
+ nombre: payload.nombre,
+ clienteId: clienteId || payload.clienteId || '',
+ personaTipo: payload.tipoCliente === 'Persona natural' ? 'Persona natural' : payload.tipoCliente === 'Proveedor' ? 'Aliado' : 'Empresa',
+ tipo: payload.servicioInteres,
+ tipoServicio: payload.servicioInteres,
+ estado: payload.estadoComercial === 'Cliente activo' ? 'Activo' : 'En seguimiento',
+ etapa: payload.estadoComercial === 'Cotización enviada' ? 'Propuesta enviada' : payload.estadoComercial === 'Cliente activo' ? 'En ejecución' : 'Primer contacto',
+ prioridad: payload.prioridad,
+ contacto: payload.nombre,
+ telefono: payload.telefono || payload.whatsapp,
+ email: payload.email,
+ ciudad: payload.ciudad,
+ direccion: payload.direccion,
+ proximoSeguimiento: payload.proximoSeguimiento,
+ valorMensualEstimado: Number(payload.valorEstimado || 0),
+ metaMensual: Number(payload.valorEstimado || 0),
+ presupuestoMensual: 0,
+ fechaInicio: today(),
+ descripcion: payload.descripcionServicio || payload.necesidad || payload.servicioInteres,
+ necesidades: payload.descripcionServicio || payload.necesidad || '',
+ notas: 'Servicio interno creado o actualizado automáticamente desde Cliente / Servicio.'
+ };
+ }
+
+ async function ensureClientServiceProject(payload = {}, clienteId = '') {
+ let business = payload.negocioId ? state.negocios.find(b => b.id === payload.negocioId) : null;
+ if (!business) business = findExistingBusinessQuick(payload.nombre || '');
+ const projectPayload = clientProjectPayload(payload, clienteId);
+ if (business?.id) {
+ await updateRecord('negocios', business.id, projectPayload);
+ return business.id;
+ }
+ const ref = await addRecord('negocios', projectPayload);
+ return ref.id;
+ }
+
+ async function ensureClientFollowUpTask(payload = {}, clienteId = '', negocioId = '') {
+ const due = payload.proximoSeguimiento;
+ if (!due || !clienteId) return;
+ const exists = state.tareas.some(t => t.clienteId === clienteId && (t.fechaLimite || t.fecha) === due && isTaskActive(t) && normalizeText(t.titulo || '').includes('seguimiento'));
+ if (exists) return;
+ await addRecord('tareas', {
+ titulo: `Seguimiento a ${payload.nombre}`,
+ tipo: 'Seguimiento comercial',
+ estado: 'Pendiente',
+ prioridad: payload.prioridad || 'Media',
+ avance: 0,
+ fechaInicio: today(),
+ fechaLimite: due,
+ fecha: due,
+ clienteId,
+ negocioId: negocioId || payload.negocioId || '',
+ servicio: payload.servicioInteres || '',
+ descripcion: `Revisar avance comercial, confirmar interés y próximo paso para ${payload.servicioInteres || 'el servicio solicitado'}.`,
+ resultado: 'Definir si se cotiza, cobra, agenda reunión o se cierra seguimiento.',
+ proximoPaso: 'Contactar por WhatsApp o llamada.',
+ requiereSeguimiento: true
+ });
+ }
+
+ function assistantActionButton(label, action, cls = 'secondary') {
+ return `<button class="btn ${cls} small" onclick="${action}">${escapeHtml(label)}</button>`;
+ }
+
+ function buildAssistant360Recommendations() {
+ const todayStr = today();
+ const recs = [];
+ const add = (tone, title, text, tag, actions = '') => recs.push({ tone, title, text, tag, actions });
+ const overdueTasks = state.tareas.filter(t => isTaskActive(t) && taskDueDate(t) && taskDueDate(t) < todayStr);
+ const todayTasks = state.tareas.filter(t => isTaskActive(t) && taskDueDate(t) === todayStr);
+ const overdueCharges = state.cuentasCobro.filter(c => chargeBalance(c) > 0 && chargeDueDate(c) && chargeDueDate(c) < todayStr && !['Pagada','Anulada'].includes(chargeStatus(c)));
+ const soonCharges = state.cuentasCobro.filter(c => {
+ const due = chargeDueDate(c);
+ const diff = daysBetweenDates(todayStr, due);
+ return chargeBalance(c) > 0 && diff !== null && diff >= 0 && diff <= 3 && !['Pagada','Anulada'].includes(chargeStatus(c));
+ });
+ const approvedWithoutCharge = state.cotizaciones.filter(q => quoteStatus(q) === 'Aprobada' && !hasChargeForQuote(q.id));
+ const quotesWithoutResponse = state.cotizaciones.filter(q => ['Enviada','En revisión','Pendiente'].includes(quoteStatus(q)) && daysBetweenDates(q.fecha || todayStr, todayStr) >= 5);
+ const clientsWithoutFollow = state.clientes.filter(c => ['Nuevo','Contactado','Interesado','Cotización enviada','Negociación','Cliente activo'].includes(c.estadoComercial || 'Nuevo') && !c.proximoSeguimiento);
+ const clientsWithValueNoQuote = state.clientes.filter(c => Number(c.valorEstimado || 0) > 0 && !state.cotizaciones.some(q => q.clienteId === c.id));
+ const monthFin = state.finanzas.filter(f => String(f.fecha || '').slice(0,7) === todayStr.slice(0,7));
+ const monthIncome = monthFin.filter(f => f.tipo === 'ingreso').reduce((a,b)=>a+Number(b.valor||0),0);
+ const monthExpense = monthFin.filter(f => f.tipo === 'gasto').reduce((a,b)=>a+Number(b.valor||0),0);
+
+ if (overdueCharges.length) add('danger', `${overdueCharges.length} cuenta(s) vencida(s)`, `Hay ${peso(overdueCharges.reduce((a,c)=>a+chargeBalance(c),0))} por cobrar con vencimiento atrasado.`, 'Alta prioridad', assistantActionButton('Ver cobros', "setSection('cuentas')", 'warning'));
+ if (overdueTasks.length) add('danger', `${overdueTasks.length} tarea(s) vencida(s)`, 'Revisa los compromisos atrasados para evitar que se acumulen pendientes.', 'Urgente', assistantActionButton('Ver tareas', "setSection('tareas')", 'warning'));
+ if (approvedWithoutCharge.length) {
+ const q = approvedWithoutCharge[0];
+ add('warning', 'Cotización aprobada sin cobro', `${clientName(q.clienteId)} ya tiene cotización aprobada y falta generar cuenta de cobro.`, 'Oportunidad de cobro', assistantActionButton('Crear cobro', `openModal('charge',{clienteId:'${q.clienteId}', cotizacionId:'${q.id}', negocioId:'${q.negocioId || ''}'})`, 'success'));
+ }
+ if (soonCharges.length) add('warning', `${soonCharges.length} cobro(s) próximos a vencer`, `Tienes ${peso(soonCharges.reduce((a,c)=>a+chargeBalance(c),0))} que vencen en los próximos 3 días.`, 'Recordatorio', assistantActionButton('Ver cuentas', "setSection('cuentas')", 'secondary'));
+ if (quotesWithoutResponse.length) {
+ const q = quotesWithoutResponse[0];
+ add('warning', 'Cotización sin respuesta', `${clientName(q.clienteId)} tiene una cotización enviada hace varios días.`, 'Seguimiento comercial', assistantActionButton('Crear tarea', `openModal('task',{clienteId:'${q.clienteId}', negocioId:'${q.negocioId || ''}', tipo:'Seguimiento comercial', titulo:'Seguimiento cotización ${q.numero || ''}', fechaLimite:'${todayStr}'})`, 'secondary'));
+ }
+ if (todayTasks.length) add('info', `${todayTasks.length} tarea(s) para hoy`, 'Tienes acciones programadas para el día. Atiende primero las de prioridad alta.', 'Enfoque', assistantActionButton('Ver agenda', "setSection('tareas')", 'secondary'));
+ if (clientsWithoutFollow.length) {
+ const c = clientsWithoutFollow[0];
+ add('info', 'Clientes sin seguimiento', `${clientsWithoutFollow.length} cliente(s) no tienen próxima fecha de seguimiento.`, 'Organización', assistantActionButton('Agendar tarea', `openModal('task',{clienteId:'${c.id}', negocioId:'${c.negocioId || ''}', tipo:'Seguimiento comercial', titulo:'Seguimiento a ${String(c.nombre || '').replace(/'/g, '')}', fechaLimite:'${todayStr}'})`, 'secondary'));
+ }
+ if (clientsWithValueNoQuote.length) {
+ const c = clientsWithValueNoQuote[0];
+ add('info', 'Cliente listo para cotizar', `${c.nombre || 'Un cliente'} tiene servicio y valor estimado, pero aún no tiene cotización.`, 'Acción rápida', assistantActionButton('Cotizar', `openModal('quote',{clienteId:'${c.id}', negocioId:'${c.negocioId || ''}'})`, 'secondary'));
+ }
+ if (monthExpense > monthIncome && (monthExpense || monthIncome)) add('danger', 'Gastos altos frente a ingresos', `Este mes los gastos superan los ingresos por ${peso(monthExpense - monthIncome)}.`, 'Alerta financiera', assistantActionButton('Revisar finanzas', "setSection('finanzas')", 'warning'));
+ if (!recs.length) add('success', 'Sistema organizado', 'No hay alertas críticas. Continúa registrando clientes, cobros, tareas y movimientos.', 'Todo en orden', assistantActionButton('Crear cliente', "openModal('client')", 'secondary'));
+ return recs.slice(0, 6);
+ }
+
+ function renderAssistant360Panel() {
+ const target = $('assistant360Panel');
+ if (!target) return;
+ const recs = buildAssistant360Recommendations();
+ const critical = recs.filter(r => ['danger','warning'].includes(r.tone)).length;
+ target.innerHTML = `
+ <div class="assistant360-head">
+ <div>
+ <h3>Asistente 360</h3>
+ <p>Recomendaciones automáticas según tareas, clientes, cotizaciones, cobros y finanzas.</p>
+ </div>
+ <div class="assistant360-badge">${critical ? `${critical} acción(es) importantes` : 'Gestión en orden'}</div>
+ </div>
+ <div class="assistant360-grid">
+ ${recs.map(r => `<article class="assistant360-card ${r.tone}"><div class="meta"><span class="tag">${escapeHtml(r.tag)}</span></div><strong>${escapeHtml(r.title)}</strong><p>${escapeHtml(r.text)}</p><div class="assistant360-actions">${r.actions || assistantActionButton('Revisar', "setSection('dashboard')", 'secondary')}</div></article>`).join('')}
+ </div>`;
+ }
+
  function clientName(id) {
  return state.clientes.find(c => c.id === id)?.nombre || 'Sin cliente';
  }
@@ -9028,7 +11245,7 @@
  $('btnLogout').addEventListener('click', () => signOut(auth));
  $('btnTheme').addEventListener('click', toggleTheme);
  $('btnToggleThemeAuth').addEventListener('click', toggleTheme);
- $('btnMobileMenu').addEventListener('click', () => $('sidebar').classList.toggle('open'));
+ setupSidebarHamburger();
  $('btnQuickQuote').addEventListener('click', () => openModal('quote'));
 
  $('periodSwitch')?.addEventListener('click', (event) => {
@@ -9135,6 +11352,7 @@
  ].join('');
 
  renderDashboardInsights({ overdueTasks, pendingQuoteItems, pendingChargeItems, todayMeetings, income, expenses });
+ renderAssistant360Panel();
  renderTodayMeetings(todayMeetings);
  renderPriorityTasks(urgentTasks);
  renderPendingQuotes(pendingQuoteItems.slice(0, 5));
@@ -9156,7 +11374,7 @@
 
  function renderDashboardInsights(data) {
  const alerts = [];
- if (!state.negocios.length) alerts.push(['warning', 'AV', 'Agrega tus negocios', 'Crea tus unidades para separar ingresos, gastos y documentos.']);
+ if (!state.negocios.length) alerts.push(['warning', 'AV', 'Agrega servicios activos', 'Crea clientes con servicio y el sistema generará su proyecto interno.']);
  if (!state.clientes.length) alerts.push(['warning', 'AV', 'Base de clientes vacía', 'Registra clientes para crear cotizaciones y cuentas de cobro más rápido.']);
  if (data.overdueTasks.length) alerts.push(['danger', '⏰', `${data.overdueTasks.length} tarea(s) vencida(s)`, 'Revisa pendientes con fecha anterior a hoy.']);
  if (data.pendingChargeItems.length) alerts.push(['warning', 'AV', `${data.pendingChargeItems.length} cuenta(s) por cobrar`, `Tienes ${peso(data.pendingChargeItems.reduce((a,b)=>a+Number(b.total||0),0))} pendiente(s).`]);
@@ -9590,8 +11808,8 @@
  return c.tipoCliente || c.tipo || 'Contacto';
  }
 
- function clientService(c) {
- return c.servicioInteres || c.servicio || c.tipoServicio || 'Servicio por definir';
+ function clientService(c = {}) {
+ return c.servicioInteres || c.servicioNecesita || c.servicio || c.tipoServicio || 'Servicio por definir';
  }
 
  function clientColor(c) {
@@ -12740,50 +14958,35 @@
  }
 
  function clientForm(data = {}) {
- $('modalTitle').textContent = data.id ? 'Editar cliente / contacto' : 'Nuevo cliente / contacto';
+ $('modalTitle').textContent = data.id ? 'Editar cliente / servicio' : 'Nuevo cliente / servicio';
+ const description = data.descripcionServicio || data.descripcion || data.necesidad || '';
  $('modalBody').innerHTML = `
  <div class="business-form-layout client-form-layout">
  <div class="business-form-panel">
+ <div class="client-intelligence-note"><strong>Flujo inteligente:</strong> crea el cliente, guarda el servicio, el valor y el seguimiento. El sistema crea o actualiza su servicio interno automáticamente para que después puedas cotizar o cobrar seleccionando solo el cliente.</div>
+
  <div class="business-form-section">
- <h4> Datos principales</h4>
+ <h4>1. Cliente</h4>
  <div class="form-row">
- <div class="field"><label>Nombre completo / contacto</label><input id="fNombre" value="${escapeHtml(data.nombre || '')}" placeholder="Ej: Susana Quintero" /></div>
- <div class="field"><label>Tipo de cliente</label><select id="fTipoCliente">
+ <div class="field"><label>Nombre del cliente o empresa</label><input id="fNombre" value="${escapeHtml(data.nombre || '')}" placeholder="Ej: La Parepa / Astro Maquinaria" /></div>
+ <div class="field"><label>Tipo</label><select id="fTipoCliente">
  <option ${((data.tipoCliente || data.tipo || '') === 'Persona natural') ? 'selected' : ''}>Persona natural</option>
  <option ${((data.tipoCliente || data.tipo || '') === 'Empresa') ? 'selected' : ''}>Empresa</option>
- <option ${((data.tipoCliente || data.tipo || '') === 'Contacto de empresa') ? 'selected' : ''}>Contacto de empresa</option>
+ <option ${((data.tipoCliente || data.tipo || '') === 'Emprendimiento') ? 'selected' : ''}>Emprendimiento</option>
  <option ${((data.tipoCliente || data.tipo || '') === 'Proveedor') ? 'selected' : ''}>Proveedor</option>
  </select></div>
  </div>
- <div class="form-row">
- <div class="field"><label>Cuenta / proyecto relacionado</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Sin cuenta/proyecto')}</select></div>
- <div class="field"><label>Cargo o rol</label><input id="fCargo" value="${escapeHtml(data.cargo || '')}" placeholder="Ej: Gerente, propietario, encargado" /></div>
- </div>
- <label class="message" style="margin:0;"><input id="fAutoProyecto" type="checkbox" ${data.negocioId ? '' : 'checked'} style="width:auto;margin-right:8px;"> Crear cuenta/proyecto automáticamente si no selecciono una.</label>
  <div class="form-row cols-3">
- <div class="field"><label>Documento / NIT / CC</label><input id="fDocumento" value="${escapeHtml(data.documento || '')}" /></div>
- <div class="field"><label>Ciudad</label><input id="fCiudad" value="${escapeHtml(data.ciudad || '')}" /></div>
- <div class="field"><label>Dirección</label><input id="fDireccion" value="${escapeHtml(data.direccion || '')}" /></div>
+ <div class="field"><label>WhatsApp</label><input id="fWhatsapp" value="${escapeHtml(data.whatsapp || data.telefono || '')}" placeholder="Número de contacto" /></div>
+ <div class="field"><label>Correo</label><input id="fEmail" type="email" value="${escapeHtml(data.email || '')}" placeholder="correo@cliente.com" /></div>
+ <div class="field"><label>Ciudad</label><input id="fCiudad" value="${escapeHtml(data.ciudad || '')}" placeholder="Bogotá, Pereira, Armenia..." /></div>
  </div>
  </div>
 
  <div class="business-form-section">
- <h4> Contacto</h4>
- <div class="form-row cols-3">
- <div class="field"><label>Teléfono</label><input id="fTelefono" value="${escapeHtml(data.telefono || '')}" /></div>
- <div class="field"><label>WhatsApp</label><input id="fWhatsapp" value="${escapeHtml(data.whatsapp || data.telefono || '')}" /></div>
- <div class="field"><label>Email</label><input id="fEmail" value="${escapeHtml(data.email || '')}" /></div>
- </div>
+ <h4>2. Servicio y valor</h4>
  <div class="form-row">
- <div class="field"><label>Instagram</label><input id="fInstagram" value="${escapeHtml(data.instagram || '')}" placeholder="@usuario" /></div>
- <div class="field"><label>Página web</label><input id="fWeb" value="${escapeHtml(data.web || '')}" placeholder="https://..." /></div>
- </div>
- </div>
-
- <div class="business-form-section">
- <h4> Información comercial</h4>
- <div class="form-row cols-3">
- <div class="field"><label>Servicio de interés</label><select id="fServicioInteres">
+ <div class="field"><label>Servicio que necesita</label><select id="fServicioInteres">
  <option ${((data.servicioInteres || data.servicio || '') === 'Marketing digital') ? 'selected' : ''}>Marketing digital</option>
  <option ${((data.servicioInteres || data.servicio || '') === 'Página web') ? 'selected' : ''}>Página web</option>
  <option ${((data.servicioInteres || data.servicio || '') === 'Software / POS') ? 'selected' : ''}>Software / POS</option>
@@ -12792,75 +14995,102 @@
  <option ${((data.servicioInteres || data.servicio || '') === 'Automatización') ? 'selected' : ''}>Automatización</option>
  <option ${((data.servicioInteres || data.servicio || '') === 'Otro') ? 'selected' : ''}>Otro</option>
  </select></div>
+ <div class="field"><label>Valor que se le cobrará</label><input id="fValorEstimado" type="number" min="0" value="${data.valorEstimado || ''}" placeholder="Ej: 900000" /></div>
+ </div>
+ <div class="field"><label>Descripción de lo que se le hará</label><textarea id="fDescripcionServicio" placeholder="Describe el alcance, entregables o necesidad principal del cliente.">${escapeHtml(description)}</textarea></div>
+ </div>
+
+ <div class="business-form-section">
+ <h4>3. Seguimiento</h4>
+ <div class="form-row cols-3">
  <div class="field"><label>Estado comercial</label><select id="fEstadoComercial">
  ${['Nuevo','Contactado','Interesado','Cotización enviada','Negociación','Cliente activo','Pendiente de pago','Inactivo','Perdido'].map(x => `<option ${((data.estadoComercial || 'Nuevo') === x) ? 'selected' : ''}>${x}</option>`).join('')}
  </select></div>
  <div class="field"><label>Prioridad</label><select id="fPrioridad">
  ${['Alta','Media','Baja'].map(x => `<option ${((data.prioridad || 'Media') === x) ? 'selected' : ''}>${x}</option>`).join('')}
  </select></div>
+ <div class="field"><label>Próxima fecha de seguimiento</label><input id="fProximoSeguimiento" type="date" value="${data.proximoSeguimiento || ''}" /></div>
  </div>
- <div class="form-row cols-4">
+ <label class="flow-note" style="display:block;margin:0;"><input id="fAutoProyecto" type="checkbox" checked style="width:auto;margin-right:8px;"> Crear o actualizar automáticamente el servicio interno de este cliente.</label>
+ </div>
+
+ <details class="advanced-fields">
+ <summary>Datos avanzados opcionales</summary>
+ <div class="advanced-inner">
+ <div class="form-row cols-3">
+ <div class="field"><label>Servicio interno vinculado</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Automático / sin seleccionar')}</select></div>
+ <div class="field"><label>Cargo o rol</label><input id="fCargo" value="${escapeHtml(data.cargo || '')}" /></div>
+ <div class="field"><label>Documento / NIT / CC</label><input id="fDocumento" value="${escapeHtml(data.documento || '')}" /></div>
+ </div>
+ <div class="form-row cols-3">
+ <div class="field"><label>Teléfono alterno</label><input id="fTelefono" value="${escapeHtml(data.telefono || '')}" /></div>
+ <div class="field"><label>Dirección</label><input id="fDireccion" value="${escapeHtml(data.direccion || '')}" /></div>
  <div class="field"><label>Fuente de llegada</label><input id="fFuente" value="${escapeHtml(data.fuente || '')}" placeholder="Referido, Instagram, Google..." /></div>
- <div class="field"><label>Valor estimado</label><input id="fValorEstimado" type="number" min="0" value="${data.valorEstimado || ''}" /></div>
+ </div>
+ <div class="form-row cols-3">
+ <div class="field"><label>Instagram</label><input id="fInstagram" value="${escapeHtml(data.instagram || '')}" placeholder="@usuario" /></div>
+ <div class="field"><label>Página web</label><input id="fWeb" value="${escapeHtml(data.web || '')}" placeholder="https://..." /></div>
  <div class="field"><label>Primer contacto</label><input id="fFechaPrimerContacto" type="date" value="${data.fechaPrimerContacto || today()}" /></div>
- <div class="field"><label>Próximo seguimiento</label><input id="fProximoSeguimiento" type="date" value="${data.proximoSeguimiento || ''}" /></div>
+ </div>
+ <div class="form-row">
+ <div class="field"><label>Acuerdos importantes</label><textarea id="fAcuerdos" placeholder="Precios conversados, condiciones, fechas...">${escapeHtml(data.acuerdos || '')}</textarea></div>
+ <div class="field"><label>Notas internas</label><textarea id="fNotas">${escapeHtml(data.notas || '')}</textarea></div>
  </div>
  <div class="field"><label>Color identificador</label><input id="fColor" type="color" value="${escapeHtml(data.color || clientColor(data))}" /></div>
  </div>
-
- <div class="business-form-section">
- <h4> Necesidades y notas</h4>
- <div class="field"><label>Necesidad principal</label><textarea id="fNecesidad" placeholder="Qué necesita el cliente y qué oportunidad viste...">${escapeHtml(data.necesidad || '')}</textarea></div>
- <div class="field"><label>Acuerdos importantes</label><textarea id="fAcuerdos" placeholder="Precios conversados, entregables, condiciones, fechas...">${escapeHtml(data.acuerdos || '')}</textarea></div>
- <div class="field"><label>Notas internas</label><textarea id="fNotas">${escapeHtml(data.notas || '')}</textarea></div>
- </div>
+ </details>
+ <textarea id="fNecesidad" class="hidden">${escapeHtml(data.necesidad || description)}</textarea>
  </div>
 
  <aside class="business-live-preview client-live-preview">
  <div class="business-preview-head">
  <div>
- <strong>Vista previa de la tarjeta</strong>
- <span>Se actualiza mientras llenas los datos. Así se verá este cliente dentro del CRM.</span>
+ <strong>Vista previa inteligente</strong>
+ <span>Al guardar quedará listo para cotizar, cobrar y hacer seguimiento.</span>
  </div>
- <span class="pill">Preview</span>
+ <span class="pill">Asistente 360</span>
  </div>
  <div id="clientLivePreview"></div>
- <div class="preview-note">Esta vista es una referencia visual. Al guardar, el historial real se alimentará con reuniones, cotizaciones, cuentas de cobro y movimientos financieros.</div>
+ <div class="preview-note">El proyecto/servicio interno se mantiene conectado para reportes, pero el usuario no tendrá que llenarlo en cada cotización o cuenta de cobro.</div>
  <div class="preview-checklist">
- <div class="preview-check"><b>1</b> Vincula el cliente con una cuenta/proyecto.</div>
- <div class="preview-check"><b>2</b> Define estado, prioridad y próximo seguimiento.</div>
- <div class="preview-check"><b>3</b> Usa WhatsApp, cotización o reunión desde la tarjeta.</div>
+ <div class="preview-check"><b>1</b> Selecciona cliente en cotización y se cargará servicio + valor.</div>
+ <div class="preview-check"><b>2</b> Selecciona cliente en cuenta de cobro y se cargará concepto + valor.</div>
+ <div class="preview-check"><b>3</b> Si agregas fecha, se crea una tarea de seguimiento.</div>
  </div>
  </aside>
  </div>`;
- $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveClient">Guardar cliente</button>`;
+ $('modalFoot').innerHTML = `<button class="btn secondary" onclick="closeModal()">Cancelar</button><button class="btn" id="saveClient">Guardar cliente inteligente</button>`;
 
- const readDraft = () => ({
+ const readDraft = () => {
+ const desc = $('fDescripcionServicio')?.value.trim() || $('fNecesidad')?.value.trim() || '';
+ return {
  nombre: $('fNombre').value.trim(),
  tipoCliente: $('fTipoCliente').value,
  tipo: $('fTipoCliente').value,
- negocioId: $('fNegocio').value,
- cargo: $('fCargo').value.trim(),
- documento: $('fDocumento').value.trim(),
+ negocioId: $('fNegocio')?.value || '',
+ cargo: $('fCargo')?.value.trim() || '',
+ documento: $('fDocumento')?.value.trim() || '',
  ciudad: $('fCiudad').value.trim(),
- direccion: $('fDireccion').value.trim(),
- telefono: $('fTelefono').value.trim(),
+ direccion: $('fDireccion')?.value.trim() || '',
+ telefono: $('fTelefono')?.value.trim() || $('fWhatsapp').value.trim(),
  whatsapp: $('fWhatsapp').value.trim(),
  email: $('fEmail').value.trim(),
- instagram: $('fInstagram').value.trim(),
- web: $('fWeb').value.trim(),
+ instagram: $('fInstagram')?.value.trim() || '',
+ web: $('fWeb')?.value.trim() || '',
  servicioInteres: $('fServicioInteres').value,
+ descripcionServicio: desc,
  estadoComercial: $('fEstadoComercial').value,
  prioridad: $('fPrioridad').value,
- fuente: $('fFuente').value.trim(),
+ fuente: $('fFuente')?.value.trim() || '',
  valorEstimado: Number($('fValorEstimado').value || 0),
- fechaPrimerContacto: $('fFechaPrimerContacto').value,
+ fechaPrimerContacto: $('fFechaPrimerContacto')?.value || today(),
  proximoSeguimiento: $('fProximoSeguimiento').value,
- color: $('fColor').value,
- necesidad: $('fNecesidad').value.trim(),
- acuerdos: $('fAcuerdos').value.trim(),
- notas: $('fNotas').value.trim()
- });
+ color: $('fColor')?.value || clientColor(data),
+ necesidad: desc,
+ acuerdos: $('fAcuerdos')?.value.trim() || '',
+ notas: $('fNotas')?.value.trim() || ''
+ };
+ };
 
  const updatePreview = () => {
  const preview = $('clientLivePreview');
@@ -12868,51 +15098,27 @@
  preview.innerHTML = clientFormPreviewCard(readDraft());
  };
 
- ['fNombre','fTipoCliente','fNegocio','fCargo','fDocumento','fCiudad','fDireccion','fTelefono','fWhatsapp','fEmail','fInstagram','fWeb','fServicioInteres','fEstadoComercial','fPrioridad','fFuente','fValorEstimado','fFechaPrimerContacto','fProximoSeguimiento','fColor','fNecesidad','fAcuerdos','fNotas'].forEach(id => {
- const el = $(id);
- if (el) {
+ $('modalBody').querySelectorAll('input, select, textarea').forEach(el => {
  el.addEventListener('input', updatePreview);
  el.addEventListener('change', updatePreview);
- }
  });
-
  updatePreview();
 
  $('saveClient').onclick = async () => {
  try {
- const payload = readDraft();
+ let payload = readDraft();
  if (!payload.nombre) return toast('El cliente necesita nombre');
- if (!payload.negocioId && $('fAutoProyecto')?.checked) {
- const existingBusiness = findExistingBusinessQuick(payload.nombre);
- if (existingBusiness) payload.negocioId = existingBusiness.id;
+ const autoProject = $('fAutoProyecto')?.checked;
+ if (autoProject) payload.negocioId = await ensureClientServiceProject(payload, data.id || '');
+ let clientId = data.id || '';
+ if (data.id) await updateRecord('clientes', data.id, payload);
  else {
- const bRef = await addRecord('negocios', {
- nombre: payload.nombre,
- personaTipo: payload.tipoCliente === 'Persona natural' ? 'Persona natural' : payload.tipoCliente === 'Proveedor' ? 'Aliado' : 'Empresa',
- tipo: payload.servicioInteres,
- tipoServicio: payload.servicioInteres,
- estado: payload.estadoComercial === 'Cliente activo' ? 'Activo' : 'En seguimiento',
- etapa: payload.estadoComercial === 'Cotización enviada' ? 'Propuesta enviada' : 'Primer contacto',
- prioridad: payload.prioridad,
- contacto: payload.nombre,
- telefono: payload.telefono || payload.whatsapp,
- email: payload.email,
- ciudad: payload.ciudad,
- direccion: payload.direccion,
- proximoSeguimiento: payload.proximoSeguimiento,
- valorMensualEstimado: payload.valorEstimado,
- metaMensual: payload.valorEstimado,
- presupuestoMensual: 0,
- fechaInicio: today(),
- descripcion: payload.necesidad || payload.servicioInteres,
- necesidades: payload.necesidad,
- notas: 'Cuenta/proyecto creada automáticamente desde el formulario de cliente.'
- });
- payload.negocioId = bRef.id;
+ const ref = await addRecord('clientes', payload);
+ clientId = ref.id;
  }
- }
- data.id ? await updateRecord('clientes', data.id, payload) : await addRecord('clientes', payload);
- closeModal(); toast(payload.negocioId ? 'Cliente guardado y vinculado a proyecto' : 'Cliente guardado');
+ if (autoProject && payload.negocioId) await updateRecord('negocios', payload.negocioId, { clienteId: clientId, ...clientProjectPayload(payload, clientId) });
+ await ensureClientFollowUpTask(payload, clientId, payload.negocioId);
+ closeModal(); toast('Cliente, servicio interno y seguimiento guardados');
  } catch (error) { toast(error.message || 'No se pudo guardar el cliente'); }
  };
  }
@@ -13527,10 +15733,11 @@
  </div>
 
  <div class="quote-form-section">
- <h4> Cliente y relación comercial</h4>
+ <h4> Cliente inteligente</h4>
+ <div class="auto-service-hint" id="quoteAutoHint">Selecciona un cliente y el sistema cargará automáticamente servicio, descripción, valor y vínculo interno para reportes.</div>
  <div class="form-row cols-2">
  <div class="field"><label>Cliente/contacto</label><select id="fCliente">${options(state.clientes, data.clienteId, 'Selecciona cliente')}</select></div>
- <div class="field"><label>Cuenta/proyecto</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Sin cuenta/proyecto')}</select></div>
+ <div class="field hidden-auto-field"><label>Servicio interno automático</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Automático según cliente')}</select></div>
  </div>
  <div class="form-row cols-2">
  <div class="field"><label>Reunión relacionada</label><select id="fReunion"><option value="">Sin reunión</option>${state.reuniones.map(m => `<option value="${m.id}" ${data.reunionId===m.id?'selected':''}>${escapeHtml(m.titulo || 'Reunión')} · ${escapeHtml(m.fecha || '')}</option>`).join('')}</select></div>
@@ -13633,22 +15840,26 @@
  renderItems();
  $('addItemBtn').onclick = () => { items.push({ descripcion: '', detalle: '', cantidad: 1, valor: 0, descuento: 0 }); renderItems(); };
  const applyClientDefaults = () => {
- const c = state.clientes.find(x => x.id === $('fCliente')?.value);
+ const profile = getClientCommercialProfile($('fCliente')?.value);
+ const c = profile.client;
  if (!c) return updatePreview();
- if (!$('fNegocio').value && c.negocioId) $('fNegocio').value = c.negocioId;
- const service = clientService(c);
+ if (!$('fNegocio').value && profile.negocioId) $('fNegocio').value = profile.negocioId;
+ const service = profile.service;
  if (!$('fServicio').value.trim() && service !== 'Servicio por definir') $('fServicio').value = service;
- if (Number(c.valorEstimado || 0) > 0 && items.length && !items.some(i => Number(i.valor || 0) > 0)) {
+ const isEmptyItem = (item = {}) => !String(item.descripcion || '').trim() && !String(item.detalle || '').trim() && !Number(item.valor || 0);
+ const canAutofillFirst = items.length === 1 && isEmptyItem(items[0]);
+ if (canAutofillFirst && Number(profile.value || 0) > 0) {
  items[0].descripcion = service !== 'Servicio por definir' ? service : 'Servicio profesional';
- items[0].detalle = c.necesidad || c.acuerdos || 'Servicio solicitado por el cliente.';
+ items[0].detalle = profile.description || 'Servicio solicitado por el cliente.';
  items[0].cantidad = 1;
- items[0].valor = Number(c.valorEstimado || 0);
+ items[0].valor = Number(profile.value || 0);
  renderItems();
- return;
  }
+ const hint = $('quoteAutoHint');
+ if (hint) hint.innerHTML = `<strong>Autocompletado:</strong> ${escapeHtml(c.nombre || 'Cliente')} · ${escapeHtml(service)} · ${peso(profile.value || 0)}. Puedes agregar más servicios sin borrar este.`;
  updatePreview();
  };
- $('fCliente')?.addEventListener('change', applyClientDefaults);
+  $('fCliente')?.addEventListener('change', applyClientDefaults);
  $('fEstado')?.addEventListener('change', () => {
  if ($('fEstado').value === 'Aprobada' && $('fCrearCobroAuto')) $('fCrearCobroAuto').checked = true;
  updatePreview();
@@ -13680,6 +15891,7 @@
  window.print();
  setTimeout(() => $('printArea').classList.add('hidden'), 500);
  };
+ if ($('fCliente')?.value && !data.id) applyClientDefaults();
  $('saveQuote').onclick = async () => {
  try {
  const payload = formData();
@@ -13718,9 +15930,10 @@
  <div class="field"><label>Vencimiento</label><input id="fVencimiento" type="date" value="${data.vencimiento || data.fechaVencimiento || localDatePlus(5)}" /></div>
  <div class="field"><label>Estado</label><select id="fEstado"><option ${data.estado==='Borrador'?'selected':''}>Borrador</option><option ${(!data.estado || data.estado==='Pendiente')?'selected':''}>Pendiente</option><option ${data.estado==='Enviada'?'selected':''}>Enviada</option><option ${data.estado==='Parcial'?'selected':''}>Parcial</option><option ${data.estado==='Pagada'?'selected':''}>Pagada</option><option ${data.estado==='Vencida'?'selected':''}>Vencida</option><option ${data.estado==='Anulada'?'selected':''}>Anulada</option></select></div>
  </div>
+ <div class="auto-service-hint" id="chargeAutoHint">Selecciona un cliente y el sistema buscará primero una cotización aprobada pendiente; si no existe, usará el servicio activo o valor estimado.</div>
  <div class="form-row">
  <div class="field"><label>Cliente / contacto</label><select id="fCliente">${options(state.clientes, data.clienteId, 'Selecciona cliente')}</select></div>
- <div class="field"><label>Cuenta / proyecto</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Sin cuenta/proyecto')}</select></div>
+ <div class="field hidden-auto-field"><label>Servicio interno automático</label><select id="fNegocio">${options(state.negocios, data.negocioId, 'Automático según cliente')}</select></div>
  </div>
  <div class="form-row">
  <div class="field"><label>Cotización relacionada</label><select id="fCotizacion"><option value="">Sin cotización</option>${state.cotizaciones.map(q => `<option value="${q.id}" ${data.cotizacionId===q.id?'selected':''}>${escapeHtml(q.numero || 'Cotización')} · ${escapeHtml(clientName(q.clienteId))} · ${peso(quoteTotals(q).total)}</option>`).join('')}</select></div>
@@ -13781,15 +15994,28 @@
  $(id)?.addEventListener('change', updatePreview);
  });
  $('fCliente').addEventListener('change', async () => {
- const c = state.clientes.find(x => x.id === $('fCliente').value);
+ const profile = getClientCommercialProfile($('fCliente').value);
+ const c = profile.client;
  if (!data.id) $('fNumero').value = await nextChargeNumber($('fCliente').value);
  if (c) {
- if (!$('fNegocio').value && c.negocioId) $('fNegocio').value = c.negocioId;
- if (!$('fTotal').value && Number(c.valorEstimado || 0) > 0) $('fTotal').value = c.valorEstimado;
- if (!$('fConcepto').value.trim()) $('fConcepto').value = `Cobro por ${clientService(c)} - ${c.nombre || 'cliente'}`;
+ if (!$('fNegocio').value && profile.negocioId) $('fNegocio').value = profile.negocioId;
+ if (profile.approvedQuotePending) {
+ const q = profile.approvedQuotePending;
+ $('fCotizacion').value = q.id;
+ $('fNegocio').value = q.negocioId || profile.negocioId || $('fNegocio').value;
+ $('fTotal').value = quoteTotals(q).total;
+ $('fConcepto').value = `Cuenta de cobro generada desde cotización ${q.numero || ''} - ${q.servicioPrincipal || (q.items || []).map(i => i.descripcion).filter(Boolean).join(', ') || profile.service}`;
+ $('fVencimiento').value = q.vence || $('fVencimiento').value;
+ if ($('chargeAutoHint')) $('chargeAutoHint').innerHTML = `<strong>Detectado:</strong> cotización aprobada pendiente de cobrar para ${escapeHtml(c.nombre || 'cliente')} por ${peso(quoteTotals(q).total)}.`;
+ } else {
+ if (!$('fTotal').value && Number(profile.value || 0) > 0) $('fTotal').value = profile.value;
+ if (!$('fConcepto').value.trim()) $('fConcepto').value = `Cuenta de cobro por ${profile.service} para ${c.nombre || 'cliente'}. ${profile.description || ''}`.trim();
+ if ($('chargeAutoHint')) $('chargeAutoHint').innerHTML = `<strong>Autocompletado:</strong> ${escapeHtml(c.nombre || 'Cliente')} · ${escapeHtml(profile.service)} · ${peso(profile.value || 0)}.`;
+ }
  }
  updatePreview();
  });
+  if ($('fCliente')?.value && !data.id) setTimeout(() => $('fCliente').dispatchEvent(new Event('change')), 0);
  $('fCotizacion').addEventListener('change', () => {
  const q = state.cotizaciones.find(x => x.id === $('fCotizacion').value);
  if (q) {
@@ -14612,6 +16838,110 @@ window.openStoredFileById = openStoredFileById;
  window.useFileAsConfig = useFileAsConfig;
  window.useFileAsBusinessLogo = useFileAsBusinessLogo;
  window.renderFiles = renderFiles;
+
+
+ 
+function setupSidebarHamburger() {
+ const appPage = document.getElementById('appPage');
+ const sidebar = document.getElementById('sidebar');
+ const btn = document.getElementById('btnMobileMenu');
+ if (!appPage || !sidebar || !btn) return;
+ const label = btn.querySelector('.menu-label');
+ const isMobile = () => window.matchMedia('(max-width: 1020px)').matches;
+ let closeTimer = null;
+
+ const setButtonState = () => {
+   const mobile = isMobile();
+   const expanded = mobile ? sidebar.classList.contains('open') : appPage.classList.contains('sidebar-hover-open');
+   btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+   btn.setAttribute('title', mobile ? (expanded ? 'Cerrar menú' : 'Abrir menú') : 'Menú');
+   if (label) label.textContent = mobile ? (expanded ? 'Cerrar' : 'Menú') : 'Menú';
+ };
+
+ const openDesktopSidebar = () => {
+   if (isMobile()) return;
+   clearTimeout(closeTimer);
+   appPage.classList.add('sidebar-hover-open');
+   appPage.classList.add('sidebar-collapsed');
+   sidebar.classList.remove('open');
+   setButtonState();
+ };
+
+ const closeDesktopSidebar = (delay = 160) => {
+   if (isMobile()) return;
+   clearTimeout(closeTimer);
+   closeTimer = setTimeout(() => {
+     appPage.classList.remove('sidebar-hover-open');
+     appPage.classList.add('sidebar-collapsed');
+     sidebar.classList.remove('open');
+     setButtonState();
+   }, delay);
+ };
+
+ const closeMobileSidebar = () => {
+   if (!isMobile()) return;
+   sidebar.classList.remove('open');
+   setButtonState();
+ };
+
+ btn.addEventListener('click', (event) => {
+   event.preventDefault();
+   if (isMobile()) {
+     sidebar.classList.toggle('open');
+     appPage.classList.remove('sidebar-collapsed', 'sidebar-hover-open');
+     setButtonState();
+     return;
+   }
+   openDesktopSidebar();
+ });
+
+ btn.addEventListener('mouseenter', openDesktopSidebar);
+ btn.addEventListener('mouseleave', () => closeDesktopSidebar(260));
+ sidebar.addEventListener('mouseenter', openDesktopSidebar);
+ sidebar.addEventListener('mouseleave', () => closeDesktopSidebar(120));
+
+ document.querySelectorAll('#nav button').forEach((navBtn) => {
+   navBtn.addEventListener('click', closeMobileSidebar);
+ });
+
+ document.addEventListener('keydown', (event) => {
+   if (event.key === 'Escape') {
+     closeMobileSidebar();
+     closeDesktopSidebar(0);
+   }
+ });
+
+ window.addEventListener('resize', () => {
+   clearTimeout(closeTimer);
+   if (isMobile()) {
+     appPage.classList.remove('sidebar-collapsed', 'sidebar-hover-open');
+     sidebar.classList.remove('open');
+   } else {
+     sidebar.classList.remove('open');
+     appPage.classList.add('sidebar-collapsed');
+     appPage.classList.remove('sidebar-hover-open');
+   }
+   setButtonState();
+ });
+
+ if (isMobile()) {
+   appPage.classList.remove('sidebar-collapsed', 'sidebar-hover-open');
+   sidebar.classList.remove('open');
+ } else {
+   appPage.classList.add('sidebar-collapsed');
+   appPage.classList.remove('sidebar-hover-open');
+   sidebar.classList.remove('open');
+ }
+ setButtonState();
+}
+
+function setupHeaderToggle() {
+ const appPage = document.getElementById('appPage');
+ if (appPage) appPage.classList.remove('header-collapsed');
+ try { localStorage.removeItem('gestion360_header_collapsed'); } catch (error) {}
+}
+
+ setupHeaderToggle();
 
  applyTheme(localStorage.getItem('gestion360_theme') || 'light');
  </script>
